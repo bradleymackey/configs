@@ -1,10 +1,10 @@
 # Interactive?
 # $- = Contains `i` if interactive
-[[ $- == *i* ]] && IS_INTERACTIVE=1 || NOT_INTERACTIVE=1;
+[[ $- == *i* ]] && IS_INTERACTIVE=1 || NOT_INTERACTIVE=1
 
 # TMUX
 # -z = True if the length of string is zero.
-[[ -z "$TMUX" ]] && NOT_TMUX=1 || IS_TMUX=1;
+[[ -z "$TMUX" ]] && NOT_TMUX=1 || IS_TMUX=1
 
 # Modern, please!
 export TERM=xterm-256color
@@ -181,8 +181,16 @@ fi
 export PATH
 
 # ##### TMUX #####
-# -> Launch to tmux if we're not already in it and we're interactive
-if [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
+# -> Launch to tmux if 
+#   1. we have tmux installed
+#   2. we're not already in it
+#   3. we're interactive
+[[ -x "$(command -v tmux)" ]] && HAS_TMUX=1
+if ! [ $HAS_TMUX ]; then
+    echo "➜ You don't have TMUX installed."
+fi
+
+if [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
     echo "➜ 🚀 TMUX"
     # Launches tmux in a session called 'base'.
     tmux attach -t base || tmux new -s base
