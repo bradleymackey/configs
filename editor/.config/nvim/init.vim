@@ -37,7 +37,13 @@ Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'luochen1990/rainbow'
+" Xcode
+" (they call the master branch 'main')
+Plug 'gfontenot/vim-xcode', {'branch': 'main'}
 call plug#end()
+
+" Xcode
+let g:xcode_default_simulator = 'iPhone 8'
 
 " Re-enable underscore regular terminal cursor when we leave nvim
 " (otherwise the nvim cursor style is carried over to the term)
