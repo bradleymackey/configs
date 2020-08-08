@@ -108,9 +108,8 @@ export LANG=en_US.UTF-8
 export PATH="$HOME/.fastlane/bin:$PATH"
 
 # vim
+alias e='nvim'
 alias nv='nvim'
-alias vi='nvim'
-alias vim='nvim'
 alias v='nvim'
 
 # UTILS

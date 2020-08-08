@@ -142,8 +142,10 @@ nnoremap j gj
 nnoremap k gk
 
 " Leader +- to adjust window sizing
-nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <silent> <Leader>1 :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>2 :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <silent> <Leader>3 :exe "resize " . (winwidth(0) * 3/2)<CR>
+nnoremap <silent> <Leader>4 :exe "resize " . (winwidth(0) * 2/3)<CR>
 
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
