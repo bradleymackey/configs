@@ -1,11 +1,16 @@
+# Interactive?
+# $- = Contains `i` if interactive
+[[ $- == *i* ]] && IS_INTERACTIVE=1 || NOT_INTERACTIVE=1;
 
-# Modern Colors
+# TMUX
+# -z = True if the length of string is zero.
+[[ -z "$TMUX" ]] && NOT_TMUX=1 || IS_TMUX=1;
+
+# Modern, please!
 export TERM=xterm-256color
 
-# If you come from bash you might have to change your $PATH.
+# oh, my
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -67,8 +72,7 @@ plugins=(
     zsh-autosuggestions
 )
 
-# only initalise oh-my-zsh if interactive
-if [[ $- == *i* ]]; then
+if [[ $IS_INTERACTIVE ]]; then
     source $ZSH/oh-my-zsh.sh
 fi
 
@@ -178,10 +182,8 @@ export PATH
 
 # ##### TMUX #####
 # -> Launch to tmux if we're not already in it and we're interactive
-# -z = True if the length of string is zero.
-# $- = Contains `i` if interactive
-if [[ -z "$TMUX" ]] && [[ $- == *i* ]]; then
-    echo "➜ Launching TMUX session..."
+if [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
+    echo "➜ 🚀 TMUX"
     # Launches tmux in a session called 'base'.
     tmux attach -t base || tmux new -s base
 fi
