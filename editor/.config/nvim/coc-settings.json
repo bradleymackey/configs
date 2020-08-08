@@ -1,0 +1,15 @@
+{
+  "diagnostic.checkCurrentLine": true,
+  "suggest.timeout": 2000,
+  "languageserver": {
+    "swift": {
+      "command": "sourcekit-lsp",
+      "args": [],
+      "filetypes": ["swift"],
+      "initializationOptions": {},
+      "settings": {
+      }
+    }
+  }
+
+}
