@@ -111,7 +111,7 @@ alias touchbarreset='sudo pkill TouchBarServer'
 alias grep='/usr/local/bin/rg'
 eval $(thefuck --alias)
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en1"
+alias localip="ipconfig getifaddr en0"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 
