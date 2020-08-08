@@ -42,7 +42,17 @@ Plug 'luochen1990/rainbow'
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
 call plug#end()
 
-" Xcode
+" ## Xcode ##
+" :Xbuild will build the project
+" :Xrun will run the app in the iOS Simulator or locally on your Mac
+" :Xtest will test the project
+" :Xclean will clean the project's build directory
+" :Xopen will open the project or a specified file in Xcode
+" :Xswitch will switch the selected version of Xcode (requires sudo)
+" :Xworkspace will let you manually specify the workspace
+" :Xproject will let you manually specify the project
+" :Xscheme will let you manually specify the scheme
+" :Xsimulator will let you manually specify the simulator
 let g:xcode_default_simulator = 'iPhone 8'
 
 " Re-enable underscore regular terminal cursor when we leave nvim
@@ -131,6 +141,9 @@ nnoremap <leader><right> <c-w><right><CR>
 nnoremap j gj
 nnoremap k gk
 
+" Leader +- to adjust window sizing
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor

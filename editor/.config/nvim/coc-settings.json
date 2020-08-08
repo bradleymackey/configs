@@ -3,7 +3,7 @@
   "suggest.timeout": 2000,
   "languageserver": {
     "swift": {
-      "command": "xcrun sourcekit-lsp",
+      "command": "sourcekit-lsp",
       "args": [],
       "filetypes": ["swift", "c", "cc", "cpp", "c++", "objc", "objcpp"],
       "initializationOptions": {},

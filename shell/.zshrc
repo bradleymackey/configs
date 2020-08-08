@@ -139,6 +139,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# SOURCEKIT-LSP
+PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
+
 #  NVM - node version manager
 #  slow, original command:
 # [[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh
