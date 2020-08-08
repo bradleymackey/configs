@@ -164,6 +164,8 @@ hi Identifier ctermfg=147 cterm=NONE
 hi Search ctermbg=white ctermfg=black
 hi IncSearch ctermbg=blue ctermfg=white
 hi MatchParen ctermbg=None ctermfg=yellow cterm=bold,undercurl,strikethrough
+" Error is too red, so we make it salmon
+hi CocErrorSign ctermfg=213
 
 " NERDTree
 let g:NERDTreeGitStatusWithFlags = 1
@@ -412,7 +414,3 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-" REMAP COC COLORS
-" Error is too red, so we make it salmon
-hi CocErrorSign ctermfg=213
