@@ -67,7 +67,10 @@ plugins=(
     zsh-autosuggestions
 )
 
-source $ZSH/oh-my-zsh.sh
+# only initalise oh-my-zsh if interactive
+if [[ $- == *i* ]]; then
+    source $ZSH/oh-my-zsh.sh
+fi
 
 ############# User configuration ############# 
 
@@ -173,12 +176,11 @@ fi
 
 export PATH
 
-# TMUX
-# always try to open in a TMUX shell
-if [ -n "$TMUX" ]; then
-    # already in TMUX (do nothing)
-    :
-else
+# ##### TMUX #####
+# -> Launch to tmux if we're not already in it and we're interactive
+# -z = True if the length of string is zero.
+# $- = Contains `i` if interactive
+if [[ -z "$TMUX" ]] && [[ $- == *i* ]]; then
     echo "➜ Launching TMUX session..."
     # Launches tmux in a session called 'base'.
     tmux attach -t base || tmux new -s base
