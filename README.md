@@ -11,7 +11,7 @@ Relevant dependencies should be installed to use this on the relvant system.
 
 ## Setup
 
-- OS: macOS (should be mostly Linux compatible)
+- OS: macOS (configs should be mostly Linux compatible)
 - Shell: `zsh`
 - Version Control: `git`
 - Terminal Emulator: [`Alacritty`](https://github.com/alacritty/alacritty)
