@@ -1,16 +1,21 @@
-# Interactive?
+# 
+### SETUP
+#
+export TERM=xterm-256color
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+#
+### SCRIPT HELPERS
+#
 # $- = Contains `i` if interactive
 [[ $- == *i* ]] && IS_INTERACTIVE=1 || NOT_INTERACTIVE=1
 
-# TMUX
 # -z = True if the length of string is zero.
 [[ -z "$TMUX" ]] && NOT_TMUX=1 || IS_TMUX=1
 
-# Modern, please!
-export TERM=xterm-256color
-
-# oh, my
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+#
+### OH MY ZSH 
+#
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -38,7 +43,7 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -76,46 +81,32 @@ if [[ $IS_INTERACTIVE ]]; then
     source $ZSH/oh-my-zsh.sh
 fi
 
-############# User configuration ############# 
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# fastlane
-export LC_ALL=en_US.UTF-8
+### CUSTOM CONFIGURATION
+#
+export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export PATH="$HOME/.fastlane/bin:$PATH"
+export ARCHFLAGS="-arch x86_64"
 
-# vim
+# EDITOR (neovim if local, vim if not)
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 alias e='nvim'
 alias nv='nvim'
 alias v='nvim'
 
-# UTILS
+# FASTLANE
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export PATH="$HOME/.fastlane/bin:$PATH"
+
+# ALIASES
+# (run alias for a full list of all zsh aliases)
 alias touchbarreset='sudo pkill TouchBarServer'
 alias grep='/usr/local/bin/rg'
-eval $(thefuck --alias)
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 alias dl="cd ~/Downloads"
@@ -177,6 +168,9 @@ fi
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
   source "$HOME/google-cloud-sdk/completion.zsh.inc"
 fi
+
+# ADDITIONAL SETUP
+eval $(thefuck --alias)
 
 export PATH
 

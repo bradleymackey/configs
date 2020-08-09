@@ -37,6 +37,8 @@ Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'luochen1990/rainbow'
+" 'gcc' to comment line, 'gc' if in visual mode
+Plug 'tomtom/tcomment_vim'
 " Xcode
 " (they call the master branch 'main')
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
