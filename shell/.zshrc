@@ -120,6 +120,7 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
+alias fastlane="bundle exec fastlane"
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
