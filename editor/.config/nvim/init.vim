@@ -28,6 +28,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'itchyny/lightline.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'keith/swift.vim'
+Plug 'godlygeek/tabular'
 " error checking, syntax checking
 Plug 'w0rp/ale'
 " Highlight what is about to be yanked
