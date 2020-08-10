@@ -143,6 +143,14 @@ nnoremap <leader><right> <c-w><right><CR>
 nnoremap j gj
 nnoremap k gk
 
+" Sane splits
+set splitright
+set splitbelow
+
+" Permanent undo
+set undodir=~/.vimdid
+set undofile
+
 " Leader +- to adjust window sizing
 nnoremap <silent> <Leader>1 :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>2 :exe "resize " . (winheight(0) * 2/3)<CR>
