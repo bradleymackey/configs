@@ -37,5 +37,8 @@ font:
     # 'spacing' between lines and letters
     offset:
         x: 0
-        y: 10
+        y: 6
+    glyph_offset:
+        x: 0
+        y: 2
 
