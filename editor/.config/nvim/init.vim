@@ -40,10 +40,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'luochen1990/rainbow'
 " 'gcc' to comment line, 'gc' if in visual mode
 Plug 'tomtom/tcomment_vim'
+Plug 'delphinus/vim-firestore'
 " Xcode
 " (they call the master branch 'main')
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
 call plug#end()
+
+" ## FIREBASE ##
+" Currently outdated syntax, so disable
+let g:vim_firestore_warnings = 0
+autocmd BufNewFile,BufRead *.rules set syntax=firestore
 
 " ## Xcode ##
 " :Xbuild will build the project
@@ -119,11 +125,11 @@ set ignorecase
 set smartcase
 set gdefault
 
-" Ctrl-C or Ctrl-J for Esc (because ESC is a pain in the ass on touchbar)
-inoremap <C-j> <Esc>
-vnoremap <C-j> <Esc>
+" Ctrl-C or Ctrl-A for Esc (because ESC is a pain in the ass on touchbar)
 inoremap <C-c> <Esc>
 vnoremap <C-c> <Esc>
+inoremap <C-a> <Esc>
+vnoremap <C-a> <Esc>
 
 " Forced learning is good! Unmap arrow keys so that we are forced to use the
 " homerow.
@@ -133,6 +139,16 @@ inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
+
+" Move with Ctrl in all modes
+inoremap <C-j> <down>
+nnoremap <C-j> <down>
+inoremap <C-k> <up>
+nnoremap <C-k> <up>
+inoremap <C-h> <left>
+nnoremap <C-h> <left>
+inoremap <C-l> <right>
+nnoremap <C-l> <right>
 
 " Left and right can switch buffers
 nnoremap <left> :bp<CR>
@@ -332,6 +348,8 @@ let g:coc_global_extensions = [
 inoremap <expr><C-e> pumvisible() ? "\<C-e>" : "\<End>"
 " lifetimes don't need completion
 autocmd FileType rust let b:coc_pairs_disabled = ["'"]
+" Brackets in correct position
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
