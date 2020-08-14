@@ -125,11 +125,15 @@ set ignorecase
 set smartcase
 set gdefault
 
-" Ctrl-C or Ctrl-A for Esc (because ESC is a pain in the ass on touchbar)
+" Ctrl-C or Ctrl-A for Esc (because ESC is far away)
 inoremap <C-c> <Esc>
 vnoremap <C-c> <Esc>
+snoremap <C-c> <Esc>
+cnoremap <C-c> <Esc>
 inoremap <C-a> <Esc>
 vnoremap <C-a> <Esc>
+snoremap <C-a> <Esc>
+cnoremap <C-a> <Esc>
 
 " Forced learning is good! Unmap arrow keys so that we are forced to use the
 " homerow.
