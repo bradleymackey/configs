@@ -3,9 +3,15 @@
     email = bradleymackey@me.com
 [github]
 	user = bradleymackey
+[ui "color"]
+	ui = always
+[color]
+	ui = true
 [core]
 	editor = nvim
 	excludesfile = ~/.gitignore
+    autocrlf = input
+	safecrlf = true
 [merge]
     tool = nvim -d
 [filter "lfs"]
