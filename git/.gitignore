@@ -1,3 +1,6 @@
+# GLOBAL GITIGNORE
+# this should be referenced by the global gitconfig
+
 # macOS
 .DS_Store
 **/.DS_Store
