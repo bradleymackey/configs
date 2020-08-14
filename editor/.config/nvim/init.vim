@@ -1,6 +1,9 @@
 " ** NEOVIM INIT SCRIPT **
 " Neovim should be installed, as well as vim-plug (https://github.com/junegunn/vim-plug)
 " (vim-plug is used as the dependency manager)
+set shell=/bin/zsh
+set encoding=utf-8
+let mapleader = "\<Space>"
 
 " # Notes to self
 " nnoremap = normal mode, non-recursive remap
@@ -10,15 +13,13 @@
 " could happen
 
 " Leader
-let mapleader = "\<Space>"
-nnoremap <Leader>` :echo "This is a test of the leader key mapping"<CR>
+nnoremap <Leader>` :echo "LEADER ACKNOWLEDGED :)"<CR>
 nnoremap <Leader><Leader> :bp<CR> 
 
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
-"Plug 'tsony-tsonev/nerdtree-git-plugin'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-gitgutter'
@@ -70,11 +71,10 @@ let g:xcode_default_simulator = 'iPhone 8'
 
 " Re-enable underscore regular terminal cursor when we leave nvim
 " (otherwise the nvim cursor style is carried over to the term)
-au VimLeave * set guicursor=a:hor20-blinkon0
+autocmd VimLeave * set guicursor=a:hor20-blinkon0
 
 " APPEARANCE/BASIC
 set ignorecase
-set shell=/bin/zsh
 set nocompatible " Disable vim weirdness
 set hidden
 set ruler 
@@ -91,7 +91,7 @@ nmap <leader>\ :Rg<CR>
 nmap <leader>w :w<CR>
 nmap <leader>q :wq<CR>
 " Highlight disable (doesn't disable automatically after a search)
-nmap <leader>n :noh<CR>
+nmap <silent> <leader>n :noh<CR>
 " Position Cursor
 nnoremap <leader>z zz<CR>
 " Close buffer, not window
@@ -104,7 +104,6 @@ nnoremap <leader><C-b> :Bd<CR>
 set autoindent
 set ai
 set smartindent
-set encoding=utf-8
 set expandtab
 set tabstop=4
 set shiftwidth=4
@@ -113,7 +112,6 @@ set number " Line number
 set rnu " Line number relative to current position 
 set laststatus=2
 set noshowmode
-set wildmenu
 set mouse=a " Mouse to click and scroll
 set noshowmatch
 set printfont=:h10
@@ -122,21 +120,44 @@ set printoptions=paper:a4
 set backspace=indent,eol,start
 set completeopt-=preview " no scratch buffer when getting autocomplete
 
+" Wildmenu
+set wildmenu
+set wildmode=list:longest
+set wildignore=.hg,.svn,*~,*.png,*.jpg,*.gif,*.settings,Thumbs.db,*.min.js,*.swp,publish/*,intermediate/*,*.o,*.hi,Zend,vendor
+
 " Proper search
 set incsearch
 set ignorecase
 set smartcase
 set gdefault
 
+" Search results centered
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
 " Ctrl-C or Ctrl-A for Esc (because ESC is far away)
-inoremap <C-c> <Esc>
-vnoremap <C-c> <Esc>
-snoremap <C-c> <Esc>
-cnoremap <C-c> <Esc>
+nnoremap <C-a> <Esc>
 inoremap <C-a> <Esc>
 vnoremap <C-a> <Esc>
 snoremap <C-a> <Esc>
+xnoremap <C-a> <Esc>
 cnoremap <C-a> <Esc>
+onoremap <C-a> <Esc>
+lnoremap <C-a> <Esc>
+tnoremap <C-a> <Esc>
+
+nnoremap <C-c> <Esc>
+inoremap <C-c> <Esc>
+vnoremap <C-c> <Esc>
+snoremap <C-c> <Esc>
+xnoremap <C-c> <Esc>
+cnoremap <C-c> <Esc>
+onoremap <C-c> <Esc>
+lnoremap <C-c> <Esc>
+tnoremap <C-c> <Esc>
 
 " Forced learning is good! Unmap arrow keys so that we are forced to use the
 " homerow.
@@ -181,6 +202,9 @@ nnoremap <silent> <Leader>2 :exe "resize " . (winheight(0) * 2/3)<CR>
 nnoremap <silent> <Leader>3 :exe "resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <Leader>4 :exe "resize " . (winwidth(0) * 2/3)<CR>
 
+" ; as : in normal mode
+nnoremap ; :
+
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
     set inccommand=nosplit
@@ -224,6 +248,7 @@ hi CocErrorSign ctermfg=213
 
 " NERDTree
 let g:NERDTreeGitStatusWithFlags = 1
+let g:NERDTreeIgnore = ['^node_modules$']
 " (open NERDTree when we open a directory)
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
@@ -284,8 +309,6 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-let g:NERDTreeIgnore = ['^node_modules$']
-
 " RUST
 let g:rustfmt_autosave = 1
 autocmd BufReadPost *.rs setlocal filetype=rust
@@ -336,7 +359,7 @@ let g:delimitMate_expand_space = 1
 let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
 " no quote completion
 let delimitMate_quotes = ""
-au FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
+autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
