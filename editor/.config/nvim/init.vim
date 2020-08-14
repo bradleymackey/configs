@@ -41,6 +41,8 @@ Plug 'luochen1990/rainbow'
 " 'gcc' to comment line, 'gc' if in visual mode
 Plug 'tomtom/tcomment_vim'
 Plug 'delphinus/vim-firestore'
+" better than coc-pairs
+Plug 'Raimondi/delimitMate'
 " Xcode
 " (they call the master branch 'main')
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
@@ -103,6 +105,8 @@ nnoremap <leader><C-b> :Bd<CR>
 
 " Editor settings
 set autoindent
+set ai
+set smartindent
 set encoding=utf-8
 set expandtab
 set tabstop=4
@@ -118,6 +122,8 @@ set noshowmatch
 set printfont=:h10
 set printencoding=utf-8
 set printoptions=paper:a4
+set backspace=indent,eol,start
+set completeopt-=preview " no scratch buffer when getting autocomplete
 
 " Proper search
 set incsearch
@@ -270,32 +276,17 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+" CURRENTLY DISABLED SO IT DOES NOT INTERERE WITH DELIITMATE
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
 " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-" Autocomplete
-let g:deoplete#enable_at_startup = 1
-" Select an item from autocomplete list without inserting a line break
-augroup DepoleteLeximaWorkaround
-  au!
-  autocmd VimEnter * let a = maparg('<CR>', 'i') | inoremap <expr> <CR> pumvisible() ? "\<C-y>" : eval(a)
-augroup END
-
 let g:NERDTreeIgnore = ['^node_modules$']
-
-" Maps K to hover, gd to goto definition, rn to rename
-" nnoremap <silent> K :call LanguageClient_textDocument_hover()
-" nnoremap <silent> gd :call LanguageClient_textDocument_definition()
-" nnoremap <silent> rn :call LanguageClient_textDocument_rename()
-
-set completeopt-=preview " no scratch buffer when getting autocomplete
-" Make the box gray rather than bright pink
 
 " Rust config
 let g:rustfmt_autosave = 1
@@ -307,10 +298,13 @@ autocmd BufReadPost *.rs setlocal filetype=rust
 set shortmess+=c
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
+
+" CURRENTLY DISABLED SO IT DOES NOT INTERFERE WITH DELIMITMATE
 " When the <Enter> key is pressed while the popup menu is visible, it only
 " hides the menu. Use this mapping to close the menu and also start a new
 " line.
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -342,7 +336,6 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 " coc config
 let g:coc_global_extensions = [
   \ 'coc-snippets',
-  \ 'coc-pairs',
   \ 'coc-tsserver',
   \ 'coc-eslint', 
   \ 'coc-prettier', 
@@ -350,10 +343,12 @@ let g:coc_global_extensions = [
   \ ]
 " Crtl + e to jump out of the brackets auto-completing brackets
 inoremap <expr><C-e> pumvisible() ? "\<C-e>" : "\<End>"
-" lifetimes don't need completion
-autocmd FileType rust let b:coc_pairs_disabled = ["'"]
-" Brackets in correct position
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" delimitMate (better than coc-pairs)
+let g:delimitMate_expand_cr = 2
+let g:delimitMate_expand_space = 1
+let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+au FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
@@ -376,9 +371,12 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
+" CURRENTLY DISABLED SO IT DOES NOT INTERFERE WITH DELIMITMATE - just use the
+" default keys for the moment
+"
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
 " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
