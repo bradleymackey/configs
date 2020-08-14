@@ -1,6 +1,32 @@
 # GLOBAL GITIGNORE
 # this should be referenced by the global gitconfig
 
+# Temporary files #
+###################
+*.swp
+*.swo
+*~
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
 # macOS
 .DS_Store
 **/.DS_Store

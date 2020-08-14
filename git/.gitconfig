@@ -1,17 +1,18 @@
 [user]
 	name = Bradley Mackey
     email = bradleymackey@me.com
+    username = bradleymackey
+[core]
+	editor = nvim
+	excludesfile = ~/.gitignore
+    autocrlf = input
+	safecrlf = true
 [github]
 	user = bradleymackey
 [ui "color"]
 	ui = always
 [color]
 	ui = true
-[core]
-	editor = nvim
-	excludesfile = ~/.gitignore
-    autocrlf = input
-	safecrlf = true
 [merge]
     tool = nvim -d
 [filter "lfs"]
@@ -30,6 +31,44 @@
 	ss = "!f() { git stash show stash^{/$*} -p; }; f"
 	sa = "!f() { git stash apply stash^{/$*}; }; f"
 	sl = stash list
+    #############
+	c = commit
+	ca = commit -a
+	cm = commit -m
+	cam = commit -am
+	cem = commit --allow-empty -m
+	cd = commit --amend
+	cad = commit -a --amend
+	ced = commit --allow-empty --amend
+    ############
+    r = remote
+	ra = remote add
+	rr = remote rm
+	rv = remote -v
+	rn = remote rename
+	rp = remote prune
+	rs = remote show
+	rao = remote add origin
+	rau = remote add upstream
+	rro = remote remove origin
+	rru = remote remove upstream
+	rso = remote show origin
+	rsu = remote show upstream
+	rpo = remote prune origin
+	rpu = remote prune upstream
+    #############
+	s = status
+	sb = status -s -b
+    #############
+	bump = !sh -c 'git commit -am \"Version bump v$1\" && git psuoc && git release $1' -
+	release = !sh -c 'git tag v$1 && git pst' -
+	unrelease = !sh -c 'git tag -d v$1 && git pso :v$1' -
+	merged = !sh -c 'git o master && git plom && git bd $1 && git rpo' -
+	aliases = !git config -l | grep alias | cut -c 7-
+	snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
+	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
+	whois = !sh -c 'git log -i -1 --author=\"$1\" --pretty=\"format:%an <%ae>\"' -
+	serve = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
 [pull]
 	ff = only
 [push]
