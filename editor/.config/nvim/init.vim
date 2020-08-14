@@ -42,6 +42,8 @@ Plug 'luochen1990/rainbow'
 Plug 'tomtom/tcomment_vim'
 Plug 'delphinus/vim-firestore'
 " better than coc-pairs
+" recursive <cr> maps should RECURSIVELY call `<Plug>delimitMateCR` in order
+" to make sure that the correct delimiting calls are made
 Plug 'Raimondi/delimitMate'
 " Xcode
 " (they call the master branch 'main')
@@ -92,11 +94,6 @@ nmap <leader>q :wq<CR>
 nmap <leader>n :noh<CR>
 " Position Cursor
 nnoremap <leader>z zz<CR>
-" Autocomplete select
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<Up>"
 " Close buffer, not window
 " Use the command Bd or <leader> control b to close the current buffer without
 " losing the split screen window
@@ -269,25 +266,27 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+" COMPLETION SUGGESTIONS
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 " Or use `complete_info` if your vim support it, like:
 imap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
+" Use <TAB> to select the popup menu:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 let g:NERDTreeIgnore = ['^node_modules$']
 
-" Rust config
+" RUST
 let g:rustfmt_autosave = 1
 autocmd BufReadPost *.rs setlocal filetype=rust
 
@@ -297,15 +296,6 @@ autocmd BufReadPost *.rs setlocal filetype=rust
 set shortmess+=c
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
-
-" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
-imap <expr> <CR> (pumvisible() ? "\<c-y>" : "\<Plug>delimitMateCR")
-
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " ALE config
 " (Currently disabled)
@@ -339,13 +329,13 @@ let g:coc_global_extensions = [
   \ 'coc-prettier', 
   \ 'coc-json', 
   \ ]
-" Crtl + e to jump out of the brackets auto-completing brackets
-inoremap <expr><C-e> pumvisible() ? "\<C-e>" : "\<End>"
 
 " delimitMate (better than coc-pairs)
 let g:delimitMate_expand_cr = 2
 let g:delimitMate_expand_space = 1
 let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+" no quote completion
+let delimitMate_quotes = ""
 au FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
 
 " don't give |ins-completion-menu| messages.
@@ -359,7 +349,6 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -368,14 +357,6 @@ endfunction
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" default keys for the moment
-"
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
-" Or use `complete_info` if your vim support it, like:
-imap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
