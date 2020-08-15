@@ -18,7 +18,8 @@ nnoremap <Leader>` :echo "LEADER ACKNOWLEDGED :)"<CR>
 """"""""""""""""""""""""""""""""""""""""
 
 " Faster fuzzy searching
-nmap <leader>; :GFiles<CR> " (only search git files, ignore things in .gitignore)
+" GFiles = (only search git files, ignore things in .gitignore)
+nmap <leader>; :GFiles<CR> 
 nmap <leader>' :Buffers<CR>
 nmap <leader>\ :Rg<CR>
 " Quick-save
@@ -372,7 +373,7 @@ let g:coc_global_extensions = [
 " delimitMate (better than coc-pairs)
 let g:delimitMate_expand_cr = 2
 let g:delimitMate_expand_space = 1
-let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+let g:delimitMate_matchpairs = "(:),[:],{:}"
 " no quote completion
 let delimitMate_quotes = ""
 autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
