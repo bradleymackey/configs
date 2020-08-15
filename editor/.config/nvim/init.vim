@@ -14,7 +14,38 @@ let mapleader = "\<Space>"
 
 " Leader
 nnoremap <Leader>` :echo "LEADER ACKNOWLEDGED :)"<CR>
-nnoremap <Leader><Leader> :bp<CR> 
+
+""""""""""""""""""""""""""""""""""""""""
+
+" Faster fuzzy searching
+nmap <leader>; :Files<CR>
+nmap <leader>' :Buffers<CR>
+nmap <leader>\ :Rg<CR>
+" Quick-save
+nmap <leader>w :w<CR>
+nmap <leader>q :wq<CR>
+" Highlight disable (doesn't disable automatically after a search)
+nmap <silent> <leader>n :noh<CR>
+" Position Cursor
+nnoremap <leader>z zz<CR>
+" Close buffer, not window
+" Use the command Bd or <leader> control b to close the current buffer without
+" losing the split screen window
+command Bd :bp | :bd #
+nnoremap <leader><C-b> :Bd<CR>
+
+""""""""""""""""""""""""""""""""""""""""
+
+" <leader><leader> toggles between buffers
+nnoremap <leader><leader> <c-^>
+" <leader>, shows/hides hidden characters
+nnoremap <leader>, :set invlist<cr>
+" <leader>q shows stats
+nnoremap <leader>q g<c-g>
+" Keymap for replacing up to next _ or -
+noremap <leader>m ct_
+
+""""""""""""""""""""""""""""""""""""""""
 
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
@@ -51,6 +82,8 @@ Plug 'Raimondi/delimitMate'
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
 call plug#end()
 
+""""""""""""""""""""""""""""""""""""""""
+
 " ## FIREBASE ##
 " Currently outdated syntax, so disable
 let g:vim_firestore_warnings = 0
@@ -83,23 +116,6 @@ set lazyredraw " https://github.com/vim/vim/issues/1735#issuecomment-383353563
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 filetype plugin indent on
 
-" Faster fuzzy searching
-nmap <leader>; :Files<CR>
-nmap <leader>' :Buffers<CR>
-nmap <leader>\ :Rg<CR>
-" Quick-save
-nmap <leader>w :w<CR>
-nmap <leader>q :wq<CR>
-" Highlight disable (doesn't disable automatically after a search)
-nmap <silent> <leader>n :noh<CR>
-" Position Cursor
-nnoremap <leader>z zz<CR>
-" Close buffer, not window
-" Use the command Bd or <leader> control b to close the current buffer without
-" losing the split screen window
-command Bd :bp | :bd #
-nnoremap <leader><C-b> :Bd<CR>
-
 " Editor settings
 set autoindent
 set ai
@@ -130,6 +146,9 @@ set incsearch
 set ignorecase
 set smartcase
 set gdefault
+
+" ; as : in normal mode
+nnoremap ; :
 
 " Search results centered
 nnoremap <silent> n nzz
@@ -201,9 +220,6 @@ nnoremap <silent> <Leader>1 :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>2 :exe "resize " . (winheight(0) * 2/3)<CR>
 nnoremap <silent> <Leader>3 :exe "resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <Leader>4 :exe "resize " . (winwidth(0) * 2/3)<CR>
-
-" ; as : in normal mode
-nnoremap ; :
 
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
