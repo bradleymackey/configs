@@ -75,6 +75,7 @@ plugins=(
     xcode
     zsh-syntax-highlighting
     zsh-autosuggestions
+    zsh-vim-mode
 )
 
 if [[ $IS_INTERACTIVE ]]; then
