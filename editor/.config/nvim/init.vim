@@ -18,7 +18,7 @@ nnoremap <Leader>` :echo "LEADER ACKNOWLEDGED :)"<CR>
 """"""""""""""""""""""""""""""""""""""""
 
 " Faster fuzzy searching
-nmap <leader>; :Files<CR>
+nmap <leader>; :GFiles<CR> " (only search git files, ignore things in .gitignore)
 nmap <leader>' :Buffers<CR>
 nmap <leader>\ :Rg<CR>
 " Quick-save
