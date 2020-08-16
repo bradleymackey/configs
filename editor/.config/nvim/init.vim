@@ -86,9 +86,7 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""
 
 " ## FIREBASE ##
-" Currently outdated syntax, so disable
 let g:vim_firestore_warnings = 0
-autocmd BufNewFile,BufRead *.rules set syntax=firestore
 
 " ## Xcode ##
 " :Xbuild will build the project
