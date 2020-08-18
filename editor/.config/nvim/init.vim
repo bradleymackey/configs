@@ -252,7 +252,9 @@ hi Pmenu ctermfg=86 ctermbg=239 guibg=239
 hi PmenuSel ctermfg=yellow ctermbg=black guibg=black
 hi Special ctermfg=yellow
 " Statement i.e. keywords
-hi Statement ctermfg=171
+hi Statement ctermfg=177
+hi Type ctermfg=34
+hi Operator ctermfg=176
 hi Number ctermfg=141
 " PreProc i.e. function parameters, bright green
 hi PreProc ctermfg=34
