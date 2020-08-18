@@ -248,19 +248,24 @@ hi CursorLineNR cterm=bold ctermfg=white ctermbg=238
 hi SignColumn ctermfg=243 ctermbg=238 guibg=grey
 hi StatusLine cterm=bold,reverse ctermbg=8 guifg=black guibg=red
 " The autocomplete box
-hi Pmenu ctermfg=white ctermbg=239 guibg=239
+hi Pmenu ctermfg=86 ctermbg=239 guibg=239
 hi PmenuSel ctermfg=yellow ctermbg=black guibg=black
-" 170 = Orchid -- this makes keywords not too dark pink (which is hard to read
-" on a dark background)
-hi Special ctermfg=185
-" PreProc is basically keywords
-hi PreProc ctermfg=169
-hi Comment ctermfg=gray cterm=italic gui=italic
+hi Special ctermfg=yellow
+" Statement i.e. keywords
+hi Statement ctermfg=171
+hi Number ctermfg=141
+" PreProc i.e. function parameters, bright green
+hi PreProc ctermfg=34
+" Comment = gray, Doc Comment = green
+hi Comment ctermfg=250 cterm=italic gui=italic
 hi SpecialComment ctermfg=70 cterm=italic gui=italic
+" Identifier = light blue
 hi Identifier ctermfg=147 cterm=NONE
-hi Search ctermbg=white ctermfg=black
-hi IncSearch ctermbg=blue ctermfg=white
-hi MatchParen ctermbg=None ctermfg=yellow cterm=bold,undercurl,strikethrough
+" Search = highlight yellow
+hi Search ctermbg=226 ctermfg=black
+hi IncSearch ctermbg=229 ctermfg=black
+" Match paren more subtle
+hi MatchParen ctermbg=None ctermfg=226 cterm=bold,underline
 " Error is too red, so we make it salmon
 hi CocErrorSign ctermfg=213
 
