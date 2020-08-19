@@ -73,6 +73,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'luochen1990/rainbow'
 " 'gcc' to comment line, 'gc' if in visual mode
 Plug 'tomtom/tcomment_vim'
+" Firebase *.rules file support
 Plug 'delphinus/vim-firestore'
 " better than coc-pairs
 " recursive <cr> maps should RECURSIVELY call `<Plug>delimitMateCR` in order
@@ -121,6 +122,8 @@ set textwidth=80
 set formatoptions=tcq
 set autoindent
 set ai
+" use the system clipboard by default
+set clipboard=unnamed
 set smartindent
 set expandtab
 set tabstop=4
@@ -135,6 +138,7 @@ set noshowmatch
 set printfont=:h10
 set printencoding=utf-8
 set printoptions=paper:a4
+" allow backspace in insert mode
 set backspace=indent,eol,start
 set completeopt-=preview " no scratch buffer when getting autocomplete
 
@@ -147,6 +151,7 @@ set wildignore=.hg,.svn,*~,*.png,*.jpg,*.gif,*.settings,Thumbs.db,*.min.js,*.swp
 set incsearch
 set ignorecase
 set smartcase
+" (g search) option on by default
 set gdefault
 
 " ; as : in normal mode
@@ -244,7 +249,7 @@ hi CursorLineNR cterm=bold ctermfg=white ctermbg=238
 hi SignColumn ctermfg=243 ctermbg=238 guibg=grey
 hi StatusLine cterm=bold,reverse ctermbg=8 guifg=black guibg=red
 " The autocomplete box
-hi Pmenu ctermfg=86 ctermbg=239 guibg=239
+hi Pmenu ctermfg=221 ctermbg=239 guibg=239
 hi PmenuSel ctermfg=yellow ctermbg=black guibg=black
 hi Special ctermfg=yellow
 " Statement i.e. keywords
