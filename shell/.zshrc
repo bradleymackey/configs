@@ -113,6 +113,7 @@ alias localip="ipconfig getifaddr en0"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias fastlane="bundle exec fastlane"
+alias up="cd .."
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
