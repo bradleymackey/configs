@@ -271,6 +271,12 @@ hi MatchParen ctermbg=None ctermfg=226 cterm=bold,underline
 " Error is too red, so we make it salmon
 hi CocErrorSign ctermfg=213
 
+"" DIFFS
+hi DiffAdd ctermfg=34 ctermbg=none cterm=bold 
+hi DiffDelete ctermfg=167 ctermbg=none cterm=bold
+hi DiffChange ctermfg=228 ctermbg=none cterm=bold
+hi DiffText cterm=bold ctermbg=none gui=bold guibg=non ctermfg=white guifg=white
+
 " NERDTree
 let g:NERDTreeGitStatusWithFlags = 1
 let g:NERDTreeIgnore = ['^node_modules$']

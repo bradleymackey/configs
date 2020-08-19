@@ -14,7 +14,17 @@
 [color]
 	ui = true
 [merge]
-    tool = nvim -d
+    tool = vimdiff
+    conflictstyle = diff3
+[mergetool]
+    keepBackup = false
+    prompt = true
+[mergetool "vimdiff"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[difftool]
+    prompt = false
+[diff]
+    tool = vimdiff
 [instaweb]
 	httpd = python -m http.server
 [web]
