@@ -267,6 +267,10 @@ hi MatchParen ctermbg=None ctermfg=226 cterm=bold,underline
 " Error is too red, so we make it salmon
 hi CocErrorSign ctermfg=213
 
+" Highlight current line
+set cursorline
+hi CursorLine cterm=NONE ctermbg=235 guibg=235
+
 "" DIFFS
 hi DiffAdd ctermfg=34 ctermbg=none cterm=bold 
 hi DiffDelete ctermfg=167 ctermbg=none cterm=bold
