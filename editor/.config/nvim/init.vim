@@ -159,16 +159,16 @@ nnoremap <silent> * *zz
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
-" Ctrl-C or Ctrl-A for Esc (because ESC is far away)
-nnoremap <C-a> <Esc>
-inoremap <C-a> <Esc>
-vnoremap <C-a> <Esc>
-snoremap <C-a> <Esc>
-xnoremap <C-a> <Esc>
-cnoremap <C-a> <Esc>
-onoremap <C-a> <Esc>
-lnoremap <C-a> <Esc>
-tnoremap <C-a> <Esc>
+" Ctrl-C or Ctrl-J for Esc (because ESC is far away)
+nnoremap <C-j> <Esc>
+inoremap <C-j> <Esc>
+vnoremap <C-j> <Esc>
+snoremap <C-j> <Esc>
+xnoremap <C-j> <Esc>
+cnoremap <C-j> <Esc>
+onoremap <C-j> <Esc>
+lnoremap <C-j> <Esc>
+tnoremap <C-j> <Esc>
 
 nnoremap <C-c> <Esc>
 inoremap <C-c> <Esc>
@@ -189,11 +189,7 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
-" Move with Ctrl in all modes
-inoremap <C-j> <down>
-nnoremap <C-j> <down>
-inoremap <C-k> <up>
-nnoremap <C-k> <up>
+" Move with Ctrl HORIZONTALLY
 inoremap <C-h> <left>
 nnoremap <C-h> <left>
 inoremap <C-l> <right>
