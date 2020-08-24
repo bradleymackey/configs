@@ -295,6 +295,7 @@ nnoremap <silent> <Leader>v :NERDTreeFind<CR>
 " Appearance
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+let NERDTreeShowHidden=1
 
 " vim-prettier
 "let g:prettier#quickfix_enabled = 0
