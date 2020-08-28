@@ -271,6 +271,8 @@ hi IncSearch ctermbg=229 ctermfg=black
 hi MatchParen ctermbg=None ctermfg=226 cterm=bold,underline
 " Error is too red, so we make it salmon
 hi CocErrorSign ctermfg=213
+hi ColorColumn ctermfg=white ctermbg=red
+hi SpellBad ctermfg=white ctermbg=red
 
 " Highlight current line
 set cursorline
