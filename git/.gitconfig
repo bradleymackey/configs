@@ -5,8 +5,8 @@
 [core]
 	editor = nvim
 	excludesfile = ~/.gitignore
-    autocrlf = input
-	safecrlf = true
+    autocrlf = false
+	safecrlf = false
 [github]
 	user = bradleymackey
 [ui "color"]
