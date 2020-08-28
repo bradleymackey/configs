@@ -272,7 +272,11 @@ hi MatchParen ctermbg=None ctermfg=226 cterm=bold,underline
 " Error is too red, so we make it salmon
 hi CocErrorSign ctermfg=213
 hi ColorColumn ctermfg=white ctermbg=red
+" SPELLING
 hi SpellBad ctermfg=white ctermbg=red
+hi SpellCap ctermfg=black ctermbg=12
+hi SpellRare ctermfg=black ctermbg=13
+hi SpellLocal ctermfg=black ctermbg=14
 
 " Highlight current line
 set cursorline
