@@ -1,6 +1,9 @@
 " ** NEOVIM INIT SCRIPT **
 " Neovim should be installed, as well as vim-plug (https://github.com/junegunn/vim-plug)
 " (vim-plug is used as the dependency manager)
+"
+" Note that some invokations of <CR> may need to call <Plug>delimitMateCR
+" instead. This is so that delimitMate is still able to format if need be.
 set shell=/bin/zsh
 set encoding=utf-8
 let mapleader = "\<Space>"
