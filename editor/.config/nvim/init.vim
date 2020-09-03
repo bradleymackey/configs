@@ -122,8 +122,6 @@ set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-o
 filetype plugin indent on
 
 " Editor settings
-set textwidth=80
-set formatoptions=tcq
 set autoindent
 set ai
 " use the system clipboard by default
