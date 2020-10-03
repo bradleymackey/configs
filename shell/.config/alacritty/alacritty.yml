@@ -23,16 +23,16 @@ cursor:
 font: 
     size: 13.0
     normal:
-        family: Hack Nerd Font
+        family: Hack
         style: Regular
     bold:
-        family: Hack Nerd Font
+        family: Hack
         style: Bold
     italic:
-        family: Hack Nerd Font
+        family: Hack
         style: Italic
     bold_italic:
-        family: Hack Nerd Font
+        family: Hack
         style: Bold Italic
     # 'spacing' between lines and letters
     offset:
