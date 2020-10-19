@@ -261,8 +261,7 @@ hi Operator ctermfg=176
 hi Number ctermfg=141
 " PreProc i.e. function parameters, bright green
 hi PreProc ctermfg=34
-" Comment = gray, Doc Comment = green
-hi Comment ctermfg=250 cterm=italic gui=italic
+hi Comment ctermfg=2 cterm=italic gui=italic
 hi SpecialComment ctermfg=70 cterm=italic gui=italic
 " Identifier = light blue
 hi Identifier ctermfg=147 cterm=NONE
