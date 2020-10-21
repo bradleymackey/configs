@@ -15,14 +15,14 @@ There are probably better alternatives to some of these tools below, but they wo
 - OS: macOS (configs should be mostly Linux compatible)
 - Version Control: `git`
 - Package Manager: [`brew`](https://brew.sh)
-- Terminal: `zsh`
-    - Customise: [`ohmyzsh`](https://github.com/ohmyzsh/ohmyzsh)
-    - Color Support: [`base16`](https://github.com/chriskempson/base16)
+- Terminal:
+    - Shell: `zsh`, [`ohmyzsh`](https://github.com/ohmyzsh/ohmyzsh)
     - Emulator: [`Alacritty`](https://github.com/alacritty/alacritty)
     - Multiplexer: [`tmux`](https://github.com/tmux/tmux/wiki)
+    - Colors: [`base16`](https://github.com/chriskempson/base16)
 - Editor: [`neovim`](https://neovim.io)
     - Package Manager: [`vim-plug`](https://github.com/junegunn/vim-plug)
-    - Completion: [`coc.nvim`](https://github.com/neoclide/coc.nvim)
+    - Completion Engine: [`coc.nvim`](https://github.com/neoclide/coc.nvim)
     - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
     - (*see config file for more*) 
 - Turbo Boost: [`turbo-boost-disable`](https://github.com/bradleymackey/turbo-boost-disable)
