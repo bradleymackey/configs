@@ -237,10 +237,22 @@ let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowTo
 syntax on
 set hlsearch
 set t_Co=256
-set termguicolors
 set background=dark
-
 let base16colorspace=256
+
+if exists('$TMUX') 
+    if has('nvim')
+        set termguicolors
+    else
+        set term=screen-256color 
+    endif
+endif
+
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
 colorscheme base16-gruvbox-dark-hard
 hi Normal ctermbg=NONE
 " Highlight current line, not as promient
