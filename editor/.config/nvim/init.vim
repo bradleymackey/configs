@@ -233,55 +233,24 @@ end
 " Vim-Rainbow
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 
-" *** Color OVERRIDES ***
-" Note that these overrides are set based on the 'desert' color scheme
-" (We are just overriding some of the colors)
+" *** Color & Highlighting ***
 syntax on
 set hlsearch
-set background=dark
-colorscheme desert
 set t_Co=256
+set termguicolors
+set background=dark
+
+let base16colorspace=256
+colorscheme base16-gruvbox-dark-hard
 hi Normal ctermbg=NONE
-" Line numbers/line number background
-hi LineNr ctermfg=243 ctermbg=238 guibg=grey
-hi CursorLineNR cterm=bold ctermfg=white ctermbg=238
-" (the gutter, same as LineNr)
-hi SignColumn ctermfg=243 ctermbg=238 guibg=grey
-hi StatusLine cterm=bold,reverse ctermbg=8 guifg=black guibg=red
-" The autocomplete box
-hi Pmenu ctermfg=221 ctermbg=239 guibg=239
-hi PmenuSel ctermfg=yellow ctermbg=black guibg=black
-hi Special ctermfg=yellow
-" Statement i.e. keywords
-hi Statement ctermfg=177
-hi Type ctermfg=34
-hi Operator ctermfg=176
-hi Number ctermfg=141
-" PreProc i.e. function parameters, bright green
-hi PreProc ctermfg=34
-hi Comment ctermfg=2 cterm=italic gui=italic
-hi SpecialComment ctermfg=70 cterm=italic gui=italic
-" Identifier = light blue
-hi Identifier ctermfg=147 cterm=NONE
-" Search = highlight yellow
-hi Search ctermbg=226 ctermfg=black
-hi IncSearch ctermbg=229 ctermfg=black
-" Match paren more subtle
-hi MatchParen ctermbg=None ctermfg=226 cterm=bold,underline
-" Error is too red, so we make it salmon
-hi CocErrorSign ctermfg=213
-hi ColorColumn ctermfg=white ctermbg=red
-" SPELLING
-hi SpellBad ctermfg=white ctermbg=red
-hi SpellCap ctermfg=black ctermbg=12
-hi SpellRare ctermfg=black ctermbg=13
-hi SpellLocal ctermfg=black ctermbg=14
-
-" Highlight current line
+" Brighter comments
+call Base16hi("Comment", "77b32e", "", g:base16_cterm09, "", "italic", "")
+call Base16hi("MatchParen", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold,italic", "")
+" Highlight current line, not as promient
 set cursorline
-hi CursorLine cterm=NONE ctermbg=235 guibg=235
+call Base16hi("CursorLine", "", "111111", "", "111111", "", "")
 
-"" DIFFS
+" DIFFS
 hi DiffAdd ctermfg=34 ctermbg=none cterm=bold 
 hi DiffDelete ctermfg=167 ctermbg=none cterm=bold
 hi DiffChange ctermfg=228 ctermbg=none cterm=bold
