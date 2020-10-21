@@ -231,13 +231,7 @@ if has('nvim')
 end
 
 " Vim-Rainbow
-let g:rainbow_active = 1 " toggle via :RainbowToggle
-let g:rainbow_conf = {
-\	'guifgs': ['white', 'darkorange3', 'lightblue', 'darkseagreen3'],
-\	'ctermfgs': ['white', 'darkorange3', 'lightblue', 'darkseagreen3'],
-\	'guis': [''],
-\	'cterms': [''],
-\}
+let g:rainbow_active = 0 " toggle via :RainbowToggle
 
 " *** Color & Highlighting ***
 syntax on
