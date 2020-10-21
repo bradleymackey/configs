@@ -243,20 +243,29 @@ set background=dark
 let base16colorspace=256
 colorscheme base16-gruvbox-dark-hard
 hi Normal ctermbg=NONE
-" Brighter comments
-call Base16hi("Comment", "77b32e", "", g:base16_cterm09, "", "italic", "")
-call Base16hi("MatchParen", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold,italic", "")
 " Highlight current line, not as promient
 set cursorline
-call Base16hi("CursorLine", "", "111111", "", "111111", "", "")
+call g:Base16hi("CursorLine", "", "111111", "", "111111", "", "")
 
-" DIFFS
-hi DiffAdd ctermfg=34 ctermbg=none cterm=bold 
-hi DiffDelete ctermfg=167 ctermbg=none cterm=bold
-hi DiffChange ctermfg=228 ctermbg=none cterm=bold
-hi DiffText cterm=bold ctermbg=none gui=bold guibg=non ctermfg=white guifg=white
+" Brighter comments
+call g:Base16hi("Comment", "77b32e", "", "77b32e", "", "italic", "")
+call g:Base16hi("MatchParen", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold,italic", "")
 
-" NERDTree
+" COC defines bad colors, link them to the scheme default
+hi link CocErrorSign Error
+hi link CocWarningSign Warning
+
+" Reference: Coc Default Colors
+" hi default CocUnderline    cterm=underline gui=underline
+" hi default CocBold         term=bold cterm=bold gui=bold
+" hi default CocErrorSign    ctermfg=Red     guifg=#ff0000
+" hi default CocWarningSign  ctermfg=Brown   guifg=#ff922b
+" hi default CocInfoSign     ctermfg=Yellow  guifg=#fab005
+" hi default CocHintSign     ctermfg=Blue    guifg=#15aabf
+" hi default CocSelectedText ctermfg=Red     guifg=#fb4934
+" hi default CocCodeLens     ctermfg=Gray    guifg=#999999
+
+" ------- NERDTree --------
 let g:NERDTreeGitStatusWithFlags = 1
 let g:NERDTreeIgnore = ['^node_modules$']
 " (open NERDTree when we open a directory)
