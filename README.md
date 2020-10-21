@@ -13,14 +13,15 @@ There are probably better alternatives to some of these tools below, but they wo
 ## Setup
 
 - OS: macOS (configs should be mostly Linux compatible)
-- Shell: `zsh`
-    - Customise: [`ohmyzsh`](https://github.com/ohmyzsh/ohmyzsh)
 - Version Control: `git`
 - Package Manager: [`brew`](https://brew.sh)
 - Turbo Boost: [`turbo-boost-disable`](https://github.com/bradleymackey/turbo-boost-disable)
 - Wake/Sleep Scripting: [`sleepwatcher`](https://formulae.brew.sh/formula/sleepwatcher)
-- Terminal Emulator: [`Alacritty`](https://github.com/alacritty/alacritty)
-- Terminal Multiplexer: [`tmux`](https://github.com/tmux/tmux/wiki)
+- Terminal: `zsh`
+    - Customise: [`ohmyzsh`](https://github.com/ohmyzsh/ohmyzsh)
+    - Color Support: [`base16`](https://github.com/chriskempson/base16)
+    - Emulator: [`Alacritty`](https://github.com/alacritty/alacritty)
+    - Multiplexer: [`tmux`](https://github.com/tmux/tmux/wiki)
 - Editor: [`neovim`](https://neovim.io)
     - Package Manager: [`vim-plug`](https://github.com/junegunn/vim-plug)
     - Completion: [`coc.nvim`](https://github.com/neoclide/coc.nvim)
