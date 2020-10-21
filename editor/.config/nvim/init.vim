@@ -65,8 +65,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'keith/swift.vim'
 Plug 'godlygeek/tabular'
-" error checking, syntax checking
-Plug 'w0rp/ale'
 " Highlight what is about to be yanked
 Plug 'machakann/vim-highlightedyank'
 " Fuzzy
@@ -364,12 +362,6 @@ set shortmess+=c
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
 
-" ALE config
-" (Currently disabled)
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_save = 0
-
 " Lightline
 let g:lightline = {
       \ 'active': {
@@ -384,8 +376,12 @@ let g:lightline = {
 function! LightlineFilename()
   return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
+
 " Use auocmd to force lightline update.
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+
+" Javascript
+let javaScript_fold=0
 
 " COC
 " coc config
