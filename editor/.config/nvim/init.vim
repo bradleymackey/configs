@@ -235,16 +235,14 @@ let g:rainbow_active = 0 " toggle via :RainbowToggle
 
 " *** Color & Highlighting ***
 syntax on
+set cursorline
 set hlsearch
 set t_Co=256
 set background=dark
-let base16colorspace=256
 
 if exists('$TMUX') 
     if has('nvim')
         set termguicolors
-    else
-        set term=screen-256color 
     endif
 endif
 
@@ -255,9 +253,6 @@ endif
 
 colorscheme base16-gruvbox-dark-hard
 hi Normal ctermbg=NONE
-" Highlight current line, not as promient
-set cursorline
-call g:Base16hi("CursorLine", "", "111111", "", "111111", "", "")
 
 " Brighter comments
 call g:Base16hi("Comment", "77b32e", "", "77b32e", "", "italic", "")
@@ -279,7 +274,7 @@ hi link CocWarningSign Warning
 
 " ------- NERDTree --------
 let g:NERDTreeGitStatusWithFlags = 1
-let g:NERDTreeIgnore = ['^node_modules$']
+let g:NERDTreeIgnore = ['^node_modules$', '.DS_Store']
 " (open NERDTree when we open a directory)
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
@@ -290,15 +285,7 @@ nnoremap <silent> <Leader>v :NERDTreeFind<CR>
 " Appearance
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let NERDTreeShowHidden=1
-
-" vim-prettier
-"let g:prettier#quickfix_enabled = 0
-"let g:prettier#quickfix_auto_focus = 0
-" prettier command for coc
-" run prettier on save
-"let g:prettier#autoformat = 0
-"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+let NERDTreeShowHidden=1 " some may be ignored, see above
 
 " sync open file with NERDTree
 " Check if NERDTree is open or active
@@ -379,7 +366,7 @@ let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-tsserver',
   \ 'coc-eslint', 
-  \ 'coc-prettier', 
+  \ 'coc-prettier',
   \ 'coc-json', 
   \ ]
 
