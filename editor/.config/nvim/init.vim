@@ -218,6 +218,8 @@ set splitbelow
 set undodir=~/.vimdid
 set undofile
 
+set signcolumn=yes
+
 " Leader +- to adjust window sizing
 nnoremap <silent> <Leader>1 :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>2 :exe "resize " . (winheight(0) * 2/3)<CR>
@@ -229,6 +231,14 @@ if has('nvim')
     set inccommand=nosplit
     noremap <C-q> :confirm qall<CR>
 end
+
+" Help filetype detection
+autocmd BufRead *.plot set filetype=gnuplot
+autocmd BufRead *.md set filetype=markdown
+autocmd BufRead *.lds set filetype=ld
+autocmd BufRead *.tex set filetype=tex
+autocmd BufRead *.trm set filetype=c
+autocmd BufRead *.xlsx.axlsx set filetype=ruby
 
 " Vim-Rainbow
 let g:rainbow_active = 0 " toggle via :RainbowToggle
@@ -305,11 +315,6 @@ endfunction
 " Highlight currently open buffer in NERDTree
 autocmd BufEnter * call SyncTree()
 
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -339,7 +344,7 @@ set shortmess+=c
 " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
 inoremap <c-c> <ESC>
 
-" Lightline
+" ------- Lightline -------
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
@@ -354,21 +359,10 @@ function! LightlineFilename()
   return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
 
-" Use auocmd to force lightline update.
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-
-" Javascript
+" ###### JavaScript #######
 let javaScript_fold=0
 
-" COC
-" coc config
-let g:coc_global_extensions = [
-  \ 'coc-snippets',
-  \ 'coc-tsserver',
-  \ 'coc-eslint', 
-  \ 'coc-prettier',
-  \ 'coc-json', 
-  \ ]
+" ####### DelimitMate ########
 
 " delimitMate (better than coc-pairs)
 let g:delimitMate_expand_cr = 2
@@ -378,10 +372,20 @@ let g:delimitMate_matchpairs = "(:),[:],{:}"
 let delimitMate_quotes = ""
 autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
 
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
+" ######## COC ########
+
+" coc config
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-tsserver',
+  \ 'coc-eslint', 
+  \ 'coc-prettier',
+  \ 'coc-json', 
+  \ ]
+" prettier formatting with COC
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" Use auocmd to force lightline update.
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -484,11 +488,3 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-" Help filetype detection
-autocmd BufRead *.plot set filetype=gnuplot
-autocmd BufRead *.md set filetype=markdown
-autocmd BufRead *.lds set filetype=ld
-autocmd BufRead *.tex set filetype=tex
-autocmd BufRead *.trm set filetype=c
-autocmd BufRead *.xlsx.axlsx set filetype=ruby
