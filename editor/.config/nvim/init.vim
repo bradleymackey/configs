@@ -84,7 +84,7 @@ Plug 'Raimondi/delimitMate'
 " Xcode
 " (they call the master branch 'main')
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
-Plug 'leafgarland/typescript-vim'
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'digitaltoad/vim-pug'
 call plug#end()
 
