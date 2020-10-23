@@ -57,6 +57,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 " Autocomplete, language server and other plugin support (like bracket
 " autocomplete, see below for all listed plugins and config)
@@ -249,6 +250,7 @@ set cursorline
 set hlsearch
 set t_Co=256
 set background=dark
+let base16colorspace=256
 
 if exists('$TMUX') 
     if has('nvim')
