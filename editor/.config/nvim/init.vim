@@ -291,7 +291,7 @@ let g:NERDTreeIgnore = ['^node_modules$', '.DS_Store']
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " Open and close the tree
-nnoremap <Leader><c-f> :NERDTreeToggle<CR>
+nnoremap <c-n> :NERDTreeToggle<CR>
 " Faster searching
 nnoremap <silent> <Leader>v :NERDTreeFind<CR>
 " Appearance
