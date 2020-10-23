@@ -121,6 +121,7 @@ set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-o
 filetype plugin indent on
 
 " Editor settings
+set re=0
 set autoindent
 set ai
 " use the system clipboard by default
