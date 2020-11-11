@@ -1,0 +1,211 @@
+{
+	"window.autoDetectColorScheme": true,
+	"window.zoomLevel": 0,
+
+	"workbench.statusBar.visible": true,
+	"workbench.activityBar.visible": true,
+	"workbench.editor.limit.enabled": true,
+	"workbench.editor.limit.value": 10,
+	"workbench.startupEditor": "newUntitledFile",
+	"workbench.iconTheme": "material-icon-theme",
+	"workbench.list.smoothScrolling": true,
+	"workbench.colorCustomizations": {
+		"statusBar.background": "#005f5f",
+		"statusBar.noFolderBackground": "#005f5f",
+		"statusBar.debuggingBackground": "#005f5f"
+	},
+
+	"editor.fontFamily": "JetBrains Mono NL",
+	"editor.fontLigatures": true,
+	"editor.fontSize": 14,
+	"editor.fontWeight": "200",
+	"editor.cursorBlinking": "smooth",
+	"editor.cursorStyle": "underline",
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"editor.wordWrap": "on",
+	"editor.rulers": [ 110 ],
+	"editor.mouseWheelZoom": true,
+	"editor.suggestSelection": "first",
+	"editor.wrappingIndent": "same",
+	"editor.wordWrapColumn": 80,
+	"editor.mouseWheelScrollSensitivity": 0.25,
+    "editor.tabCompletion": "on",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+
+	"terminal.integrated.scrollback": 3000,
+	"terminal.integrated.fontWeight": "600",
+    "terminal.integrated.mouseWheelScrollSensitivity": 0.5,
+
+	// MISC
+	"breadcrumbs.enabled": false,
+	"gitlens.advanced.messages": {
+		"suppressShowKeyBindingsNotice": true
+	},
+	"explorer.confirmDragAndDrop": false,
+	"files.autoSave": "afterDelay",
+	
+	// #############
+	// ### LANGS ###
+	// #############
+	"C_Cpp.default.intelliSenseMode": "gcc-x64",
+	"npm.packageManager": "npm",
+    "eslint.codeActionsOnSave.mode": "all",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"python.languageServer": "Microsoft",
+	"python.pythonPath": "/usr/local/bin/python3",
+	"vetur.format.options.tabSize": 4,
+	"rust-client.channel": "stable",
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	"vs-kubernetes": {
+		"vs-kubernetes.minikube-path": "/Users/bradleymackey/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+	},
+    "typescript.updateImportsOnFileMove.enabled": "always",
+	"[typescript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+
+	// ###########
+	// ### VIM ###
+	// ###########
+	// Use keybindings defined here rather than the 
+	// Command doc:
+	// - show intellisense on hover in normal mode -> gh
+	// - autocomplete -> CMD + Space
+	"vim.easymotion": true,
+	"vim.incsearch": true,
+	"vim.smartcase": true,
+	"vim.useSystemClipboard": true,
+	"vim.useCtrlKeys": true,
+	"vim.hlsearch": true,
+	"vim.leader": "<space>",
+	"vim.handleKeys": {
+		"<C-a>": false,
+		"<C-f>": false,
+		"<C-space>": false,
+		"<C-l>": true,
+		"<C-h>": true,
+	},
+	"vim.highlightedyank.color": "rgba(250, 240, 100, 0.4)",
+	"vim.highlightedyank.enable": true,
+	"vim.enableNeovim": true,
+	"vim.smartRelativeLine": true,
+	"vim.operatorPendingModeKeyBindingsNonRecursive": [
+		{
+			"before": [
+				"<C-j>"
+			],
+			"after": [
+				"<Esc>"
+			]
+		}
+	],
+	"vim.commandLineModeKeyBindingsNonRecursive": [
+		{
+			"before": [
+				"<C-j>"
+			],
+			"after": [
+				"<Esc>"
+			]
+		}
+	],
+	"vim.visualModeKeyBindingsNonRecursive": [
+		{
+			"before": [
+				"<C-j>"
+			],
+			"after": [
+				"<Esc>"
+			]
+		}
+	],
+	"vim.insertModeKeyBindings": [
+		{
+			"before": [
+				"<C-h>",
+			],
+			"after": [
+				"<left>"
+			]
+		},
+		{
+			"before": [
+				"<C-l>",
+			],
+			"after": [
+				"<right>"
+			]
+		},
+	],
+	"vim.insertModeKeyBindingsNonRecursive": [
+		{
+			"before": [
+				"<C-j>"
+			],
+			"after": [
+				"<Esc>"
+			]
+		},
+		{
+			"before": [
+				"j",
+				"j"
+			],
+			"after": [
+				"<Esc>"
+			]
+		}
+	],
+	"vim.normalModeKeyBindingsNonRecursive": [
+		{
+			"before": [
+				";"
+			],
+			"after": [
+				":"
+			]
+		},
+		{
+			"before": [
+				"<leader>",
+				"w"
+			],
+			"after": [
+				":w"
+			]
+		},
+		{
+			"before": [
+				"<leader>",
+				"d"
+			],
+			"after": [
+				"d",
+				"d"
+			]
+		},
+		{
+			"before": [
+				"<leader>",
+				"n"
+			],
+			"commands": [
+				":nohl"
+			]
+		},
+		{
+			"before": [
+				"<C-n>"
+			],
+			"commands": [
+				":nohl"
+			]
+		}
+    ],
+    "workbench.colorTheme": "Default Light+",
+    "eslint.alwaysShowStatus": true,
+	"eslint.format.enable": true,
+}
