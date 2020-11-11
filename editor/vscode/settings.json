@@ -10,7 +10,7 @@
 	"workbench.iconTheme": "material-icon-theme",
 	"workbench.list.smoothScrolling": true,
 	"workbench.colorCustomizations": {
-		"statusBar.background": "#005f5f",
+		"statusBar.background": "#51aod5",
 		"statusBar.noFolderBackground": "#005f5f",
 		"statusBar.debuggingBackground": "#005f5f"
 	},
