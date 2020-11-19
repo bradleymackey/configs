@@ -2,6 +2,8 @@
 	"window.autoDetectColorScheme": true,
 	"window.zoomLevel": 0,
 
+	"workbench.preferredDarkColorTheme": "GitHub Dark",
+	"workbench.preferredLightColorTheme": "GitHub Light",
 	"workbench.statusBar.visible": true,
 	"workbench.activityBar.visible": true,
 	"workbench.editor.limit.enabled": true,
@@ -10,7 +12,8 @@
 	"workbench.iconTheme": "material-icon-theme",
 	"workbench.list.smoothScrolling": true,
 	"workbench.colorCustomizations": {
-		"statusBar.background": "#51aod5",
+		"statusBar.background": "#f01713",
+		"statusBar.foreground": "#fff",
 		"statusBar.noFolderBackground": "#005f5f",
 		"statusBar.debuggingBackground": "#005f5f"
 	},
@@ -30,10 +33,27 @@
 	"editor.wrappingIndent": "same",
 	"editor.wordWrapColumn": 80,
 	"editor.mouseWheelScrollSensitivity": 0.25,
-    "editor.tabCompletion": "on",
+	"editor.tabCompletion": "on",
     "editor.codeActionsOnSave": {
         "source.fixAll": true
-    },
+	},
+	"editor.tokenColorCustomizations": {
+		"textMateRules": [
+			{
+				"scope": "comment",
+				"settings": {
+					"fontStyle": "italic"
+				}
+			},
+			{
+				"scope": "keyword",
+				"settings": {
+					"foreground": "#fe00er",
+					"fontStyle": "bold"
+				}
+			}
+		]
+	},
 
 	"terminal.integrated.scrollback": 3000,
 	"terminal.integrated.fontWeight": "600",
@@ -53,6 +73,8 @@
 	"C_Cpp.default.intelliSenseMode": "gcc-x64",
 	"npm.packageManager": "npm",
     "eslint.codeActionsOnSave.mode": "all",
+    "eslint.alwaysShowStatus": true,
+	"eslint.format.enable": true,
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"python.languageServer": "Microsoft",
 	"python.pythonPath": "/usr/local/bin/python3",
@@ -204,8 +226,6 @@
 				":nohl"
 			]
 		}
-    ],
-    "workbench.colorTheme": "Default Light+",
-    "eslint.alwaysShowStatus": true,
-	"eslint.format.enable": true,
+	],
+	"workbench.colorTheme": "GitHub Dark",
 }
