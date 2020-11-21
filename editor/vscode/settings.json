@@ -1,7 +1,6 @@
 {
 	"window.autoDetectColorScheme": true,
 	"window.zoomLevel": 0,
-
 	"workbench.preferredDarkColorTheme": "GitHub Dark",
 	"workbench.preferredLightColorTheme": "GitHub Light",
 	"workbench.statusBar.visible": true,
@@ -17,7 +16,6 @@
 		"statusBar.noFolderBackground": "#005f5f",
 		"statusBar.debuggingBackground": "#005f5f"
 	},
-
 	"editor.fontFamily": "UbuntuMono Nerd Font",
 	"editor.fontLigatures": true,
 	"editor.fontSize": 14,
@@ -27,15 +25,17 @@
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
 	"editor.wordWrap": "on",
-	"editor.rulers": [ 110 ],
+	"editor.rulers": [
+		110
+	],
 	"editor.mouseWheelZoom": true,
 	"editor.suggestSelection": "first",
 	"editor.wrappingIndent": "same",
 	"editor.wordWrapColumn": 80,
 	"editor.mouseWheelScrollSensitivity": 0.25,
 	"editor.tabCompletion": "on",
-    "editor.codeActionsOnSave": {
-        "source.fixAll": true
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
 	},
 	"editor.tokenColorCustomizations": {
 		"textMateRules": [
@@ -54,11 +54,9 @@
 			}
 		]
 	},
-
 	"terminal.integrated.scrollback": 3000,
 	"terminal.integrated.fontWeight": "600",
-    "terminal.integrated.mouseWheelScrollSensitivity": 0.5,
-
+	"terminal.integrated.mouseWheelScrollSensitivity": 0.5,
 	// MISC
 	"breadcrumbs.enabled": false,
 	"gitlens.advanced.messages": {
@@ -66,14 +64,13 @@
 	},
 	"explorer.confirmDragAndDrop": false,
 	"files.autoSave": "afterDelay",
-	
 	// #############
 	// ### LANGS ###
 	// #############
 	"C_Cpp.default.intelliSenseMode": "gcc-x64",
 	"npm.packageManager": "npm",
-    "eslint.codeActionsOnSave.mode": "all",
-    "eslint.alwaysShowStatus": true,
+	"eslint.codeActionsOnSave.mode": "all",
+	"eslint.alwaysShowStatus": true,
 	"eslint.format.enable": true,
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"python.languageServer": "Microsoft",
@@ -84,11 +81,10 @@
 	"vs-kubernetes": {
 		"vs-kubernetes.minikube-path": "/Users/bradleymackey/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
 	},
-    "typescript.updateImportsOnFileMove.enabled": "always",
+	"typescript.updateImportsOnFileMove.enabled": "always",
 	"[typescript]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
-
 	// ###########
 	// ### VIM ###
 	// ###########
