@@ -18,11 +18,11 @@
 		"statusBar.debuggingBackground": "#005f5f"
 	},
 
-	"editor.fontFamily": "JetBrains Mono NL",
+	"editor.fontFamily": "UbuntuMono Nerd Font",
 	"editor.fontLigatures": true,
 	"editor.fontSize": 14,
 	"editor.fontWeight": "200",
-	"editor.cursorBlinking": "smooth",
+	"editor.cursorBlinking": "phase",
 	"editor.cursorStyle": "underline",
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
@@ -227,5 +227,5 @@
 			]
 		}
 	],
-	"workbench.colorTheme": "GitHub Dark",
+	"workbench.colorTheme": "GitHub Light",
 }
