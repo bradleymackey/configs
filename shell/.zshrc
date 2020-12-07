@@ -120,6 +120,7 @@ alias dt="cd ~/Desktop"
 alias fl="bundle exec fastlane"
 alias up="cd .."
 alias lfi="curl -H 'Accept: ../../../../../../../../../etc/passwd{{'"
+alias ls="exa"
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
@@ -181,6 +182,9 @@ fi
 eval $(thefuck --alias)
 
 export PATH
+
+# AUTOJUMP
+[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
 
 # ##### HACKING FUNCTIONS #####
 urlencode() {
