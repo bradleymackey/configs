@@ -324,7 +324,7 @@ function! s:check_back_space() abort
 endfunction
 
 " COMPLETION SUGGESTIONS
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Use <cr> to confirm completion (we use delimitMateCR to we also get this <cr> formatting), `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 " Or use `complete_info` if your vim support it, like:
