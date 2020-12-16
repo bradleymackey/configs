@@ -287,7 +287,7 @@ hi link CocWarningSign Warning
 
 " ------- NERDTree --------
 let g:NERDTreeGitStatusWithFlags = 1
-let g:NERDTreeIgnore = ['^node_modules$', '.DS_Store']
+let g:NERDTreeIgnore = ['^node_modules$', '^__pycache__', '.DS_Store']
 " (open NERDTree when we open a directory)
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
