@@ -135,9 +135,9 @@ export GOPATH="$HOME/go"
 PATH="$PATH:$GOPATH/bin"
 
 # PYTHON
-export PYENV_ROOT="$HOME/.pyenv"
-PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # SOURCEKIT-LSP
 PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
