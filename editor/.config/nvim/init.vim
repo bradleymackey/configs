@@ -252,12 +252,8 @@ set hlsearch
 set t_Co=256
 set background=dark
 let base16colorspace=256
-
-if exists('$TMUX') 
-    if has('nvim')
-        set termguicolors
-    endif
-endif
+" so that colors work correctly
+set termguicolors
 
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
