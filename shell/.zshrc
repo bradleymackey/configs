@@ -180,17 +180,23 @@ urlencode() {
 }
 
 # ##### TMUX #####
+# Note: no longer using TMUX because it is really slow on a Mac (when paired with nvim),
+# see here for a kinda summary: https://github.com/tmux/tmux/issues/353
+#
+# the setup now is just iTerm, and just the native tabs in iTerm for multiplexing
+#
+# #### LEGACY ####
 # -> Launch to tmux if 
 #   1. we have tmux installed
 #   2. we're not already in it
 #   3. we're interactive
-[[ -x "$(command -v tmux)" ]] && HAS_TMUX=1
-if ! [ $HAS_TMUX ]; then
-    echo "➜ You don't have TMUX installed."
-fi
-
-if [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
-    echo "➜ 🚀 TMUX"
-    # Launches tmux in a session called 'base'.
-    tmux attach -t base || tmux new -s base
-fi
+# [[ -x "$(command -v tmux)" ]] && HAS_TMUX=1
+# if ! [ $HAS_TMUX ]; then
+#     echo "➜ You don't have TMUX installed."
+# fi
+# 
+# if [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
+#     echo "➜ 🚀 TMUX"
+#     # Launches tmux in a session called 'base'.
+#     tmux attach -t base || tmux new -s base
+# fi
