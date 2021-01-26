@@ -78,6 +78,8 @@ plugins=(
     git-extras
     osx
     xcode
+    zsh-autosuggestions
+    zsh-syntax-highlighting
 )
 
 if [[ $IS_INTERACTIVE ]]; then
