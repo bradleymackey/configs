@@ -109,7 +109,7 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 # ALIASES
 # (run alias for a full list of all zsh aliases)
 alias touchbarreset='sudo pkill TouchBarServer'
-alias grep='/usr/local/bin/rg'
+alias grep='rg'
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 alias dl="cd ~/Downloads"
