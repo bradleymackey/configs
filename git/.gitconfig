@@ -1,6 +1,6 @@
 [user]
 	name = Bradley Mackey
-    email = bradleymackey@me.com
+	email = bradleymackey@me.com
     username = bradleymackey
 [core]
 	editor = nvim
@@ -101,3 +101,5 @@
 [protocol]
 	version = 2
 
+[credential]
+	helper = store

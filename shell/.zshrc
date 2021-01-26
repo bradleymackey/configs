@@ -3,6 +3,7 @@
 #
 export TERM=xterm-256color
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/opt/homebrew/bin:$PATH
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
@@ -72,15 +73,11 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    brew
     sublime
     sudo
     git-extras
     osx
     xcode
-    zsh-syntax-highlighting
-    zsh-autosuggestions
-    zsh-vim-mode
 )
 
 if [[ $IS_INTERACTIVE ]]; then
@@ -92,7 +89,7 @@ fi
 #
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export ARCHFLAGS="-arch x86_64"
+export ARCHFLAGS="-arch arm64"
 
 # EDITOR (neovim if local, vim if not)
 if [[ -n $SSH_CONNECTION ]]; then
@@ -138,6 +135,7 @@ PATH="$PATH:$GOPATH/bin"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+PATH=$(pyenv root)/shims:$PATH
 
 # SOURCEKIT-LSP
 PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
@@ -157,9 +155,6 @@ fi
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
   source "$HOME/google-cloud-sdk/completion.zsh.inc"
 fi
-
-# ADDITIONAL SETUP
-eval $(thefuck --alias)
 
 export PATH
 
@@ -200,3 +195,4 @@ urlencode() {
 #     # Launches tmux in a session called 'base'.
 #     tmux attach -t base || tmux new -s base
 # fi
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
