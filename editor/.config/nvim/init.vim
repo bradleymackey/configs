@@ -59,9 +59,7 @@ endif
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'chriskempson/base16-vim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 " Autocomplete, language server and other plugin support (like bracket
@@ -71,8 +69,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'keith/swift.vim'
 Plug 'godlygeek/tabular'
-" Highlight what is about to be yanked
-Plug 'machakann/vim-highlightedyank'
 " Fuzzy
 Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -286,20 +282,24 @@ hi link CocWarningSign Warning
 " hi default CocSelectedText ctermfg=Red     guifg=#fb4934
 " hi default CocCodeLens     ctermfg=Gray    guifg=#999999
 
-" ------- NERDTree --------
-let g:NERDTreeGitStatusWithFlags = 1
-let g:NERDTreeIgnore = ['^node_modules$', '^__pycache__', '.DS_Store']
-" (open NERDTree when we open a directory)
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-" Open and close the tree
-nnoremap <c-n> :NERDTreeToggle<CR>
-" Faster searching
-nnoremap <silent> <Leader>v :NERDTreeFind<CR>
-" Appearance
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let NERDTreeShowHidden=1 " some may be ignored, see above
+" ------- CHADTree (better than NERDTree) --------
+nnoremap <c-n> <cmd>CHADopen<cr>
+let g:chadtree_settings = { "theme.icon_glyph_set": "ascii" }
+
+" old NERDTree config:
+" let g:NERDTreeGitStatusWithFlags = 1
+" let g:NERDTreeIgnore = ['^node_modules$', '^__pycache__', '.DS_Store']
+" " (open NERDTree when we open a directory)
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" " Open and close the tree
+" nnoremap <c-n> :NERDTreeToggle<CR>
+" " Faster searching
+" nnoremap <silent> <Leader>v :NERDTreeFind<CR>
+" " Appearance
+" let NERDTreeMinimalUI = 1
+" let NERDTreeDirArrows = 1
+" let NERDTreeShowHidden=1 " some may be ignored, see above
 
 " sync open file with NERDTree
 " Check if NERDTree is open or active
