@@ -1,8 +1,12 @@
 #!/bin/sh
 
 echo "Running install script..."
+echo "Fetching all submodules..."
+git submodule update --init --recursive
 
 # setup
+
+# (only create the .config directory if it doesn't exist)
 mkdir -p ~/.config
 
 # homebrew
@@ -21,6 +25,7 @@ ln -s ./shell/.zshrc ~/.zshrc
 ln -s ./editor/.config/nvim ~/.config/nvim
 ln -s ./editor/.vimdid ~/.vimdid
 ln -s ./shell/.tmux.conf ~/.tmux.conf
+ln -s ./shell/.config/base16-shell ~/.config/base16-shell
 
 # other tools
 
@@ -32,4 +37,4 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 echo ""
-echo "Restart shell to see effects..."
+echo "Start a new ZSH shell to see effects..."
