@@ -1,0 +1,35 @@
+#!/bin/sh
+
+echo "Running install script..."
+
+# setup
+mkdir -p ~/.config
+
+# homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# path is set in .zshrc already, but we need it for the rest of this session
+PATH="/opt/homebrew:$PATH"
+brew bundle install ./shell/Brewfile
+
+# git
+ln -s ./git/.gitconfig ~/.gitconfig 
+ln -s ./git/.gitignore ~/.gitignore
+git config credential.helper store
+
+# shell + editor
+ln -s ./shell/.zshrc ~/.zshrc
+ln -s ./editor/.config/nvim ~/.config/nvim
+ln -s ./editor/.vimdid ~/.vimdid
+ln -s ./shell/.tmux.conf ~/.tmux.conf
+
+# other tools
+
+# NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+# OH MY ZSH
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# RUSTUP
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+echo ""
+echo "Restart shell to see effects..."

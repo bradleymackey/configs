@@ -1,160 +1,48 @@
 tap "browsh-org/browsh"
 tap "cristianoliveira/tap"
 tap "elastic/tap"
-tap "facebook/fb"
 tap "homebrew/bundle"
 tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
 tap "homebrew/core"
-tap "homebrew/services"
-tap "jmacdonald/amp"
-tap "markeissler/hyperkit"
-tap "mxcl/made"
 tap "stripe/stripe-cli"
-tap "teamookla/speedtest"
-tap "vapor/tap"
-tap "wtfutil/wtfutil"
-cask "osxfuse"
-brew "appledoc"
-brew "readline"
-brew "sqlite"
-brew "xz"
 brew "asciinema"
 brew "autojump"
-brew "openjdk"
-brew "basex"
-brew "bash-completion"
 brew "bat"
 brew "bitwarden-cli"
 brew "libpng"
-brew "carthage"
-brew "cassandra"
 brew "certbot"
-brew "postgresql"
-brew "citus"
 brew "cloc"
 brew "cmatrix"
 brew "cowsay"
-brew "curl"
-brew "deno"
-brew "docker-machine", link: false
+brew "duplicity"
 brew "exa"
 brew "fd"
-brew "jpeg"
-brew "tesseract"
-brew "ffsend"
 brew "fzf"
-brew "gcc"
-brew "gh"
+brew "jpeg"
 brew "git"
-brew "git-extras"
-brew "git-lfs"
-brew "gnupg"
 brew "gnuplot"
-brew "go"
-brew "gradle"
-brew "helm"
-brew "httpie"
-brew "libimobiledevice", args: ["HEAD"]
-brew "ideviceinstaller"
-brew "imagemagick"
-brew "ios-deploy"
 brew "irssi"
-brew "jenv"
-brew "jq"
-brew "kotlin"
-brew "kubernetes-cli"
-brew "lolcat"
-brew "mas"
-brew "maven"
-brew "md5sha1sum"
-brew "minetest"
-brew "mongo-c-driver"
+brew "luajit", args: ["HEAD"]
 brew "neofetch"
-brew "neovim"
-brew "netcat"
+brew "tree-sitter"
+brew "neovim", args: ["HEAD"]
 brew "nmap"
-brew "p7zip"
-brew "pandoc"
-brew "pyenv"
+brew "openjdk"
+brew "postgresql"
+brew "pyenv-virtualenv"
 brew "redis"
-brew "rethinkdb"
 brew "ripgrep"
-brew "skaffold"
-brew "sleepwatcher"
-brew "spatialindex"
 brew "sqlmap"
-brew "swift-protobuf"
-brew "swiftformat"
 brew "swiftlint"
-brew "tcl-tk"
-brew "terraform"
-brew "thefuck"
-brew "tmux"
-brew "vim"
+brew "trash"
+brew "vapor"
 brew "watch"
 brew "watchman"
 brew "wget"
-brew "wrk"
-brew "wtfutil"
 brew "youtube-dl"
-brew "zsh-autosuggestions"
-brew "browsh-org/browsh/browsh"
+brew "zsh-syntax-highlighting"
 brew "cristianoliveira/tap/ergo"
-brew "elastic/tap/elasticsearch-full"
-brew "facebook/fb/xar"
-brew "jmacdonald/amp/amp"
-brew "mxcl/made/swift-sh"
 brew "stripe/stripe-cli/stripe"
-brew "teamookla/speedtest/speedtest"
-brew "vapor/tap/vapor"
-cask "adoptopenjdk8"
-cask "alacritty"
-cask "amethyst"
-cask "android-platform-tools"
-cask "firefox"
-cask "font-hack-nerd-font"
 cask "godot"
-cask "java"
-cask "minikube"
-cask "netron"
-cask "swiftformat-for-xcode"
-cask "xquartz"
-mas "Airport Madness 3D Vol 2 Free", id: 1389820961
-mas "Alpine Crawler", id: 416060151
-mas "Apple Configurator 2", id: 1037126344
-mas "Boop", id: 1518425043
-mas "Bus Driver", id: 442373698
-mas "Coin Tick", id: 1141688067
-mas "Developer", id: 640199958
-mas "Disk Speed Test", id: 425264550
-mas "Flow", id: 1423210932
-mas "Flycut", id: 442160987
-mas "Ghostery Lite", id: 1436953057
-mas "GIF Brewery 3", id: 1081413713
-mas "GoodNotes", id: 1444383602
-mas "Haskell", id: 841285201
-mas "Hidden Bar", id: 1452453066
-mas "iMovie", id: 408981434
-mas "Jayson", id: 1189824719
-mas "Keynote", id: 409183694
-mas "Lotto Machine", id: 1483344007
-mas "Mactracker", id: 430255202
-mas "Magnet", id: 441258766
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Parcel", id: 639968404
-mas "Paste JSON as Code • quicktype", id: 1330801220
-mas "PiPer", id: 1421915518
-mas "Pixelmator Pro", id: 1289583905
-mas "Playgrounds", id: 1496833156
-mas "Rested", id: 421879749
-mas "Server", id: 883878097
-mas "Slack", id: 803453959
-mas "Super Stickman Golf 3", id: 1071253172
-mas "The Unarchiver", id: 425424353
-mas "Trello", id: 1278508951
-mas "VSound", id: 1508138230
-mas "Wipr", id: 1320666476
-mas "Xcode", id: 497799835
+cask "iterm2"
+cask "mactex-no-gui"
