@@ -13,7 +13,7 @@ mkdir -p ~/.config
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # path is set in .zshrc already, but we need it for the rest of this session
 PATH="/opt/homebrew:$PATH"
-brew bundle install ./shell/Brewfile
+brew bundle --file ./shell/Brewfile
 
 # git
 ln -s ./git/.gitconfig ~/.gitconfig 
