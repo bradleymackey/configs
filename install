@@ -1,40 +1,53 @@
 #!/bin/sh
 
 echo "Running install script..."
-echo "Fetching all submodules..."
-git submodule update --init --recursive
+echo "Installing brew (requires xcode command line)..."
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# path is set in .zshrc already, but we need it for the rest of this session
+PATH="/opt/homebrew:$PATH"
 
 # setup
 
 # (only create the .config directory if it doesn't exist)
 mkdir -p ~/.config
 
+echo "Fetching all submodules..."
+git submodule update --init --recursive
+
 # homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# path is set in .zshrc already, but we need it for the rest of this session
-PATH="/opt/homebrew:$PATH"
+echo "Installing brew dependencies..."
 brew bundle --file ./shell/Brewfile
 
 # git
+echo "Linking git..."
 ln -s ./git/.gitconfig ~/.gitconfig 
 ln -s ./git/.gitignore ~/.gitignore
 git config credential.helper store
 
 # shell + editor
+echo "Shell and editor setup..."
 ln -s ./shell/.zshrc ~/.zshrc
 ln -s ./editor/.config/nvim ~/.config/nvim
 ln -s ./editor/.vimdid ~/.vimdid
 ln -s ./shell/.tmux.conf ~/.tmux.conf
 ln -s ./shell/.config/base16-shell ~/.config/base16-shell
 
-# other tools
+# ----- other tools -----
 
 # NVM
+echo "Installing NVM..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+
 # OH MY ZSH
+echo "Installing OH MY ZSH..."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # RUSTUP
+echo "Installing rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup update stable
+echo "Installing cargo-edit..."
+cargo install cargo-edit
 
 echo ""
 echo "Start a new ZSH shell to see effects..."
