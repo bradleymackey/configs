@@ -387,6 +387,7 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-json', 
   \ 'coc-python',
+  \ 'coc-rls',
   \ ]
 " prettier formatting with COC
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
