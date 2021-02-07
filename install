@@ -20,17 +20,18 @@ brew bundle --file ./shell/Brewfile
 
 # git
 echo "Linking git..."
-ln -s ./git/.gitconfig ~/.gitconfig 
-ln -s ./git/.gitignore ~/.gitignore
+ln -s ~/configs/git/.gitconfig ~/.gitconfig 
+ln -s ~/configs/git/.gitignore ~/.gitignore
 git config credential.helper store
 
 # shell + editor
 echo "Shell and editor setup..."
-ln -s ./shell/.zshrc ~/.zshrc
-ln -s ./editor/.config/nvim ~/.config/nvim
-ln -s ./editor/.vimdid ~/.vimdid
-ln -s ./shell/.tmux.conf ~/.tmux.conf
-ln -s ./shell/.config/base16-shell ~/.config/base16-shell
+ln -s ~/configs/shell/.zshrc ~/.zshrc
+ln -s ~/configs/editor/.config/nvim ~/.config/nvim
+ln -s ~/configs/editor/.vimdid ~/.vimdid
+ln -s ~/configs/shell/.tmux.conf ~/.tmux.conf
+ln -s ~/configs/shell/.config/base16-shell ~/.config/base16-shell
+ln -s ~/configs/shell/.config/kitty ~/.config/kitty
 
 # ----- other tools -----
 
