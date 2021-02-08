@@ -361,7 +361,9 @@ let g:lightline = {
       \ },
       \ }
 function! LightlineFilename()
-  return expand('%:t') !=# '' ? @% : '[No Name]'
+    " if the path is empty, show 'noname'
+    " otherwise show file relative to open directory
+    return expand('%:p') !=# '' ? expand('%:t') : '[No Name]'
 endfunction
 
 " ###### JavaScript #######
