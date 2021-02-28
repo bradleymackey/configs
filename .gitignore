@@ -1,0 +1,6 @@
+**/secret.*
+**/*.p12
+**/*.pem
+**/.zsh_history
+**/.bash_history
+
