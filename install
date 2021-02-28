@@ -1,10 +1,16 @@
 #!/bin/sh
 
 echo "Running install script..."
-echo "Installing brew (requires xcode command line)..."
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# path is set in .zshrc already, but we need it for the rest of this session
-PATH="/opt/homebrew:$PATH"
+
+# only macOS needs homebrew
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Installing brew (requires xcode command line)..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  # path is set in .zshrc already, but we need it for the rest of this session
+  PATH="/opt/homebrew:$PATH"
+  echo "Installing brew dependencies..."
+  brew bundle --file ./shell/Brewfile
+fi
 
 # setup
 
@@ -13,10 +19,6 @@ mkdir -p ~/.config
 
 echo "Fetching all submodules..."
 git submodule update --init --recursive
-
-# homebrew
-echo "Installing brew dependencies..."
-brew bundle --file ./shell/Brewfile
 
 # git
 echo "Linking git..."
