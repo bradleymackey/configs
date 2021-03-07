@@ -67,11 +67,9 @@ Plug 'airblade/vim-gitgutter'
 " autocomplete, see below for all listed plugins and config)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'itchyny/lightline.vim'
-Plug 'rust-lang/rust.vim'
-Plug 'keith/swift.vim'
 Plug 'godlygeek/tabular'
-" Fuzzy
 Plug 'airblade/vim-rooter'
+" Fuzzy
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'luochen1990/rainbow'
@@ -86,8 +84,8 @@ Plug 'Raimondi/delimitMate'
 " Xcode
 " (they call the master branch 'main')
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
-Plug 'leafgarland/typescript-vim'
 Plug 'digitaltoad/vim-pug'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
