@@ -86,6 +86,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'gfontenot/vim-xcode', {'branch': 'main'}
 Plug 'digitaltoad/vim-pug'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'keith/swift.vim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
