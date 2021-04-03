@@ -1,3 +1,6 @@
+live_config_reload: true
+background_opacity: 1.0
+
 # macOS default
 shell:
     program: /bin/zsh
@@ -11,10 +14,9 @@ window:
         columns: 120
         lines: 30
     padding:
-        x: 2
-        y: 2
+        x: 4
+        y: 4
     decorations: full
-background_opacity: 1.0
 
 cursor:
     style: Block
@@ -42,3 +44,5 @@ font:
         x: 0
         y: 2
 
+# debug:
+#     render_timer: true
