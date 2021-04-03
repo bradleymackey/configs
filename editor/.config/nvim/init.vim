@@ -265,7 +265,7 @@ colorscheme base16-gruvbox-dark-hard
 hi Normal ctermbg=NONE
 
 " Brighter comments
-call g:Base16hi("Comment", "77b32e", "", "77b32e", "", "italic", "")
+call g:Base16hi("Comment", "737571", "", "737571", "", "", "")
 call g:Base16hi("MatchParen", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold,italic", "")
 
 " COC defines bad colors, link them to the scheme default
