@@ -91,6 +91,10 @@ call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
 
+" ## GIT GUTTER ##
+" Update git status when the buffer is saved
+autocmd BufWritePost * GitGutter
+
 " ## FIREBASE ##
 let g:vim_firestore_warnings = 0
 
