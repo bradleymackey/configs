@@ -120,6 +120,7 @@ alias fl="bundle exec fastlane"
 alias up="cd .."
 alias lfi="curl -H 'Accept: ../../../../../../../../../etc/passwd{{'"
 alias ls="exa"
+alias gap="git add -p"
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
