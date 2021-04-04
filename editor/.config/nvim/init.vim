@@ -129,6 +129,7 @@ filetype plugin indent on
 set re=0
 set autoindent
 set ai
+set foldlevel=99 " open all folds
 " use the system clipboard by default
 set clipboard=unnamed
 set smartindent
