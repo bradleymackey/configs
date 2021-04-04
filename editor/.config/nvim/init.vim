@@ -16,7 +16,7 @@ let mapleader = "\<Space>"
 " could happen
 
 " Leader
-nnoremap <Leader>` :echo "LEADER ACKNOWLEDGED :)"<CR>
+nnoremap <Leader>` :echo "Leader active, bindings present :^)"<CR>
 
 """"""""""""""""""""""""""""""""""""""""
 
