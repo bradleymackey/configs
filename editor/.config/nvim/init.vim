@@ -111,10 +111,6 @@ let g:vim_firestore_warnings = 0
 " :Xsimulator will let you manually specify the simulator
 let g:xcode_default_simulator = 'iPhone 8'
 
-" Re-enable underscore regular terminal cursor when we leave nvim
-" (otherwise the nvim cursor style is carried over to the term)
-autocmd VimLeave * set guicursor=a:hor20-blinkon0
-
 " APPEARANCE/BASIC
 set ignorecase
 set nocompatible " Disable vim weirdness
