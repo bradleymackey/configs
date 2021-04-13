@@ -193,3 +193,6 @@ if [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
     # Launches tmux in a session called 'base'.
     tmux attach -t base || tmux new -s base
 fi
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
