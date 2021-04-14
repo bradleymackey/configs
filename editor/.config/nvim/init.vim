@@ -91,6 +91,10 @@ call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
 
+" ## VIM ROOTER ##
+" Manual only
+let g:rooter_manual_only = 1
+
 " ## GIT GUTTER ##
 " Update git status when the buffer is saved
 autocmd BufWritePost * GitGutter
