@@ -61,7 +61,6 @@ endif
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'chriskempson/base16-vim'
 Plug 'preservim/nerdtree'
-Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 " Autocomplete, language server and other plugin support (like bracket
 " autocomplete, see below for all listed plugins and config)
@@ -289,6 +288,7 @@ hi link CocWarningSign Warning
 
 " --- NERDTREE ---
 let g:NERDTreeGitStatusWithFlags = 1
+let NERDTreeAutoDeleteBuffer = 1
 let g:NERDTreeIgnore = ['^node_modules$', '^__pycache__', '.DS_Store']
 " (open NERDTree when we open a directory)
 autocmd StdinReadPre * let s:std_in=1
@@ -300,7 +300,7 @@ nnoremap <silent> <Leader>v :NERDTreeFind<CR>
 " Appearance
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-let NERDTreeShowHidden=1 " some may be ignored, see above
+let NERDTreeShowHidden = 1 " some may be ignored, see above
 
 " sync open file with NERDTree
 " Check if NERDTree is open or active
