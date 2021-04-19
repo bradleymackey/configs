@@ -287,6 +287,7 @@ hi link CocWarningSign Warning
 " hi default CocCodeLens     ctermfg=Gray    guifg=#999999
 
 " --- NERDTREE ---
+hi NERDTreeDir guifg=#04a03d guibg=NONE gui=bold
 let g:NERDTreeGitStatusWithFlags = 1
 let NERDTreeAutoDeleteBuffer = 1
 let g:NERDTreeIgnore = ['^node_modules$', '^__pycache__', '.DS_Store']
