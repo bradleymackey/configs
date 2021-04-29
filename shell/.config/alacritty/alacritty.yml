@@ -25,16 +25,16 @@ cursor:
 font: 
     size: 13.0
     normal:
-        family: JetBrainsMonoNL Nerd Font
+        family: Menlo
         style: Regular
     bold:
-        family: JetBrainsMonoNL Nerd Font
+        family: Menlo
         style: Bold
     italic:
-        family: JetBrains Mono NL
+        family: Menlo
         style: Italic
     bold_italic:
-        family: JetBrains Mono NL
+        family: Menlo
         style: Bold Italic
     # 'spacing' between lines and letters
     offset:
