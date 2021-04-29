@@ -25,16 +25,16 @@ cursor:
 font: 
     size: 13.0
     normal:
-        family: Menlo
+        family: Meslo LG S
         style: Regular
     bold:
-        family: Menlo
+        family: Meslo LG S
         style: Bold
     italic:
-        family: Menlo
+        family: Meslo LG S
         style: Italic
     bold_italic:
-        family: Menlo
+        family: Meslo LG S
         style: Bold Italic
     # 'spacing' between lines and letters
     offset:
