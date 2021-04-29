@@ -25,16 +25,16 @@ cursor:
 font: 
     size: 13.0
     normal:
-        family: Meslo LG S
+        family: MesloLGS Nerd Font Mono
         style: Regular
     bold:
-        family: Meslo LG S
+        family: MesloLGS Nerd Font Mono
         style: Bold
     italic:
-        family: Meslo LG S
+        family: MesloLGS Nerd Font Mono
         style: Italic
     bold_italic:
-        family: Meslo LG S
+        family: MesloLGS Nerd Font Mono
         style: Bold Italic
     # 'spacing' between lines and letters
     offset:
