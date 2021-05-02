@@ -144,6 +144,11 @@ sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
 sign define LspDiagnosticsSignInformation text=@ texthl=Question linehl= numhl=Question
 sign define LspDiagnosticsSignHint text=> texthl=Question linehl= numhl=Question
 
+" bg is always bright white, so make the text black
+hi LspReferenceText ctermfg=black guifg=black cterm=bold gui=bold
+hi LspReferenceRead ctermfg=black guifg=black cterm=bold gui=bold
+hi LspReferenceWrite ctermfg=black guifg=black cterm=bold gui=bold
+
 " LSP Config 
 
 lua << EOF
