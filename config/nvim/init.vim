@@ -144,11 +144,6 @@ sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
 sign define LspDiagnosticsSignInformation text=@ texthl=Question linehl= numhl=Question
 sign define LspDiagnosticsSignHint text=> texthl=Question linehl= numhl=Question
 
-" bg is always bright white, so make the text black
-hi LspReferenceText ctermfg=black guifg=black cterm=bold gui=bold
-hi LspReferenceRead ctermfg=black guifg=black cterm=bold gui=bold
-hi LspReferenceWrite ctermfg=black guifg=black cterm=bold gui=bold
-
 " LSP Config 
 
 lua << EOF
@@ -192,9 +187,9 @@ local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceRead cterm=bold ctermbg=white guibg=white ctermfg=black guifg=black
+      hi LspReferenceText cterm=bold ctermbg=white guibg=white ctermfg=black guifg=black
+      hi LspReferenceWrite cterm=bold ctermbg=white guibg=white ctermfg=black guifg=black
       augroup lsp_document_highlight
         autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
