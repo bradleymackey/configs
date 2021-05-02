@@ -2,14 +2,19 @@
 -- Setup of the native Neovim LSP
 -- Called from `init.vim`
 
-local lsp_status = require('lsp-status')
-
 -- Status
+local lsp_status = require('lsp-status')
 lsp_status.register_progress()
 lsp_status.config({
   status_symbol = '',
-  indicator_hint = ' !',
+  indicator_hint = ' @',
+  indicator_errors = ' !',
+  indicator_warnings = ' *',
+  indicator_info = ' ~',
+  current_function = false,
 })
+
+-- LSP setup
 
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
@@ -20,9 +25,11 @@ local on_attach = function(client, bufnr)
 
   -- Completion
   require('completion').on_attach()
+
+  -- Status
   lsp_status.on_attach(client)
 
-  -- Mappings.
+  -- Mappings
   local opts = { noremap=true, silent=true }
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
