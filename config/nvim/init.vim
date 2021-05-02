@@ -116,6 +116,17 @@ hi Normal ctermbg=NONE
 call g:Base16hi("Comment", "737571", "", "737571", "", "", "")
 call g:Base16hi("MatchParen", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold,italic", "")
 
+""""""""""""""""""""""""""""""""""""""""
+
+" *** Treesitter ***
+lua << EOF
+local sitter = require('nvim-treesitter.configs')
+sitter.setup {
+    highlight = {
+        enable = true
+    }
+}
+EOF
 
 """"""""""""""""""""""""""""""""""""""""
 " LSP
@@ -199,7 +210,6 @@ for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
 EOF
-
 
 """"""""""""""""""""""""""""""""""""""""
 
