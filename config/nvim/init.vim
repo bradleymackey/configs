@@ -145,10 +145,6 @@ sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
 sign define LspDiagnosticsSignInformation text=@ texthl=Question linehl= numhl=Question
 sign define LspDiagnosticsSignHint text=> texthl=Question linehl= numhl=Question
 
-" Autocomplete
-set completeopt=menuone,noinsert,noselect
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-
 " LSP Config 
 
 lua << EOF
@@ -211,6 +207,11 @@ for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
 EOF
+
+" Autocomplete
+set completeopt=menuone,noinsert,noselect
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+imap <silent> <c-p> <Plug>(completion_trigger)
 
 """"""""""""""""""""""""""""""""""""""""
 
