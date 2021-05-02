@@ -134,15 +134,15 @@ EOF
 " :help highlight-groups
 hi link LspDiagnosticsFloatingError WarningMsg
 hi link LspDiagnosticsVirtualTextError WarningMsg
-hi link LspDiagnosticsFloatingHint Question
-hi link LspDiagnosticsVirtualTextHint Question
+hi link LspDiagnosticsFloatingHint Label
+hi link LspDiagnosticsVirtualTextHint Label
 hi link LspDiagnosticsFloatingWarning Label
 hi link LspDiagnosticsVirtualTextWarning Label
 
 sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
 sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
-sign define LspDiagnosticsSignInformation text=@ texthl=Question linehl= numhl=Question
-sign define LspDiagnosticsSignHint text=> texthl=Question linehl= numhl=Question
+sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
+sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
 
 " LSP Config 
 
