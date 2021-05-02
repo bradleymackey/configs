@@ -2,21 +2,14 @@
 -- Setup of the native Neovim LSP
 -- Called from `init.vim`
 
--- Customise diagnostic handler
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- Enable underline, use default values
-        underline = true,
-        -- Enable virtual text, override spacing to 4
-        virtual_text = {
-            spacing = 4,
-        },
-        -- Disable a feature
-        update_in_insert = false,
-        -- Make the most serious diagnostic the one that is highlighted
-        severity_sort = true,
-    }
-)
+local lsp_status = require('lsp-status')
+
+-- Status
+lsp_status.register_progress()
+lsp_status.config({
+  status_symbol = '',
+  indicator_hint = ' !',
+})
 
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
@@ -27,6 +20,7 @@ local on_attach = function(client, bufnr)
 
   -- Completion
   require('completion').on_attach()
+  lsp_status.on_attach(client)
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -74,6 +68,25 @@ end
 -- and map buffer local keybindings when the language server attaches
 local servers = { "clangd", "sourcekit", "rust_analyzer", "tsserver" }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
+  nvim_lsp[lsp].setup { 
+      on_attach = on_attach,
+      capabilities = lsp_status.capabilities
+  }
 end
+
+-- Customise diagnostic handler
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- Enable underline, use default values
+        underline = true,
+        -- Enable virtual text, override spacing to 4
+        virtual_text = {
+            spacing = 4,
+        },
+        -- Disable a feature
+        update_in_insert = false,
+        -- Make the most serious diagnostic the one that is highlighted
+        severity_sort = true,
+    }
+)
 

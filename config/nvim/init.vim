@@ -63,6 +63,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-lua/lsp-status.nvim'
 
 " Fuzzy
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -145,6 +146,14 @@ luafile ~/.config/nvim/lsp-init.lua
 set completeopt=menuone,noinsert,noselect
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 imap <silent> <c-p> <Plug>(completion_trigger)
+
+function! StatuslineLsp() abort
+    if luaeval('#vim.lsp.buf_get_clients() > 0')
+        return luaeval("require('lsp-status').status()")
+    endif
+
+    return ''
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""
 
@@ -366,10 +375,11 @@ inoremap <c-c> <ESC>
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'filename', 'modified' ] ]
+      \             [ 'readonly', 'filename', 'modified', 'lspstatus' ] ]
       \ },
       \ 'component_function': {
       \   'filename': 'LightlineFilename',
+      \   'lspstatus': 'StatuslineLsp',
       \ },
       \ }
 function! LightlineFilename()
