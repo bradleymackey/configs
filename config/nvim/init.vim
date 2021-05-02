@@ -132,17 +132,18 @@ EOF
 " LSP
 
 " Colors
-hi link LspDiagnosticsFloatingError Error
-hi link LspDiagnosticsVirtualTextError Error
-hi link LspDiagnosticsFloatingHint Warning
-hi link LspDiagnosticsVirtualTextHint Warning
-hi link LspDiagnosticsFloatingWarning Warning
-hi link LspDiagnosticsVirtualTextWarning Warning
+" :help highlight-groups
+hi link LspDiagnosticsFloatingError WarningMsg
+hi link LspDiagnosticsVirtualTextError WarningMsg
+hi link LspDiagnosticsFloatingHint Question
+hi link LspDiagnosticsVirtualTextHint Question
+hi link LspDiagnosticsFloatingWarning Label
+hi link LspDiagnosticsVirtualTextWarning Label
 
 sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
-sign define LspDiagnosticsSignWarning text=* texthl=Warning linehl= numhl=Warning
-sign define LspDiagnosticsSignInformation text=> texthl=Information linehl= numhl=Information
-sign define LspDiagnosticsSignHint text=> texthl=Warning linehl= numhl=Warning
+sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
+sign define LspDiagnosticsSignInformation text=@ texthl=Question linehl= numhl=Question
+sign define LspDiagnosticsSignHint text=> texthl=Question linehl= numhl=Question
 
 " Autocomplete
 set completeopt=menuone,noinsert,noselect
@@ -205,7 +206,7 @@ end
 
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
-local servers = { "sourcekit", "rust_analyzer", "tsserver" }
+local servers = { "clangd", "sourcekit", "rust_analyzer", "tsserver" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
