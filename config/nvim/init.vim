@@ -432,11 +432,10 @@ inoremap <c-c> <ESC>
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'component_function': {
       \   'filename': 'LightlineFilename',
-      \   'cocstatus': 'coc#status'
       \ },
       \ }
 function! LightlineFilename()
