@@ -104,7 +104,7 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- EFM (for formatting and linting)
+-- EFM (for linting only)
 
 local eslint = {
   lintCommand = 'eslint_d --stdin --stdin-filename ${INPUT} -f unix',
@@ -112,30 +112,14 @@ local eslint = {
   lintIgnoreExitCode = true
 }
 
-local prettier = {
-  formatCommand = 'prettier --find-config-path --stdin-filepath ${INPUT}',
-  formatStdin = true
-}
-
 local efm_config = os.getenv('HOME') .. '/.config/efm-langserver/config.yaml'
 local efm_log_dir = '/tmp/'
 local efm_root_markers = { 'package.json', '.git/', '.zshrc' }
 local efm_languages = {
-  yaml = { prettier },
-  json = { prettier },
-  markdown = { prettier },
-  javascript = { eslint, prettier },
-  javascriptreact = { eslint, prettier },
-  typescript = { eslint, prettier },
-  typescriptreact = { eslint, prettier },
-  css = { prettier },
-  scss = { prettier },
-  sass = { prettier },
-  less = { prettier },
-  json = { prettier },
-  graphql = { prettier },
-  vue = { prettier },
-  html = { prettier }
+  javascript = { eslint },
+  javascriptreact = { eslint },
+  typescript = { eslint },
+  typescriptreact = { eslint }
 }
 
 nvim_lsp.efm.setup({
@@ -155,7 +139,8 @@ nvim_lsp.efm.setup({
   on_attach = on_attach,
   root_dir = nvim_lsp.util.root_pattern(unpack(efm_root_markers)),
   init_options = {
-    documentFormatting = true
+      -- we only lint with efm
+    documentFormatting = false
   },
   settings = {
     rootMarkers = efm_root_markers,
@@ -178,3 +163,58 @@ vim.lsp.diagnostic.on_publish_diagnostics, {
         severity_sort = true,
     }
 )
+-- Format with 'formatter.nvim'
+
+ require('formatter').setup({
+   logging = false,
+   filetype = {
+     javascript = {
+         -- prettier
+        function()
+           return {
+             exe = "prettier",
+             args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+             stdin = true
+           }
+         end
+     },
+     typescript = {
+         -- prettier
+        function()
+           return {
+             exe = "prettier",
+             args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+             stdin = true
+           }
+         end
+     },
+     rust = {
+       -- Rustfmt
+       function()
+         return {
+           exe = "rustfmt",
+           args = {"--emit=stdout"},
+           stdin = true
+         }
+       end
+     },
+     lua = {
+         -- luafmt
+         function()
+           return {
+             exe = "luafmt",
+             args = {"--indent-count", 2, "--stdin"},
+             stdin = true
+           }
+         end
+       }
+   }
+ })  
+
+ -- Format on save
+ vim.api.nvim_exec([[
+   augroup FormatAutogroup
+   autocmd!
+   autocmd BufWritePost *.js,*.rs,*.lua,*.ts FormatWrite
+   augroup END
+ ]], true)
