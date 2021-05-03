@@ -88,7 +88,7 @@ vim.lsp.diagnostic.on_publish_diagnostics, {
         underline = true,
         -- Enable virtual text, override spacing to 4
         virtual_text = {
-            spacing = 4,
+            spacing = 8,
         },
         -- Disable a feature
         update_in_insert = false,
