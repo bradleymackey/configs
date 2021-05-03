@@ -125,14 +125,48 @@ luafile ~/.config/nvim/tree-sitter-init.lua
 """"""""""""""""""""""""""""""""""""""""
 " LSP
 
+" gets the color of an existing group name
+" from https://github.com/vim-airline/vim-airline/blob/master/autoload/airline/highlighter.vim
+function! s:get_syn(group, what, mode) abort
+  let color = ''
+  if hlexists(a:group)
+    let color = synIDattr(synIDtrans(hlID(a:group)), a:what, a:mode)
+  endif
+  if empty(color) || color == -1
+    " should always exist
+    let color = synIDattr(synIDtrans(hlID('Normal')), a:what, a:mode)
+    " however, just in case
+    if empty(color) || color == -1
+      let color = 'NONE'
+    endif
+  endif
+  return color
+endfunction
+
 " Colors
 " :help highlight-groups
-hi link LspDiagnosticsFloatingError WarningMsg
-hi link LspDiagnosticsVirtualTextError WarningMsg
-hi link LspDiagnosticsFloatingHint Label
-hi link LspDiagnosticsVirtualTextHint Label
-hi link LspDiagnosticsFloatingWarning Label
-hi link LspDiagnosticsVirtualTextWarning Label
+" (Set LSP colors based on the current colorscheme, but italic and underline
+" them to make them more clear
+
+let s:lsp_tf='italic,underline'
+
+exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+            \' guibg=' . s:get_syn('ErrorMsg', 'bg', 'gui') .
+            \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
+            \' ctermbg=' . s:get_syn('ErrorMsg', 'bg', 'cterm') .
+            \' ctermfg=' . s:get_syn('ErrorMsg', 'fg', 'cterm')
+
+exec 'hi LspDiagnosticsVirtualTextHint cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+            \' guibg=' . s:get_syn('Label', 'bg', 'gui') .
+            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+            \' ctermbg=' . s:get_syn('Label', 'bg', 'cterm') .
+            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
+
+exec 'hi LspDiagnosticsVirtualTextWarning cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+            \' guibg=' . s:get_syn('Label', 'bg', 'gui') .
+            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+            \' ctermbg=' . s:get_syn('Label', 'bg', 'cterm') .
+            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
 
 sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
 sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
