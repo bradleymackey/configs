@@ -198,3 +198,6 @@ if [ -f '/Users/bradley/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/bradley
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/bradley/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/bradley/google-cloud-sdk/completion.zsh.inc'; fi
+
+# clangd
+export PATH="$PATH:/opt/homebrew/opt/llvm/bin/"
