@@ -57,14 +57,18 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" No LSP in ALE!
+" nvim-lsp handles this, but routes it to ALE for display
+let g:ale_disable_lsp = 1
+
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-lua/lsp-status.nvim'
-Plug 'mhartington/formatter.nvim'
+Plug 'dense-analysis/ale'
+Plug 'nathunsmitty/nvim-ale-diagnostic'
 
 " Fuzzy
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -149,41 +153,46 @@ endfunction
 " (Set LSP colors based on the current colorscheme, but italic and underline
 " them to make them more clear
 
-let s:lsp_tf='italic,underline'
+" LEGACY - we now use ALE to render the errors
+" This is because it integrates easily with linters and auto-formatters as
+" well, so we just use it to display the LSP errors too.
+" (still using native LSP)
 
-exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('ErrorMsg', 'fg', 'cterm')
-
-exec 'hi LspDiagnosticsVirtualTextWarning cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-
-exec 'hi LspDiagnosticsVirtualTextHint cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-
-exec 'hi LspDiagnosticsVirtualTextInformation cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-
-hi link LspDiagnosticsFloatingError WarningMsg
-hi link LspDiagnosticsFloatingWarning Label
-hi link LspDiagnosticsFloatingHint Label
-hi link LspDiagnosticsFloatingInformation Label
-
-sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
-sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
-sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
-sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
+" let s:lsp_tf='italic,underline'
+"
+" exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+"             \' guibg=NONE' .
+"             \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
+"             \' ctermbg=NONE' .
+"             \' ctermfg=' . s:get_syn('ErrorMsg', 'fg', 'cterm')
+"
+" exec 'hi LspDiagnosticsVirtualTextWarning cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+"             \' guibg=NONE' .
+"             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+"             \' ctermbg=NONE' .
+"             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
+"
+" exec 'hi LspDiagnosticsVirtualTextHint cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+"             \' guibg=NONE' .
+"             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+"             \' ctermbg=NONE' .
+"             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
+"
+" exec 'hi LspDiagnosticsVirtualTextInformation cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+"             \' guibg=NONE' .
+"             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+"             \' ctermbg=NONE' .
+"             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
+"
+" hi link LspDiagnosticsFloatingError WarningMsg
+" hi link LspDiagnosticsFloatingWarning Label
+" hi link LspDiagnosticsFloatingHint Label
+" hi link LspDiagnosticsFloatingInformation Label
+"
+" sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
+" sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
+" sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
+" sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
 
 " LSP Config 
 
@@ -194,13 +203,15 @@ set completeopt=menuone,noinsert,noselect
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 imap <silent> <c-p> <Plug>(completion_trigger)
 
-function! StatuslineLsp() abort
-    if luaeval('#vim.lsp.buf_get_clients() > 0')
-        return luaeval("require('lsp-status').status()")
-    endif
+" Format and Lint with ALE
+let g:ale_fixers = ['prettier', 'eslint']
+let g:ale_fix_on_save = 1
+let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_prefix = '    > '
 
-    return ''
-endfunction
+hi link ALEVirtualTextError Comment
+hi link ALEVirtualTextWarning Comment
+hi link ALEVirtualTextInfo Comment
 
 """"""""""""""""""""""""""""""""""""""""
 
@@ -426,13 +437,26 @@ let g:lightline = {
       \ },
       \ 'component_function': {
       \   'filename': 'LightlineFilename',
-      \   'lspstatus': 'StatuslineLsp',
+      \   'lspstatus': 'LinterStatus',
       \ },
       \ }
 function! LightlineFilename()
     " if the path is empty, show 'noname'
     " otherwise show file relative to open directory
     return expand('%:p') !=# '' ? expand('%:t') : '[No Name]'
+endfunction
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dE %dW',
+    \   all_errors,
+    \   all_non_errors
+    \)
 endfunction
 
 " ###### JavaScript #######
