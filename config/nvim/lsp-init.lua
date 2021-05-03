@@ -69,6 +69,7 @@ local on_attach = function(client, bufnr)
       augroup END
     ]], false)
   end
+
 end
 
 -- Use a loop to conveniently both setup defined servers 
@@ -96,4 +97,59 @@ vim.lsp.diagnostic.on_publish_diagnostics, {
         severity_sort = true,
     }
 )
+
+-- Format
+require('formatter').setup({
+  logging = false,
+  filetype = {
+    javascript = {
+        -- prettier
+       function()
+          return {
+            exe = "prettier",
+            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+            stdin = true
+          }
+        end
+    },
+    typescript = {
+        -- prettier
+       function()
+          return {
+            exe = "prettier",
+            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+            stdin = true
+          }
+        end
+    },
+    rust = {
+      -- Rustfmt
+      function()
+        return {
+          exe = "rustfmt",
+          args = {"--emit=stdout"},
+          stdin = true
+        }
+      end
+    },
+    lua = {
+        -- luafmt
+        function()
+          return {
+            exe = "luafmt",
+            args = {"--indent-count", 2, "--stdin"},
+            stdin = true
+          }
+        end
+      }
+  }
+})  
+
+-- Format on save
+vim.api.nvim_exec([[
+  augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost *.js,*.rs,*.lua,*.ts FormatWrite
+  augroup END
+]], true)
 
