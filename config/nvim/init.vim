@@ -90,6 +90,7 @@ Plug 'Raimondi/delimitMate'
 " Syntax
 Plug 'delphinus/vim-firestore' " firebase *.rules file support
 Plug 'digitaltoad/vim-pug'
+Plug 'keith/swift.vim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""
