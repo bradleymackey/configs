@@ -151,21 +151,21 @@ endfunction
 let s:lsp_tf='italic,underline'
 
 exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=' . s:get_syn('ErrorMsg', 'bg', 'gui') .
+            \' guibg=NONE' .
             \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
-            \' ctermbg=' . s:get_syn('ErrorMsg', 'bg', 'cterm') .
+            \' ctermbg=NONE' .
             \' ctermfg=' . s:get_syn('ErrorMsg', 'fg', 'cterm')
 
 exec 'hi LspDiagnosticsVirtualTextHint cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=' . s:get_syn('Label', 'bg', 'gui') .
+            \' guibg=NONE' .
             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=' . s:get_syn('Label', 'bg', 'cterm') .
+            \' ctermbg=NONE' .
             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
 
 exec 'hi LspDiagnosticsVirtualTextWarning cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=' . s:get_syn('Label', 'bg', 'gui') .
+            \' guibg=NONE' .
             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=' . s:get_syn('Label', 'bg', 'cterm') .
+            \' ctermbg=NONE' .
             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
 
 sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
