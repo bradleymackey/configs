@@ -184,18 +184,14 @@ endfunction
 "             \' ctermbg=NONE' .
 "             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
 "
-" hi link LspDiagnosticsFloatingError WarningMsg
-" hi link LspDiagnosticsFloatingWarning Label
-" hi link LspDiagnosticsFloatingHint Label
-" hi link LspDiagnosticsFloatingInformation Label
-"
+
+
 " sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
 " sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
 " sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
 " sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
 
 " LSP Config 
-
 luafile ~/.config/nvim/lsp-init.lua
 
 " Autocomplete
@@ -212,6 +208,16 @@ let g:ale_virtualtext_prefix = '    > '
 hi link ALEVirtualTextError Comment
 hi link ALEVirtualTextWarning Comment
 hi link ALEVirtualTextInfo Comment
+
+let g:ale_sign_error = '!'
+let g:ale_sign_warning = '*'
+sign define ALEErrorSign text= texthl=Error linehl= numhl=Error
+
+" ALE doesn't override these -> we need them for the fixit box
+hi link LspDiagnosticsFloatingError WarningMsg
+hi link LspDiagnosticsFloatingWarning Label
+hi link LspDiagnosticsFloatingHint Label
+hi link LspDiagnosticsFloatingInformation Label
 
 """"""""""""""""""""""""""""""""""""""""
 
