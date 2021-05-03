@@ -14,6 +14,23 @@ lsp_status.config({
   current_function = false,
 })
 
+-- Formatting
+
+-- (format on save helper)
+vim.lsp.handlers["textDocument/formatting"] = function(err, _, result, _, bufnr)
+    if err ~= nil or result == nil then
+        return
+    end
+    if not vim.api.nvim_buf_get_option(bufnr, "modified") then
+        local view = vim.fn.winsaveview()
+        vim.lsp.util.apply_text_edits(result, bufnr)
+        vim.fn.winrestview(view)
+        if bufnr == vim.api.nvim_get_current_buf() then
+            vim.api.nvim_command("noautocmd :update")
+        end
+    end
+end
+
 -- LSP setup
 
 local nvim_lsp = require('lspconfig')
@@ -51,6 +68,11 @@ local on_attach = function(client, bufnr)
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    -- format on save
+    vim.api.nvim_command [[augroup Format]]
+    vim.api.nvim_command [[autocmd! * <buffer>]]
+    vim.api.nvim_command [[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()]]
+    vim.api.nvim_command [[augroup END]]
   end
   if client.resolved_capabilities.document_range_formatting then
     buf_set_keymap("v", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
@@ -82,6 +104,65 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+-- EFM (for formatting and linting)
+
+local eslint = {
+  lintCommand = 'eslint_d --stdin --stdin-filename ${INPUT} -f unix',
+  lintStdin = true,
+  lintIgnoreExitCode = true
+}
+
+local prettier = {
+  formatCommand = 'prettier --find-config-path --stdin-filepath ${INPUT}',
+  formatStdin = true
+}
+
+local efm_config = os.getenv('HOME') .. '/.config/efm-langserver/config.yaml'
+local efm_log_dir = '/tmp/'
+local efm_root_markers = { 'package.json', '.git/', '.zshrc' }
+local efm_languages = {
+  yaml = { prettier },
+  json = { prettier },
+  markdown = { prettier },
+  javascript = { eslint, prettier },
+  javascriptreact = { eslint, prettier },
+  typescript = { eslint, prettier },
+  typescriptreact = { eslint, prettier },
+  css = { prettier },
+  scss = { prettier },
+  sass = { prettier },
+  less = { prettier },
+  json = { prettier },
+  graphql = { prettier },
+  vue = { prettier },
+  html = { prettier }
+}
+
+nvim_lsp.efm.setup({
+  cmd = {
+    "efm-langserver",
+    "-c",
+    efm_config,
+    "-logfile",
+    efm_log_dir .. "efm.log"
+  },
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact'
+  },
+  on_attach = on_attach,
+  root_dir = nvim_lsp.util.root_pattern(unpack(efm_root_markers)),
+  init_options = {
+    documentFormatting = true
+  },
+  settings = {
+    rootMarkers = efm_root_markers,
+    languages = efm_languages
+  }
+})
+
 -- Customise diagnostic handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -97,59 +178,3 @@ vim.lsp.diagnostic.on_publish_diagnostics, {
         severity_sort = true,
     }
 )
-
--- Format
-require('formatter').setup({
-  logging = false,
-  filetype = {
-    javascript = {
-        -- prettier
-       function()
-          return {
-            exe = "prettier",
-            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
-            stdin = true
-          }
-        end
-    },
-    typescript = {
-        -- prettier
-       function()
-          return {
-            exe = "prettier",
-            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
-            stdin = true
-          }
-        end
-    },
-    rust = {
-      -- Rustfmt
-      function()
-        return {
-          exe = "rustfmt",
-          args = {"--emit=stdout"},
-          stdin = true
-        }
-      end
-    },
-    lua = {
-        -- luafmt
-        function()
-          return {
-            exe = "luafmt",
-            args = {"--indent-count", 2, "--stdin"},
-            stdin = true
-          }
-        end
-      }
-  }
-})  
-
--- Format on save
-vim.api.nvim_exec([[
-  augroup FormatAutogroup
-  autocmd!
-  autocmd BufWritePost *.js,*.rs,*.lua,*.ts FormatWrite
-  augroup END
-]], true)
-
