@@ -200,10 +200,13 @@ let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 imap <silent> <c-p> <Plug>(completion_trigger)
 
 " Format and Lint with ALE
-let g:ale_fixers = ['prettier', 'eslint']
+let g:ale_fixers = ['prettier']
+let b:ale_linters = {'javascript': ['eslint'], 'typescript': ['eslint']}
 let g:ale_fix_on_save = 1
 let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = '    > '
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_save = 1
 
 hi link ALEVirtualTextError Comment
 hi link ALEVirtualTextWarning Comment
