@@ -3,6 +3,8 @@
 -- Called from `init.vim`
 
 -- Formatting
+-- (All LSP errors are directed to the ALE, so we don't want
+-- to show them in the native LSP)
 require("nvim-ale-diagnostic")
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
