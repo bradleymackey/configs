@@ -87,6 +87,9 @@ if [[ $IS_INTERACTIVE ]]; then
 fi
 
 
+# Customize the default prompt
+# gives us git status and name of the current folder only
+# (not bold though!)
 PROMPT="%(?:%{$fg[green]%}• :%{$fg[red]%}• )"
 PROMPT+='%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
 
@@ -119,7 +122,6 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 
 # ALIASES
 # (run alias for a full list of all zsh aliases)
-alias touchbarreset='sudo pkill TouchBarServer'
 alias grep='rg'
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
