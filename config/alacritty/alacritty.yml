@@ -22,6 +22,9 @@ cursor:
   style: Block
   unfocused_hollow: true
 
+mouse:
+  hide_when_typing: true
+
 font:
   size: 13.0
   normal:
