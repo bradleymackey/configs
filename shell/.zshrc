@@ -86,6 +86,15 @@ if [[ $IS_INTERACTIVE ]]; then
     source $ZSH/oh-my-zsh.sh
 fi
 
+
+PROMPT="%(?:%{$fg[green]%}• :%{$fg[red]%}• )"
+PROMPT+='%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[blue]%}git:(%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[blue]%})%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%})(%{$fg[yellow]%}✕"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})(%{$fg[green]%}✓"
+
 #
 ### CUSTOM CONFIGURATION
 #
