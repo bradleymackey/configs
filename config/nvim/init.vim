@@ -207,6 +207,8 @@ let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = '    > '
 let g:ale_lint_on_text_changed = 'always'
 let g:ale_lint_on_save = 1
+let g:ale_set_loclist=0
+let g:ale_set_quickfix=0
 
 hi link ALEVirtualTextError Comment
 hi link ALEVirtualTextWarning Comment
