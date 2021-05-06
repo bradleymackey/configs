@@ -8,8 +8,10 @@ set ruler
 set ttyfast
 set lazyredraw " https://github.com/vim/vim/issues/1735#issuecomment-383353563
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
-filetype plugin indent on
 set shortmess+=c
+set path+=** " filenames in directories directly
+
+filetype plugin indent on
 
 " Editor settings
 set re=0
