@@ -93,6 +93,14 @@ let g:ale_lint_on_save = 1
 let g:ale_set_loclist=0
 let g:ale_set_quickfix=0
 
+" eslint_d is faster!
+let g:ale_javascript_eslint_use_global = 1
+let g:ale_javascript_eslint_executable = 'eslint_d'
+
+" prettier_d is faster!
+let g:javascript_prettier_use_global = 1
+let g:javascript_prettier_executable = 'prettier_d'
+
 hi link ALEVirtualTextError Comment
 hi link ALEVirtualTextWarning Comment
 hi link ALEVirtualTextInfo Comment
