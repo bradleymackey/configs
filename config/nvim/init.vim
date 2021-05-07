@@ -188,6 +188,8 @@ endfunction
 
 " ### JavaScript
 let javaScript_fold=0
+autocmd BufReadPost .eslintrc setlocal filetype=json
+autocmd BufReadPost .prettierrc setlocal filetype=json
 
 " ### Delimit Mate
 let g:delimitMate_expand_cr = 2
