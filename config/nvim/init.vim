@@ -83,6 +83,8 @@ let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 imap <silent> <c-p> <Plug>(completion_trigger)
 
 " Format and Lint with ALE
+" (LSP is also routed through ALE, so LSP, and lint is all shown together in
+" ALE)
 let g:ale_fixers = ['prettier', 'fixjson', 'rustfmt']
 let b:ale_linters = {
     \ 'javascript': ['eslint'], 
