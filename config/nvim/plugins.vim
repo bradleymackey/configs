@@ -40,6 +40,7 @@ Plug 'godlygeek/tabular'
 " recursive <cr> maps should RECURSIVELY call `<Plug>delimitMateCR` in order
 " to make sure that the correct delimiting calls are made
 Plug 'Raimondi/delimitMate'
+Plug 'folke/todo-comments.nvim'
 
 " Syntax
 Plug 'delphinus/vim-firestore' " firebase *.rules file support

@@ -8,6 +8,7 @@ source $HOME/.config/nvim/bindings.vim
 luafile $HOME/.config/nvim/tree-sitter-init.lua
 source $HOME/.config/nvim/settings.vim
 luafile ~/.config/nvim/lsp-init.lua
+luafile ~/.config/nvim/todo-init.lua
 
 source $HOME/.config/nvim/nerd-tree.vim
 
@@ -42,38 +43,38 @@ endfunction
 " well, so we just use it to display the LSP errors too.
 " (still using native LSP)
 
-" let s:lsp_tf='italic,underline'
-"
-" exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-"             \' guibg=NONE' .
-"             \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
-"             \' ctermbg=NONE' .
-"             \' ctermfg=' . s:get_syn('ErrorMsg', 'fg', 'cterm')
-"
-" exec 'hi LspDiagnosticsVirtualTextWarning cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-"             \' guibg=NONE' .
-"             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-"             \' ctermbg=NONE' .
-"             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-"
-" exec 'hi LspDiagnosticsVirtualTextHint cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-"             \' guibg=NONE' .
-"             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-"             \' ctermbg=NONE' .
-"             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-"
-" exec 'hi LspDiagnosticsVirtualTextInformation cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-"             \' guibg=NONE' .
-"             \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-"             \' ctermbg=NONE' .
-"             \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-"
+let s:lsp_tf='italic,underline'
+
+exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+            \' guibg=NONE' .
+            \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
+            \' ctermbg=NONE' .
+            \' ctermfg=' . s:get_syn('ErrorMsg', 'fg', 'cterm')
+
+exec 'hi LspDiagnosticsVirtualTextWarning cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+            \' guibg=NONE' .
+            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+            \' ctermbg=NONE' .
+            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
+
+exec 'hi LspDiagnosticsVirtualTextHint cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+            \' guibg=NONE' .
+            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+            \' ctermbg=NONE' .
+            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
+
+exec 'hi LspDiagnosticsVirtualTextInformation cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
+            \' guibg=NONE' .
+            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
+            \' ctermbg=NONE' .
+            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
 
 
-" sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
-" sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
-" sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
-" sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
+
+sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
+sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
+sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
+sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
 
 " LSP Config 
 
