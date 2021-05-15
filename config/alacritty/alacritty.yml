@@ -14,8 +14,8 @@ window:
     columns: 120
     lines: 30
   padding:
-    x: 4
-    y: 4
+    x: 2
+    y: 2
   decorations: full
 
 cursor:
@@ -26,18 +26,18 @@ mouse:
   hide_when_typing: true
 
 font:
-  size: 13.0
+  size: 14.0
   normal:
-    family: UbuntuMono Nerd Font Mono
+    family: Meslo LG S DZ
     style: Regular
   bold:
-    family: UbuntuMono Nerd Font Mono
+    family: Meslo LG S DZ
     style: Bold
   italic:
-    family: UbuntuMono Nerd Font Mono
+    family: Meslo LG S DZ
     style: Italic
   bold_italic:
-    family: UbuntuMono Nerd Font Mono
+    family: Meslo LG S DZ
     style: Bold Italic
   # 'spacing' between lines and letters
   offset:
@@ -47,4 +47,4 @@ font:
     x: 0
     y: 2
 # debug:
-#     render_timer: true
+#   render_timer: true
