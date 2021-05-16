@@ -28,17 +28,17 @@ mouse:
 font:
   size: 14.0
   normal:
-    family: Meslo LG S DZ
-    style: Regular
+    family: Bitstream Vera Sans Mono
+    style: Roman
   bold:
-    family: Meslo LG S DZ
+    family: Bitstream Vera Sans Mono
     style: Bold
   italic:
-    family: Meslo LG S DZ
-    style: Italic
+    family: Bitstream Vera Sans Mono
+    style: Oblique
   bold_italic:
-    family: Meslo LG S DZ
-    style: Bold Italic
+    family: Bitstream Vera Sans Mono
+    style: Bold Oblique
   # 'spacing' between lines and letters
   offset:
     x: 0
