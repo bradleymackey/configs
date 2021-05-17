@@ -28,17 +28,17 @@ mouse:
 font:
   size: 14.0
   normal:
-    family: Bitstream Vera Sans Mono
-    style: Roman
+    family: Fira Code
+    style: Regular
   bold:
-    family: Bitstream Vera Sans Mono
+    family: Fira Code
     style: Bold
   italic:
-    family: Bitstream Vera Sans Mono
-    style: Oblique
+    family: Fira Code
+    style: Italic
   bold_italic:
-    family: Bitstream Vera Sans Mono
-    style: Bold Oblique
+    family: Fira Code
+    style: Bold Italic
   # 'spacing' between lines and letters
   offset:
     x: 0
