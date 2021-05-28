@@ -18,7 +18,7 @@ There are probably better alternatives to some of these tools below, but they wo
 - Version Control: `git`
 - Terminal:
   - Shell: `zsh`, [`ohmyzsh`](https://github.com/ohmyzsh/ohmyzsh)
-  - Emulator: [`iTerm 2`](https://iterm2.com)
+  - Emulator: [`Alacritty`](https://github.com/alacritty/alacritty)
   - Multiplexer: [`tmux`](https://github.com/tmux/tmux/wiki)
   - Colors: [`base16`](https://github.com/chriskempson/base16)
 - Editor: [`neovim`](https://neovim.io)
