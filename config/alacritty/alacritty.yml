@@ -28,21 +28,21 @@ mouse:
 font:
   size: 14.0
   normal:
-    family: Fira Code
+    family: Meslo LG S DZ
     style: Regular
   bold:
-    family: Fira Code
+    family: Meslo LG S DZ
     style: Bold
   italic:
-    family: Fira Code
+    family: Meslo LG S DZ
     style: Italic
   bold_italic:
-    family: Fira Code
+    family: Meslo LG S DZ
     style: Bold Italic
   # 'spacing' between lines and letters
   offset:
     x: 0
-    y: 4
+    y: 2
   glyph_offset:
     x: 0
     y: 2
