@@ -155,8 +155,8 @@ PATH=$(pyenv root)/shims:$PATH
 # SOURCEKIT-LSP
 PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 
-#  NVM - node version manager
-[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh
+# FNM (fast node manager)
+eval "$(fnm env)"
 
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
