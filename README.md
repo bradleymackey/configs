@@ -23,7 +23,6 @@ There are probably better alternatives to some of these tools below, but they wo
   - Colors: [`base16`](https://github.com/chriskempson/base16)
 - Editor: [`neovim`](https://neovim.io)
   - Package Manager: [`vim-plug`](https://github.com/junegunn/vim-plug)
-  - Completion Engine: [`coc.nvim`](https://github.com/neoclide/coc.nvim)
   - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
   - (_see config file for more_)
 - Shell Tools:
