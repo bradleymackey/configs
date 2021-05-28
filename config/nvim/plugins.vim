@@ -29,6 +29,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'preservim/nerdtree'
 Plug 'airblade/vim-gitgutter'
+Plug 'Yggdroot/indentLine'
 
 " Editor
 " 'gcc' to comment line, 'gc' if in visual mode
