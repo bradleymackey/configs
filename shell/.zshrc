@@ -157,6 +157,7 @@ PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 
 # FNM (fast node manager)
 eval "$(fnm env)"
+alias nvm="fnm" # for muscle memory damn it!
 
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
