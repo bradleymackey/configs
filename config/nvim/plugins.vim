@@ -15,9 +15,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
 Plug 'dense-analysis/ale'
 Plug 'nathunsmitty/nvim-ale-diagnostic'
+Plug 'hrsh7th/nvim-compe'
+Plug 'ray-x/lsp_signature.nvim'
 
 " Fuzzy
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }

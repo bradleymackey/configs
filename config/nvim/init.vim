@@ -9,6 +9,7 @@ luafile $HOME/.config/nvim/tree-sitter-init.lua
 source $HOME/.config/nvim/settings.vim
 luafile ~/.config/nvim/lsp-init.lua
 luafile ~/.config/nvim/todo-init.lua
+luafile ~/.config/nvim/compe.lua
 
 source $HOME/.config/nvim/nerd-tree.vim
 
@@ -80,8 +81,16 @@ sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
 
 " Autocomplete
 set completeopt=menuone,noinsert,noselect
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-imap <silent> <c-p> <Plug>(completion_trigger)
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+" Old for compltion_nvim
+" let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+" imap <silent> <c-p> <Plug>(completion_trigger)
 
 " Format and Lint with ALE
 " (LSP is also routed through ALE, so LSP, and lint is all shown together in
@@ -139,16 +148,6 @@ let g:vim_firestore_warnings = 0
 
 " ### Vim-Rainbow
 let g:rainbow_active = 0 " toggle via :RainbowToggle
-
-" COMPLETION SUGGESTIONS
-" Use <cr> to confirm completion (we use delimitMateCR to we also get this <cr> formatting), `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
-" Or use `complete_info` if your vim support it, like:
-imap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " ### Rust
 let g:rustfmt_autosave = 1
