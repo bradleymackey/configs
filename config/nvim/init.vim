@@ -11,8 +11,6 @@ luafile ~/.config/nvim/lsp-init.lua
 luafile ~/.config/nvim/todo-init.lua
 luafile ~/.config/nvim/compe.lua
 
-source $HOME/.config/nvim/nerd-tree.vim
-
 """"""""""""""""""""""""""""""""""""""""
 " LSP (using ALE for display)
 
@@ -133,6 +131,9 @@ hi link LspDiagnosticsFloatingInformation Label
 
 """"""""""""""""""""""""""""""""""""""""
 " # Misc configurations
+
+nnoremap <C-n> <cmd>CHADopen<cr>
+let g:chadtree_settings = { 'theme.icon_glyph_set': 'ascii' }
 
 " ### Vim Rooter
 let g:rooter_manual_only = 1
