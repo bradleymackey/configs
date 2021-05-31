@@ -10,6 +10,7 @@ set lazyredraw " https://github.com/vim/vim/issues/1735#issuecomment-383353563
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set shortmess+=c
 set path+=** " filenames in directories directly
+set conceallevel=0
 
 filetype plugin indent on
 
