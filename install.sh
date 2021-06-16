@@ -37,7 +37,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 source ~/.zshrc
 
 ### Install packages
-source ~/configs/installers/brew.sh
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    source ~/configs/installers/brew.sh
+    source ~/configs/installers/macos.sh
+fi
 source ~/configs/installers/node.sh
 source ~/configs/installers/rust.sh
 
