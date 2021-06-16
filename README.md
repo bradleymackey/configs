@@ -31,3 +31,7 @@ There are probably better alternatives to some of these tools below, but they wo
   - Node.js Versioner: [`fnm`](https://github.com/Schniz/fnm)
   - Python Versioner: [`pyenv`](https://github.com/pyenv/pyenv)
   - Rust Versioner: [`rustup`](https://rustup.rs)
+
+# Notes
+
+- MacOS + tmux was slow on Intel but is fast on Apple Silicon. No clue why.
