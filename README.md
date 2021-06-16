@@ -32,6 +32,6 @@ There are probably better alternatives to some of these tools below, but they wo
   - Python Versioner: [`pyenv`](https://github.com/pyenv/pyenv)
   - Rust Versioner: [`rustup`](https://rustup.rs)
 
-# Notes
+## Notes
 
 - MacOS + tmux was slow on Intel but is fast on Apple Silicon. No clue why.
