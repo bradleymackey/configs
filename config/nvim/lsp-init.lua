@@ -48,7 +48,7 @@ lsp_status.config({
     status_symbol = '→',
     select_symbol = nil,
     update_interval = 100
-  })
+})
 lsp_status.register_progress()
 
 local nvim_lsp = require('lspconfig')
@@ -123,23 +123,23 @@ end
 nvim_lsp.clangd.setup { 
     handlers = lsp_status.extensions.clangd.setup(),
     capabilities = lsp_status.capabilities,
-  on_attach = on_attach
+    on_attach = on_attach
 }
 
 nvim_lsp.sourcekit.setup { 
     capabilities = lsp_status.capabilities,
-  on_attach = on_attach
+    on_attach = on_attach
 }
 
 nvim_lsp.rust_analyzer.setup { 
     capabilities = lsp_status.capabilities,
-  on_attach = on_attach
+    on_attach = on_attach
 }
 
 nvim_lsp.tsserver.setup {
     capabilities = lsp_status.capabilities,
     on_attach = function(client, buf)
-        -- efm is used instead, so disable tsserver formatting ability
+        -- efm is used for linting and formatting, so disable tsserver's formatter
         client.resolved_capabilities.document_formatting = false
         on_attach(client, buf)
     end
