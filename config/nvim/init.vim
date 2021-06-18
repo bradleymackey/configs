@@ -112,10 +112,6 @@ let g:rainbow_active = 0 " toggle via :RainbowToggle
 let g:rustfmt_autosave = 1
 autocmd BufReadPost *.rs setlocal filetype=rust
 
-" Autocomplete Config
-" suppress the annoying 'match x of y', 'The only match' and 'Pattern not
-" found' messages
-
 " ### Lightline
 let g:lightline = {
       \ 'active': {
