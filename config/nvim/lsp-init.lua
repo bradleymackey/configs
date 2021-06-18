@@ -32,6 +32,25 @@ vim.lsp.handlers["textDocument/formatting"] = function(err, _, result, _, bufnr)
     end
 end
 
+local lsp_status = require('lsp-status') -- for status support
+lsp_status.config({
+    kind_labels = {},
+    current_function = false,
+    diagnostics = true,
+    indicator_separator = '',
+    component_separator = ' ',
+    indicator_errors = 'E',
+    indicator_warnings = 'W',
+    indicator_info = 'i',
+    indicator_hint = '*',
+    indicator_ok = 'Ok',
+    spinner_frames = {'⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'},
+    status_symbol = '→',
+    select_symbol = nil,
+    update_interval = 100
+  })
+lsp_status.register_progress()
+
 local nvim_lsp = require('lspconfig')
 
 local on_attach = function(client, bufnr)
@@ -52,6 +71,9 @@ local on_attach = function(client, bufnr)
       },
       decorator = {"**", "**"}
   })
+
+  -- LSP status bar
+  lsp_status.on_attach(client)
 
   -- Mappings
   local opts = { noremap=true, silent=true }
@@ -99,18 +121,23 @@ end
 -- LANG SERVER CONFIGS
 
 nvim_lsp.clangd.setup { 
+    handlers = lsp_status.extensions.clangd.setup(),
+    capabilities = lsp_status.capabilities,
   on_attach = on_attach
 }
 
 nvim_lsp.sourcekit.setup { 
+    capabilities = lsp_status.capabilities,
   on_attach = on_attach
 }
 
 nvim_lsp.rust_analyzer.setup { 
+    capabilities = lsp_status.capabilities,
   on_attach = on_attach
 }
 
 nvim_lsp.tsserver.setup {
+    capabilities = lsp_status.capabilities,
     on_attach = function(client, buf)
         -- efm is used instead, so disable tsserver formatting ability
         client.resolved_capabilities.document_formatting = false

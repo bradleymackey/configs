@@ -13,6 +13,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'mattn/efm-langserver'
 Plug 'hrsh7th/nvim-compe'
 Plug 'ray-x/lsp_signature.nvim'
+Plug 'nvim-lua/lsp-status.nvim'
 
 " Fuzzy
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
