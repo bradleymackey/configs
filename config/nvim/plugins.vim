@@ -5,18 +5,12 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" No LSP in ALE!
-" nvim-lsp handles this, but routes it to ALE for display
-" (this needs to be called before the plugin is sourced)
-let g:ale_disable_lsp = 1
-
 " Vim Plug Plugins
 call plug#begin('~/.local/share/nvim/plugged')
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
-Plug 'dense-analysis/ale'
-Plug 'nathunsmitty/nvim-ale-diagnostic'
+Plug 'mattn/efm-langserver'
 Plug 'hrsh7th/nvim-compe'
 Plug 'ray-x/lsp_signature.nvim'
 
