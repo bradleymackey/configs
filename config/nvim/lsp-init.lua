@@ -13,7 +13,8 @@ vim.lsp.diagnostic.on_publish_diagnostics, {
             spacing = 8
         },
         signs = true,
-        update_in_insert = true,
+        -- Don't update diagnostics during insert mode, it makes things very noisy
+        update_in_insert = false,
         -- Make the most serious diagnostic the one that is highlighted
         severity_sort = true,
     }
@@ -47,7 +48,7 @@ lsp_status.config({
     spinner_frames = {'⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'},
     status_symbol = '→',
     select_symbol = nil,
-    update_interval = 100
+    update_interval = 500
 })
 lsp_status.register_progress()
 
