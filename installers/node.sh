@@ -19,6 +19,7 @@ npm i -g \
     typescript \
     typescript-language-server \
     prettier \
-    prettier_d_slim
+    prettier_d_slim \
+    pyright
 
 echo "Node stuff installed!"

@@ -126,6 +126,11 @@ nvim_lsp.clangd.setup {
     on_attach = on_attach
 }
 
+nvim_lsp.pyright.setup {
+    capabilities = lsp_status.capabilities,
+    on_attach = on_attach
+}
+
 nvim_lsp.sourcekit.setup { 
     capabilities = lsp_status.capabilities,
     on_attach = on_attach
@@ -155,6 +160,7 @@ nvim_lsp.efm.setup {
     filetypes = {
         "javascript",
         "typescript",
+        "python",
         "lua",
         "pug",
         "yaml"
