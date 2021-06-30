@@ -24,6 +24,8 @@ There are probably better alternatives to some of these tools below, but they wo
 - Editor: [`neovim`](https://neovim.io)
   - Package Manager: [`vim-plug`](https://github.com/junegunn/vim-plug)
   - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
+  - LSP: Native
+  - Lint/Format: [`efm-langserver`](https://github.com/mattn/efm-langserver)
   - (_see config file for more_)
 - Shell Tools:
   - Package Manager: [`brew`](https://brew.sh)
