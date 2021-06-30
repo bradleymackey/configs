@@ -25,19 +25,23 @@ cursor:
 mouse:
   hide_when_typing: true
 
+# My fav fonts:
+# family: Meslo LG S DZ
+# family: JetBrains Mono NL
+
 font:
   size: 14.0
   normal:
-    family: Meslo LG S DZ
+    family: JetBrains Mono NL
     style: Regular
   bold:
-    family: Meslo LG S DZ
+    family: JetBrains Mono NL
     style: Bold
   italic:
-    family: Meslo LG S DZ
+    family: JetBrains Mono NL
     style: Italic
   bold_italic:
-    family: Meslo LG S DZ
+    family: JetBrains Mono NL
     style: Bold Italic
   # 'spacing' between lines and letters
   offset:
