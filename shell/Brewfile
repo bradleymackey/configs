@@ -52,7 +52,7 @@ brew "luajit-openresty"
 brew "mosh"
 brew "neofetch"
 brew "tree-sitter"
-brew "neovim", args: ["HEAD"]
+brew "neovim"
 brew "ninja"
 brew "nmap"
 brew "node@12"
