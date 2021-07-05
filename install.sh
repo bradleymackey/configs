@@ -26,6 +26,7 @@ ln -s ~/configs/config/base16-shell ~/.config/base16-shell
 ln -s ~/configs/config/kitty ~/.config/kitty
 ln -s ~/configs/config/alacritty ~/.config/alacritty
 ln -s ~/configs/config/efm-langserver ~/.config/efm-langserver
+ln -s ~/configs/shell/.p10k.zsh ~/.p10k.zsh
 
 # ----- other tools -----
 
