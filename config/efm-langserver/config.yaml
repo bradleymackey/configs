@@ -40,6 +40,10 @@ tools:
     root-markers:
       - compile_commands.json
 
+  python-black: &python-black
+    format-command: "black --quiet -"
+    format-stdin: true
+
   markdownlint-lint: &markdownlint-lint
     lint-command: "markdownlint --stdin"
     lint-stdin: true
@@ -177,6 +181,7 @@ languages:
   python:
     - <<: *flake8-lint
     - <<: *pylint-lint
+    - <<: *python-black
 
   html:
     - <<: *htmllint-lint
