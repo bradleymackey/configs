@@ -78,15 +78,6 @@ tools:
       - tox.ini
       - .flake8
 
-  pylint-lint: &pylint-lint
-    lint-command: "pylint --output-format=text --reports=no --score=no ${INPUT}"
-    lint-stdin: false
-    lint-formats:
-      - "%f:%l:%c: C%n: %m"
-    root-markers:
-      - setup.cfg
-      - .pylintrc
-
   yamllint-lint: &yamllint-lint
     lint-command: "yamllint --strict --format parsable ${INPUT}"
     lint-stdin: false
@@ -180,7 +171,6 @@ languages:
 
   python:
     - <<: *flake8-lint
-    - <<: *pylint-lint
     - <<: *python-black
 
   html:
