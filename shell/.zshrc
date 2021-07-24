@@ -19,6 +19,9 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 # -z = True if the length of string is zero.
 [[ -z "$TMUX" ]] && NOT_TMUX=1 || IS_TMUX=1
 
+# IF VSCODE, we don't want tmux
+[[ "$TERM_PROGRAM" != "vscode" ]] && WANTS_TMUX=1
+
 #
 ### OH MY ZSH 
 #
@@ -210,7 +213,7 @@ if ! [ $HAS_TMUX ]; then
     echo "➜ You don't have TMUX installed."
 fi
 
-if [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
+if [[ $WANTS_TMUX ]] && [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE ]]; then
     echo "➜ 🚀 Launching tmux..."
     # Launches tmux in a session called 'base'.
     tmux attach -t base || tmux new -s base
