@@ -128,7 +128,7 @@ function! LightlineFilename()
     " if the path is empty, show 'noname'
     " otherwise show file relative to open directory
     " https://stackoverflow.com/a/45244610/3261161
-    return expand('%:p') !=# '' ? expand('%:~:.') : '[No Name]'
+    return expand('%:p') !=# '' ? expand('%:~:.') : '[Untitled]'
 endfunction
 
 function! LinterStatus() abort
