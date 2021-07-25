@@ -97,6 +97,7 @@
 	// PYTHON
 	"python.defaultInterpreterPath": "/usr/local/bin/python3",
 	"python.venvFolders": ["~/.pyenv/versions"],
+	"python.formatting.provider": "black",
 
 	// VIM
 	"vim.easymotion": true,
