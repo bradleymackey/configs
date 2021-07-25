@@ -74,6 +74,9 @@
 	"breadcrumbs.enabled": false,
 	"gitlens.advanced.messages": {
 	},
+	"gitlens.currentLine.enabled": false,
+	"gitlens.codeLens.authors.enabled": false,
+	"gitlens.codeLens.recentChange.enabled": false,
 	"explorer.confirmDragAndDrop": false,
 	"files.autoSave": "afterDelay",
 
@@ -229,4 +232,11 @@
 			]
 		}
 	],
+	"github.copilot.enable": {
+		"*": true,
+		"yaml": false,
+		"plaintext": false,
+		"markdown": true
+	},
+	"git.autofetch": true,
 }
