@@ -155,6 +155,8 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 PATH=$(pyenv root)/shims:$PATH
+# helps with build failures for some modules that occur on Apple Silicon (scipy, statsmodels)
+export OPENBLAS=$(brew --prefix openblas || "")
 
 # SOURCEKIT-LSP
 PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
