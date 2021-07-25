@@ -1,6 +1,5 @@
 {
-	"window.autoDetectColorScheme": true,
-	"window.zoomLevel": 0,
+    "window.autoDetectColorScheme": true,
 	"workbench.preferredDarkColorTheme": "GitHub Dark",
 	"workbench.preferredLightColorTheme": "GitHub Light",
 	"workbench.statusBar.visible": true,
@@ -9,7 +8,7 @@
 	"workbench.editor.limit.value": 10,
 	"workbench.startupEditor": "newUntitledFile",
 	"workbench.editor.showIcons": true,
-	"workbench.iconTheme": "vscode-icons",
+	"workbench.iconTheme": "material-icon-theme",
 	"workbench.list.smoothScrolling": true,
 	"workbench.colorCustomizations": {
 		"statusBar.background": "#2b5ed6",
@@ -21,15 +20,20 @@
 	},
 
 	"editor.suggestFontSize": 0,
-	"editor.fontFamily": "UbuntuMono Nerd Font",
+	"editor.renderIndentGuides": true,
+	"editor.fontFamily": "JetBrains Mono NL",
 	"editor.fontLigatures": true,
 	"editor.fontSize": 14,
-	"editor.fontWeight": "200",
-	"editor.cursorBlinking": "phase",
+	"editor.fontWeight": "400",
+	"editor.cursorBlinking": "smooth",
 	"editor.cursorStyle": "line",
+	"editor.cursorSmoothCaretAnimation": true,
+	"editor.find.cursorMoveOnType": true,
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
 	"editor.wordWrap": "on",
+	"editor.minimap.enabled": true,
+	"editor.renderControlCharacters": true,
 	"editor.rulers": [
 		110
 	],
@@ -39,8 +43,13 @@
 	"editor.wordWrapColumn": 80,
 	"editor.mouseWheelScrollSensitivity": 0.25,
 	"editor.tabCompletion": "on",
+	"editor.inlineSuggest.enabled": true,
+	"eslint.validate": [
+		"javascript"
+	],
 	"editor.codeActionsOnSave": {
-		"source.fixAll": true
+		"source.fixAll": true,
+		"source.fixAll.eslint": true
 	},
 	"editor.tokenColorCustomizations": {
 		"textMateRules": [
@@ -64,38 +73,32 @@
 	// MISC
 	"breadcrumbs.enabled": false,
 	"gitlens.advanced.messages": {
-		"suppressShowKeyBindingsNotice": true
 	},
 	"explorer.confirmDragAndDrop": false,
 	"files.autoSave": "afterDelay",
-	// #############
-	// ### LANGS ###
-	// #############
-	"C_Cpp.default.intelliSenseMode": "gcc-x64",
-	"npm.packageManager": "npm",
+
+	"npm.packageManager": "yarn",
 	"eslint.codeActionsOnSave.mode": "all",
 	"eslint.alwaysShowStatus": true,
 	"eslint.format.enable": true,
 	"javascript.updateImportsOnFileMove.enabled": "always",
-	"python.languageServer": "Microsoft",
-	"python.pythonPath": "/usr/local/bin/python3",
 	"vetur.format.options.tabSize": 4,
 	"rust-client.channel": "stable",
 	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-	"vs-kubernetes": {
-		"vs-kubernetes.minikube-path": "/Users/bradleymackey/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
-	},
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"[typescript]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
-	// ###########
-	// ### VIM ###
-	// ###########
-	// Use keybindings defined here rather than the 
-	// Command doc:
-	// - show intellisense on hover in normal mode -> gh
-	// - autocomplete -> CMD + Space
+	"workbench.colorTheme": "GitHub Light",
+	"workbench.editorAssociations": {
+		"*.ipynb": "jupyter-notebook"
+	},
+
+	// PYTHON
+	"python.defaultInterpreterPath": "/usr/local/bin/python3",
+	"python.venvFolders": ["~/.pyenv/versions"],
+
+	// VIM
 	"vim.easymotion": true,
 	"vim.incsearch": true,
 	"vim.smartcase": true,
@@ -104,15 +107,13 @@
 	"vim.hlsearch": true,
 	"vim.leader": "<space>",
 	"vim.handleKeys": {
-		"<C-a>": false,
+		"<C-d>": true,
 		"<C-f>": false,
 		"<C-space>": false,
+		"<C-a>": false,
 		"<C-l>": true,
 		"<C-h>": true,
 	},
-	"vim.highlightedyank.color": "rgba(250, 240, 100, 0.4)",
-	"vim.highlightedyank.enable": true,
-	"vim.enableNeovim": true,
 	"vim.smartRelativeLine": true,
 	"vim.operatorPendingModeKeyBindingsNonRecursive": [
 		{
@@ -184,7 +185,8 @@
 	"vim.normalModeKeyBindingsNonRecursive": [
 		{
 			"before": [
-				":", "w"
+				":",
+				"w"
 			],
 			"commands": [
 				"workbench.action.files.save",
@@ -226,7 +228,4 @@
 			]
 		}
 	],
-	"editor.minimap.enabled": false,
-	"editor.renderControlCharacters": true,
-	"workbench.colorTheme": "GitHub Light",
 }
