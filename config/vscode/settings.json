@@ -27,7 +27,7 @@
 	"editor.fontWeight": "400",
 	"editor.cursorBlinking": "smooth",
 	"editor.cursorStyle": "line",
-	"editor.cursorSmoothCaretAnimation": true,
+	"editor.cursorSmoothCaretAnimation": false,
 	"editor.find.cursorMoveOnType": true,
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
@@ -109,6 +109,8 @@
 	"vim.useSystemClipboard": true,
 	"vim.useCtrlKeys": true,
 	"vim.hlsearch": true,
+	"vim.autoindent": true,
+	"vim.showMarksInGutter": true,
 	"vim.leader": "<space>",
 	"vim.handleKeys": {
 		"<C-d>": true,
@@ -239,4 +241,7 @@
 		"markdown": true
 	},
 	"git.autofetch": true,
+	"workbench.editor.untitled.hint": "hidden",
+	"git.enableSmartCommit": true,
+	"git.confirmSync": false,
 }
