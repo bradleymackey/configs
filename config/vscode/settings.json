@@ -79,6 +79,7 @@
 	"gitlens.codeLens.authors.enabled": false,
 	"gitlens.codeLens.recentChange.enabled": false,
 	"explorer.confirmDragAndDrop": false,
+	"explorer.confirmDelete": false,
 	"files.autoSave": "afterDelay",
 
 	"npm.packageManager": "yarn",
