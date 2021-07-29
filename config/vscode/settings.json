@@ -232,6 +232,15 @@
 			"commands": [
 				":nohl"
 			]
+		},
+		{
+			"before": [
+				"K"
+			],
+			"after": [
+				"g",
+				"h"
+			]
 		}
 	],
 	"github.copilot.enable": {
