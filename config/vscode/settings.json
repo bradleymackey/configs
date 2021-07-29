@@ -34,6 +34,7 @@
 	"editor.wordWrap": "on",
 	"editor.minimap.enabled": true,
 	"editor.renderControlCharacters": true,
+	"editor.autoClosingBrackets": "always",
 	"editor.rulers": [
 		110
 	],
