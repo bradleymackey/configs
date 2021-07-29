@@ -93,7 +93,6 @@
 	"[typescript]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
-	"workbench.colorTheme": "GitHub Light",
 	"workbench.editorAssociations": {
 		"*.ipynb": "jupyter-notebook"
 	},
@@ -245,4 +244,5 @@
 	"workbench.editor.untitled.hint": "hidden",
 	"git.enableSmartCommit": true,
 	"git.confirmSync": false,
+	"workbench.colorTheme": "GitHub Light",
 }
