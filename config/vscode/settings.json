@@ -21,7 +21,7 @@
 
 	"editor.suggestFontSize": 0,
 	"editor.renderIndentGuides": true,
-	"editor.fontFamily": "JetBrains Mono NL",
+	"editor.fontFamily": "Hack",
 	"editor.fontLigatures": true,
 	"editor.fontSize": 14,
 	"editor.fontWeight": "400",
