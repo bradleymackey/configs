@@ -49,6 +49,7 @@ brew "llvm"
 brew "luajit", args: ["HEAD"]
 brew "luajit-openresty"
 brew "mosh"
+brew "n"
 brew "neofetch"
 brew "tree-sitter"
 brew "neovim"

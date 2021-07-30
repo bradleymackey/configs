@@ -161,9 +161,10 @@ export OPENBLAS=$(brew --prefix openblas || "")
 # SOURCEKIT-LSP
 PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 
-# FNM (fast node manager)
-eval "$(fnm env)"
-alias nvm="fnm" # for muscle memory damn it!
+# 'n' is a Node Version manager, installed elsewhere
+alias fnm="n"
+alias nvm="n"
+export N_PREFIX="$HOME/.n"
 
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
