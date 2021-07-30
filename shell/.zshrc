@@ -165,6 +165,7 @@ PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 alias fnm="n"
 alias nvm="n"
 export N_PREFIX="$HOME/.n"
+PATH="$N_PREFIX/bin:$PATH"
 
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
