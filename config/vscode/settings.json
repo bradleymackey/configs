@@ -154,7 +154,7 @@
       "after": ["<Esc>"]
     },
     {
-      "before": ["j", "j"],
+      "before": ["j", "k"],
       "after": ["<Esc>"]
     }
   ],
