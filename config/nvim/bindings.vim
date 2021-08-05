@@ -70,6 +70,9 @@ onoremap <C-c> <Esc>
 lnoremap <C-c> <Esc>
 tnoremap <C-c> <Esc>
 
+" In normal mode, use jk to exit.
+inoremap jk <Esc>
+
 " Forced learning is good! Unmap arrow keys so that we are forced to use the
 " homerow.
 nnoremap <up> <nop>
