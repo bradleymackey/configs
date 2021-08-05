@@ -89,14 +89,17 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[pug]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
   },
-
   // PYTHON
   "python.defaultInterpreterPath": "/usr/local/bin/python3",
   "python.venvFolders": ["~/.pyenv/versions"],
   "python.formatting.provider": "black",
+  "prettier.embeddedLanguageFormatting": "auto",
 
   // VIM
   "vim.easymotion": true,
@@ -199,5 +202,14 @@
   "workbench.editor.untitled.hint": "hidden",
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
-  "workbench.colorTheme": "GitHub Light"
+  "workbench.colorTheme": "GitHub Light",
+  "redhat.telemetry.enabled": false,
+  "typescript.tsserver.log": "verbose",
+  "firestorerules.usePrettierFormatter": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": true,
+  "eslint.packageManager": "yarn",
+  "eslint.workingDirectories": [
+  { "mode": "auto"}
+  ]
 }
