@@ -90,8 +90,8 @@ hi link LspDiagnosticsFloatingInformation Label
 """"""""""""""""""""""""""""""""""""""""
 " # Misc configurations
 
-nnoremap <C-n> <cmd>CHADopen<cr>
-let g:chadtree_settings = { 'theme.icon_glyph_set': 'ascii' }
+nnoremap <C-n> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
 
 " ### Vim Rooter
 let g:rooter_manual_only = 1
