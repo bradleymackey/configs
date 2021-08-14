@@ -86,12 +86,6 @@
   "rust-client.channel": "stable",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[pug]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
   },
@@ -100,6 +94,12 @@
   "python.venvFolders": ["~/.pyenv/versions"],
   "python.formatting.provider": "black",
   "prettier.embeddedLanguageFormatting": "auto",
+  "[pug]": {
+    "editor.defaultFormatter": "svipas.prettier-plus"
+  },
+  "[jade]": {
+    "editor.defaultFormatter": "svipas.prettier-plus"
+  },
 
   // VIM
   "vim.easymotion": true,
@@ -196,7 +196,7 @@
     "*": true,
     "yaml": false,
     "plaintext": false,
-    "markdown": true
+    "markdown": false
   },
   "git.autofetch": true,
   "workbench.editor.untitled.hint": "hidden",
@@ -204,12 +204,9 @@
   "git.confirmSync": false,
   "workbench.colorTheme": "GitHub Light",
   "redhat.telemetry.enabled": false,
-  "typescript.tsserver.log": "verbose",
+  "typescript.tsserver.log": "off",
   "firestorerules.usePrettierFormatter": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.requireConfig": true,
   "eslint.packageManager": "yarn",
-  "eslint.workingDirectories": [
-  { "mode": "auto"}
-  ]
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }
