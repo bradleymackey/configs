@@ -24,7 +24,6 @@ Plug 'luochen1990/rainbow'
 Plug 'itchyny/lightline.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'Yggdroot/indentLine'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 
