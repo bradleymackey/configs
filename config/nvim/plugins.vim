@@ -26,6 +26,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
+Plug 'wfxr/minimap.vim'
 
 " Editor
 " 'gcc' to comment line, 'gc' if in visual mode
