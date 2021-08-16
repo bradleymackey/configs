@@ -90,8 +90,8 @@ hi link LspDiagnosticsFloatingInformation Label
 """"""""""""""""""""""""""""""""""""""""
 " # Misc configurations
 
-nnoremap <C-n> :NvimTreeToggle<CR>
-nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <silent> <C-n> :NvimTreeToggle<CR>
+nnoremap <silent> <leader>r :NvimTreeRefresh<CR>
 
 " ### Vim Rooter
 let g:rooter_manual_only = 1
