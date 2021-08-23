@@ -39,6 +39,8 @@ Plug 'godlygeek/tabular'
 " to make sure that the correct delimiting calls are made
 Plug 'Raimondi/delimitMate'
 Plug 'folke/todo-comments.nvim'
+" automatically adjust indent based on current file
+Plug 'tpope/vim-sleuth'
 
 " Syntax
 Plug 'delphinus/vim-firestore' " firebase *.rules file support
