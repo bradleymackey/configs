@@ -93,6 +93,10 @@ hi link LspDiagnosticsFloatingInformation Label
 nnoremap <silent> <C-n> :NvimTreeToggle<CR>
 nnoremap <silent> <leader>r :NvimTreeRefresh<CR>
 
+" ## Color Scheme
+nnoremap <silent> <leader><CR> :colorscheme base16-one-light<CR>
+nnoremap <silent> <leader><CR><CR> :colorscheme base16-woodland<CR>
+
 " ### Vim Rooter
 let g:rooter_manual_only = 1
 
