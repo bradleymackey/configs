@@ -11,6 +11,7 @@ root-markers:
   - .bzr/
   - _darcs/
   - .git
+lint-debounce: 1s
 # command define
 commands:
   - title: Reload
