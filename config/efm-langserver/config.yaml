@@ -11,7 +11,6 @@ root-markers:
   - .bzr/
   - _darcs/
   - .git
-lint-debounce: 1s
 # command define
 commands:
   - title: Reload
@@ -97,15 +96,15 @@ tools:
     lint-command: "eslint_d -f unix --stdin --stdin-filename ${INPUT}"
     lint-ignore-exit-code: true
     lint-stdin: true
-    lint-formats:
-      - "%f(%l,%c): %tarning %m"
-      - "%f(%l,%c): %rror %m"
-    lint-source: "eslint_d"
     root-markers:
+      - package.json
       - .eslintrc.js
       - .eslintrc.yaml
       - .eslintrc.yml
       - .eslintrc.json
+    commands:
+      - command: "eslint_d -f unix --stdin --fix"
+        title: "eslint fix"
 
   htmllint-lint: &htmllint-lint
     lint-command: "npx --no-install htmllint ${INPUT}"
