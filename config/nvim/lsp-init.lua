@@ -40,10 +40,10 @@ lsp_status.config({
     diagnostics = true,
     indicator_separator = ' ',
     component_separator = ' ',
-    indicator_errors = '🔴',
-    indicator_warnings = '🟡',
-    indicator_info = '🟣',
-    indicator_hint = '🔵',
+    indicator_errors = '⛔️',
+    indicator_warnings = '⚠️',
+    indicator_info = '📘',
+    indicator_hint = '💁',
     indicator_ok = '🍏 Ok',
     spinner_frames = {'⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'},
     status_symbol = '➤',
@@ -51,8 +51,6 @@ lsp_status.config({
     update_interval = 500
 })
 lsp_status.register_progress()
-
-local nvim_lsp = require('lspconfig')
 
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -120,29 +118,30 @@ local on_attach = function(client, bufnr)
 end
 
 -- LANG SERVER CONFIGS
+local lspconfig = require('lspconfig')
 
-nvim_lsp.clangd.setup { 
+lspconfig.clangd.setup { 
     handlers = lsp_status.extensions.clangd.setup(),
     capabilities = lsp_status.capabilities,
     on_attach = on_attach
 }
 
-nvim_lsp.pyright.setup {
+lspconfig.pyright.setup {
     capabilities = lsp_status.capabilities,
     on_attach = on_attach
 }
 
-nvim_lsp.sourcekit.setup { 
+lspconfig.sourcekit.setup { 
     capabilities = lsp_status.capabilities,
     on_attach = on_attach
 }
 
-nvim_lsp.rust_analyzer.setup { 
+lspconfig.rust_analyzer.setup { 
     capabilities = lsp_status.capabilities,
     on_attach = on_attach
 }
 
-nvim_lsp.tsserver.setup {
+lspconfig.tsserver.setup {
     capabilities = lsp_status.capabilities,
     on_attach = function(client, buf)
         -- efm is used for linting and formatting, so disable tsserver's formatter
@@ -152,8 +151,10 @@ nvim_lsp.tsserver.setup {
 }
 
 -- efm is used to get linters into the native lang server
-nvim_lsp.efm.setup {
+lspconfig.efm.setup {
     -- other config comes from .config/efm-langserver/config.yaml
+    on_attach = on_attach,
+    root_dir = vim.loop.cwd,
     init_options = {
         documentFormatting = true,
         codeAction = true
@@ -165,7 +166,6 @@ nvim_lsp.efm.setup {
         "lua",
         "pug",
         "yaml"
-    },
-    on_attach = on_attach
+    }
 }
 
