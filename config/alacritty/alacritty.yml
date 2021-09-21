@@ -32,17 +32,17 @@ mouse:
 font:
   size: 14.0
   normal:
-    family: CozetteVector
+    family: Meslo LG S DZ
     style: Regular
   bold:
-    family: CozetteVector
-    style: Regular
+    family: Meslo LG S DZ
+    style: Bold
   italic:
-    family: CozetteVector
-    style: Regular
+    family: Meslo LG S DZ
+    style: Italic
   bold_italic:
-    family: CozetteVector
-    style: Regular
+    family: Meslo LG S DZ
+    style: Bold Italic
   # 'spacing' between lines and letters
   offset:
     x: 0
