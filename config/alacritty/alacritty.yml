@@ -32,17 +32,17 @@ mouse:
 font:
   size: 14.0
   normal:
-    family: NotoMono Nerd Font Mono
-    style: Book
+    family: CozetteVector
+    style: Regular
   bold:
-    family: NotoMono Nerd Font Mono
-    style: Bold
+    family: CozetteVector
+    style: Regular
   italic:
-    family: NotoMono Nerd Font Mono
-    style: Italic
+    family: CozetteVector
+    style: Regular
   bold_italic:
-    family: NotoMono Nerd Font Mono
-    style: Bold Italic
+    family: CozetteVector
+    style: Regular
   # 'spacing' between lines and letters
   offset:
     x: 0
