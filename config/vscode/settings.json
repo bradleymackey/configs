@@ -208,5 +208,10 @@
   "firestorerules.usePrettierFormatter": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.packageManager": "yarn",
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.bracketPairColorization.enabled": true
 }
