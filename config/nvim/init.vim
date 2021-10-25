@@ -10,6 +10,7 @@ source $HOME/.config/nvim/settings.vim
 luafile ~/.config/nvim/lsp-init.lua
 luafile ~/.config/nvim/todo-init.lua
 luafile ~/.config/nvim/compe.lua
+luafile ~/.config/nvim/nvim-tree.lua
 
 """"""""""""""""""""""""""""""""""""""""
 " LSP (native LSP displays errors/warnings)
