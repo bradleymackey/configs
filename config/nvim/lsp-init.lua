@@ -230,6 +230,9 @@ formatter.setup({
     typescript = {
       prettier
     },
+    json = {
+      fixjson
+    },
     cpp = {
       clang_format
     },
