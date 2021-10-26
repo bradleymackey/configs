@@ -92,6 +92,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', ':Format<CR>', opts)
 
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
@@ -107,13 +108,13 @@ local on_attach = function(client, bufnr)
     ]], false)
   end
 
-  -- autoformat (e.g. prettier)
-  if client.resolved_capabilities.document_formatting then
-      vim.api.nvim_command [[augroup Format]]
-      vim.api.nvim_command [[autocmd! * <buffer>]]
-      vim.api.nvim_command [[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()]]
-      vim.api.nvim_command [[augroup END]]
-  end
+  -- Format known formatable langs only
+  vim.api.nvim_exec([[
+  augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost *.js,*.ts,*.rs,*.c,*.cpp,*.py,*.json,*.yaml,*.yml FormatWrite
+  augroup END
+  ]], true)
 
 end
 
@@ -144,30 +145,102 @@ lspconfig.rust_analyzer.setup {
 lspconfig.tsserver.setup {
     capabilities = lsp_status.capabilities,
     on_attach = function(client, buf)
-        -- efm is used for linting and formatting, so disable tsserver's formatter
+        -- we use prettier to format, not tsserver
         client.resolved_capabilities.document_formatting = false
         on_attach(client, buf)
     end
 }
 
--- Null ls is used to get prettier formatting and eslint diagnostics etc.
--- It's lighter weight than using efm-langserver
+-- null-ls is used to get DIAGNOSTICS ONLY (don't use it for formatting)
 
 local null_ls = require("null-ls")
 
 local sources = {
-  null_ls.builtins.formatting.prettier,
+  -- (not used for formatting, as we keep hitting bugs)
+  -- null_ls.builtins.formatting.prettier,
   null_ls.builtins.diagnostics.write_good,
   null_ls.builtins.diagnostics.eslint_d,
+  null_ls.builtins.diagnostics.flake8,
   null_ls.builtins.code_actions.gitsigns,
 }
 
 null_ls.config({
+  diagnostics_format = "#{m}",
+  debounce = 250,
+  default_timeout = 5000,
   sources = sources
 })
 
 lspconfig["null-ls"].setup({
     -- see the nvim-lspconfig documentation for available configuration options
+    capabilities = lsp_status.capabilities,
     on_attach = on_attach
 })
 
+-- FORMATTER is used to get FORMATTING (because I'm hitting prettier bugs using null-ls for formatting as well)
+
+local formatter = require('formatter')
+
+local prettier = function() 
+  return {
+    exe = "prettier",
+    args = {"--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))},
+    stdin = true
+  }
+end
+
+local clang_format = function()
+  return {
+    exe = "clang-format",
+    args = {"--assume-filename", vim.api.nvim_buf_get_name(0)},
+    stdin = true,
+    cwd = vim.fn.expand('%:p:h')  -- Run clang-format in cwd of the file.
+  }
+end
+
+local rustfmt = function()
+  return {
+    exe = "rustfmt",
+    args = {"--emit=stdout"},
+    stdin = true
+  }
+end
+
+local fixjson = function()
+  return {
+    exe = "fixjson",
+    args = {},
+    stdin = true
+  }
+end
+
+local black = function()
+  return {
+    exe = "black",
+    args = { "--quiet", "--fast", "-" },
+    stdin = true
+  }
+end
+
+formatter.setup({
+  filetype = {
+    javascript = {
+      prettier
+    },
+    typescript = {
+      prettier
+    },
+    cpp = {
+      clang_format
+    },
+    c = {
+      clang_format
+    },
+    rust = {
+      rustfmt
+    },
+    python = {
+      black
+    }
+  }
+})

@@ -15,6 +15,7 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'mhartington/formatter.nvim'
 
 " Fuzzy
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }

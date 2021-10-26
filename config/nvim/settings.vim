@@ -11,6 +11,7 @@ set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-o
 set shortmess+=c
 set path+=** " filenames in directories directly
 set conceallevel=0
+set nospell
 
 filetype plugin indent on
 
