@@ -150,22 +150,24 @@ lspconfig.tsserver.setup {
     end
 }
 
--- efm is used to get linters into the native lang server
-lspconfig.efm.setup {
-    -- other config comes from .config/efm-langserver/config.yaml
-    on_attach = on_attach,
-    root_dir = vim.loop.cwd,
-    init_options = {
-        documentFormatting = true,
-        codeAction = true
-    },
-    filetypes = {
-        "javascript",
-        "typescript",
-        "python",
-        "lua",
-        "pug",
-        "yaml"
-    }
+-- Null ls is used to get prettier formatting and eslint diagnostics etc.
+-- It's lighter weight than using efm-langserver
+
+local null_ls = require("null-ls")
+
+local sources = {
+  null_ls.builtins.formatting.prettier,
+  null_ls.builtins.diagnostics.write_good,
+  null_ls.builtins.diagnostics.eslint_d,
+  null_ls.builtins.code_actions.gitsigns,
 }
+
+null_ls.config({
+  sources = sources
+})
+
+lspconfig["null-ls"].setup({
+    -- see the nvim-lspconfig documentation for available configuration options
+    on_attach = on_attach
+})
 
