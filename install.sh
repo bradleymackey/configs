@@ -19,6 +19,7 @@ git config credential.helper store
 # shell + editor
 echo "Shell and editor setup..."
 ln -s ~/configs/shell/.tmux.conf ~/.tmux.conf
+ln -s ~/configs/shell/local_ip.sh ~/local_ip.sh
 ln -s ~/configs/shell/.zshrc ~/.zshrc
 ln -s ~/configs/config/nvim ~/.config/nvim
 ln -s ~/configs/config/nvim/vimdid ~/.vimdid
