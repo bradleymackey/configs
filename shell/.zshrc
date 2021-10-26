@@ -166,6 +166,8 @@ alias fnm="n"
 alias nvm="n"
 export N_PREFIX="$HOME/.n"
 PATH="$N_PREFIX/bin:$PATH"
+# yarn
+PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
@@ -222,3 +224,4 @@ if [[ $WANTS_TMUX ]] && [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE
     # Launches tmux in a session called 'base'.
     tmux attach -t base || tmux new -s base
 fi
+
