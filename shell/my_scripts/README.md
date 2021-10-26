@@ -5,3 +5,7 @@ They should implement simple, useful behaviours and be callable directly from th
 
 These are public, so don't include personal information.
 They should be features that can be called from elsewhere, like in the tmux status bar.
+
+## Naming
+
+Make sure the names of these scripts do not clash with system names!
