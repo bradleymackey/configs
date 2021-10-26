@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-logger -p user.info "computer is waking, disable turbo boost..."
-~/turbo-boost-disable/start.sh
