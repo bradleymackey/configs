@@ -26,6 +26,7 @@ nmap <silent> <leader>n :noh<CR>
 " losing the split screen window
 command Bd :bp | :bd #
 nnoremap <leader><C-b> :Bd<CR>
+nnoremap <leader>d :Bd<CR>
 
 " <leader><leader> toggles between buffers
 nnoremap <leader><leader> <c-^>
