@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
 
-eval "$(fnm env)"
-
-fnm install 16
-fnm use 16
-
 echo "Installing npm packages"
 
 # packages
