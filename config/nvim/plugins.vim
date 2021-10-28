@@ -16,21 +16,19 @@ Plug 'nvim-lua/lsp-status.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'mhartington/formatter.nvim'
-
-" Fuzzy
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'lewis6991/gitsigns.nvim'
 
 " GUI
 Plug 'luochen1990/rainbow'
 Plug 'itchyny/lightline.vim'
 Plug 'chriskempson/base16-vim'
-Plug 'airblade/vim-gitgutter'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'wfxr/minimap.vim'
 
 " Editor
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 " 'gcc' to comment line, 'gc' if in visual mode
 Plug 'tomtom/tcomment_vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}

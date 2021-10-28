@@ -101,12 +101,6 @@ nnoremap <silent> <leader><CR><CR> :colorscheme base16-woodland<CR>
 " ### Vim Rooter
 let g:rooter_manual_only = 1
 
-" ### Git Gutter
-autocmd BufWritePost * GitGutter
-" lower priority on the gutter makes sure it's below the LSP
-" (LSP should override gutter in display)
-let g:gitgutter_sign_priority=9
-
 " ### Firebase
 let g:vim_firestore_warnings = 0
 

@@ -2,6 +2,8 @@
 -- Setup of the native Neovim LSP
 -- Called from `init.vim`
 
+require('gitsigns').setup()
+
 -- LSP setup
 -- Customise diagnostic handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
