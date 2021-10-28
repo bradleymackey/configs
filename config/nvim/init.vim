@@ -107,10 +107,6 @@ let g:vim_firestore_warnings = 0
 " ### Vim-Rainbow
 let g:rainbow_active = 0 " toggle via :RainbowToggle
 
-" ### Rust
-let g:rustfmt_autosave = 1
-autocmd BufReadPost *.rs setlocal filetype=rust
-
 " ### Lightline
 let g:lightline = {
       \ 'active': {
