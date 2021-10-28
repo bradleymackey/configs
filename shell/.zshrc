@@ -127,7 +127,6 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 # ALIASES
 # (run alias for a full list of all zsh aliases)
 alias grep='rg'
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias fl="bundle exec fastlane"
