@@ -128,7 +128,6 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 # (run alias for a full list of all zsh aliases)
 alias grep='rg'
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0 || echo Offline"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias fl="bundle exec fastlane"
@@ -137,6 +136,9 @@ alias lfi="curl -H 'Accept: ../../../../../../../../../etc/passwd{{'"
 alias ls="exa"
 alias gap="git add -p"
 alias js="node"
+
+# CUSTOM SCRIPTS from the config
+PATH="$PATH:$HOME/configs/shell/my_scripts"
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
