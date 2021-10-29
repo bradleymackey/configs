@@ -149,6 +149,7 @@ lspconfig.tsserver.setup {
     on_attach = function(client, buf)
         -- we use prettier to format, not tsserver
         client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
         on_attach(client, buf)
     end
 }
