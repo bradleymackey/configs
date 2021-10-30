@@ -26,9 +26,9 @@ cmp.setup({
   }),
   formatting = {
     format = require("lspkind").cmp_format({with_text = false, menu = ({
-      buffer = "[Buf]",
-      nvim_lsp = "[LSP]",
-      vsnip = "[Snip]",
+      buffer = "[B]",
+      nvim_lsp = "[L]",
+      vsnip = "[S]",
       nvim_lua = "[Lua]",
       latex_symbols = "[Latex]",
     })}),
