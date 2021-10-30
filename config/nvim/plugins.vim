@@ -12,8 +12,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
-Plug 'mhartington/formatter.nvim'
-Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-lua/lsp-status.nvim'
 
 " Completion
@@ -36,6 +34,8 @@ Plug 'kyazdani42/nvim-tree.lua'
 Plug 'wfxr/minimap.vim'
 
 " Editor
+Plug 'mhartington/formatter.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " 'gcc' to comment line, 'gc' if in visual mode
