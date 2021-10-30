@@ -13,6 +13,7 @@ set path+=** " filenames in directories directly
 set conceallevel=0
 set nospell
 
+set completeopt=menu,menuone,noselect
 filetype plugin indent on
 
 " Editor settings
@@ -38,7 +39,6 @@ set printencoding=utf-8
 set printoptions=paper:a4
 " allow backspace in insert mode
 set backspace=indent,eol,start
-set completeopt-=preview " no scratch buffer when getting autocomplete
 set signcolumn=yes
 
 " Wildmenu

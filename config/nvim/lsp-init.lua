@@ -68,7 +68,7 @@ local on_attach = function(client, bufnr)
       hint_enable = false,
       floating_window = true,
       handler_opts = {
-          border = "double"
+          border = "single"
       },
       decorator = {"**", "**"}
   })
@@ -122,30 +122,34 @@ end
 
 -- LANG SERVER CONFIGS
 local lspconfig = require('lspconfig')
+-- update capabilities with lsp_status
+lspconfig.capabilities = vim.tbl_extend('keep', lspconfig.capabilities or {}, lsp_status.capabilities)
+-- update capaabilities with nvim cmp completions
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 lspconfig.clangd.setup { 
     handlers = lsp_status.extensions.clangd.setup(),
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
     on_attach = on_attach
 }
 
 lspconfig.pyright.setup {
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
     on_attach = on_attach
 }
 
 lspconfig.sourcekit.setup { 
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
     on_attach = on_attach
 }
 
 lspconfig.rust_analyzer.setup { 
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
     on_attach = on_attach
 }
 
 lspconfig.tsserver.setup {
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
     on_attach = function(client, buf)
         -- we use prettier to format, not tsserver
         client.resolved_capabilities.document_formatting = false
@@ -176,7 +180,7 @@ null_ls.config({
 
 lspconfig["null-ls"].setup({
     -- see the nvim-lspconfig documentation for available configuration options
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
     on_attach = on_attach
 })
 

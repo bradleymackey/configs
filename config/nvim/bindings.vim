@@ -5,9 +5,6 @@
 " etc. for the other modes -> just use non-recursive mappings or weird things
 " could happen
 
-" Note that some invokations of <CR> may need to call <Plug>delimitMateCR
-" instead. This is so that delimitMate is still able to format if need be.
-
 let mapleader = "\<Space>"
 nnoremap <Leader>` :echo "You got it :^)"<CR>
 

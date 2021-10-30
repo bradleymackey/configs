@@ -5,12 +5,12 @@
 source $HOME/.config/nvim/plugins.vim
 source $HOME/.config/nvim/colors.vim
 source $HOME/.config/nvim/bindings.vim
-luafile $HOME/.config/nvim/tree-sitter-init.lua
 source $HOME/.config/nvim/settings.vim
-luafile ~/.config/nvim/lsp-init.lua
-luafile ~/.config/nvim/todo-init.lua
-luafile ~/.config/nvim/compe.lua
-luafile ~/.config/nvim/nvim-tree.lua
+luafile $HOME/.config/nvim/completion.lua
+luafile $HOME/.config/nvim/tree-sitter-init.lua
+luafile $HOME/.config/nvim/lsp-init.lua
+luafile $HOME/.config/nvim/todo-init.lua
+luafile $HOME/.config/nvim/nvim-tree.lua
 
 """"""""""""""""""""""""""""""""""""""""
 " LSP (native LSP displays errors/warnings)
@@ -74,15 +74,6 @@ sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
 
 " LSP Config 
 
-" Autocomplete
-set completeopt=menuone,noinsert,noselect
-
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
 hi link LspDiagnosticsFloatingError WarningMsg
 hi link LspDiagnosticsFloatingWarning Label
 hi link LspDiagnosticsFloatingHint Label
@@ -139,11 +130,3 @@ endfunction
 let javaScript_fold=0
 autocmd BufReadPost .eslintrc setlocal filetype=json
 autocmd BufReadPost .prettierrc setlocal filetype=json
-
-" ### Delimit Mate
-let g:delimitMate_expand_cr = 2
-let g:delimitMate_expand_space = 1
-let g:delimitMate_matchpairs = "(:),[:],{:}"
-" no quote completion
-let delimitMate_quotes = ""
-autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"

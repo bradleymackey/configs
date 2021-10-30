@@ -10,13 +10,22 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
-Plug 'ray-x/lsp_signature.nvim'
-Plug 'nvim-lua/lsp-status.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'mhartington/formatter.nvim'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'nvim-lua/lsp-status.nvim'
+
+" Completion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'ray-x/lsp_signature.nvim'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'onsails/lspkind-nvim'
 
 " GUI
 Plug 'luochen1990/rainbow'
@@ -35,12 +44,10 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'airblade/vim-rooter'
 Plug 'godlygeek/tabular'
 " better than coc-pairs
-" recursive <cr> maps should RECURSIVELY call `<Plug>delimitMateCR` in order
-" to make sure that the correct delimiting calls are made
-Plug 'Raimondi/delimitMate'
 Plug 'folke/todo-comments.nvim'
 " automatically adjust indent based on current file
 Plug 'tpope/vim-sleuth'
+Plug 'windwp/nvim-autopairs'
 
 " Syntax
 Plug 'delphinus/vim-firestore' " firebase *.rules file support
