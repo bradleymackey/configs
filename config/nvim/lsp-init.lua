@@ -166,7 +166,7 @@ local sources = {
   -- (not used for formatting, as we keep hitting bugs)
   -- null_ls.builtins.formatting.prettier,
   null_ls.builtins.diagnostics.write_good,
-  null_ls.builtins.diagnostics.eslint_d,
+  null_ls.builtins.diagnostics.eslint,
   null_ls.builtins.diagnostics.flake8,
   null_ls.builtins.code_actions.gitsigns,
 }
