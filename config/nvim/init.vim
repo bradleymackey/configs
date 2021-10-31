@@ -43,6 +43,11 @@ endfunction
 
 let s:lsp_tf='italic'
 
+" Held down color
+hi link LspReferenceRead Visual
+hi link LspReferenceText Visual
+hi link LspReferenceWrite Visual
+
 " < 0.6
 exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
             \' guibg=NONE' .
