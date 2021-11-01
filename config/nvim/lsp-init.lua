@@ -11,6 +11,20 @@ require('gitsigns').setup {
   },
 }
 
+vim.g['formatting_enabled'] = 1
+vim.api.nvim_exec([[
+command FormatToggle call ToggleFormattingImpl()
+function! ToggleFormattingImpl()
+    if g:formatting_enabled
+        let g:formatting_enabled = 0
+        echo "Format-on-write has been disabled"
+    else
+        let g:formatting_enabled = 1
+        echo "Format-on-write has been enabled"
+    endif
+endfunction
+]], false)
+
 -- LSP setup
 -- Customise diagnostic handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -118,7 +132,12 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_exec([[
   augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.js,*.ts,*.rs,*.c,*.cpp,*.py,*.json,*.yaml,*.yml FormatWrite
+  autocmd BufWritePost *.js,*.ts,*.rs,*.c,*.cpp,*.py,*.json,*.yaml,*.yml call FormatWriteMaybe()
+  function! FormatWriteMaybe()
+    if g:formatting_enabled
+      FormatWrite
+    endif
+  endfunction
   augroup END
   ]], true)
 
