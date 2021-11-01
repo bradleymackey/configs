@@ -53,7 +53,7 @@ brew "mosh"
 brew "n"
 brew "neofetch"
 brew "tree-sitter"
-brew "neovim"
+brew "neovim", args: ["HEAD"]
 brew "ninja"
 brew "nmap"
 brew "node@12"
