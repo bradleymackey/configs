@@ -1,5 +1,4 @@
 live_config_reload: true
-background_opacity: 1.0
 
 # macOS default
 shell:
@@ -10,6 +9,7 @@ shell:
 alt_send_esc: false
 
 window:
+  opacity: 1.0
   dimensions:
     columns: 120
     lines: 30
