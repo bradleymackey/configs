@@ -78,7 +78,8 @@ plugins=(
     sublime
     sudo
     git-extras
-    osx
+    vi-mode
+    macos
     xcode
     zsh-autosuggestions
     zsh-syntax-highlighting
