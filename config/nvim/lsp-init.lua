@@ -168,7 +168,17 @@ lspconfig.sourcekit.setup {
 
 lspconfig.rust_analyzer.setup { 
     capabilities = capabilities,
-    on_attach = on_attach
+    flags = {
+      debounce_text_changes = 150,
+    },
+    settings = {
+      ["rust-analyzer"] = {
+        cargo = {
+          allFeatures = true,
+        },
+      },
+    },
+    on_attach = on_attach,
 }
 
 lspconfig.tsserver.setup {
