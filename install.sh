@@ -21,6 +21,7 @@ echo "Shell and editor setup..."
 ln -s ~/configs/shell/.tmux.conf ~/.tmux.conf
 ln -s ~/configs/shell/my_scripts ~/.my_scripts
 ln -s ~/configs/shell/.zshrc ~/.zshrc
+ln -s ~/configs/shell/.vimrc ~/.vimrc
 ln -s ~/configs/config/nvim ~/.config/nvim
 ln -s ~/configs/config/nvim/vimdid ~/.vimdid
 ln -s ~/configs/config/base16-shell ~/.config/base16-shell
