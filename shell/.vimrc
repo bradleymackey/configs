@@ -7,6 +7,9 @@ set encoding=utf-8
 set number
 set rnu
 set ttyfast
+set hidden
+set nocompatible
+set clipboard=unnamed " System clipboard
 set lazyredraw
 set path+=**
 set autoindent
@@ -15,6 +18,10 @@ set smartindent
 set incsearch
 set ignorecase
 set smartcase
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set noshowmatch
 " Sane splits
 set splitright
 set splitbelow
