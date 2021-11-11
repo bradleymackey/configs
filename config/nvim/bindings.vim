@@ -15,6 +15,9 @@ nnoremap ; :
 nmap <leader>w :w<CR>
 nmap <leader>q :wq<CR>
 
+" Save as root
+command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
 " Highlight disable (doesn't disable automatically after a search)
 nmap <silent> <leader>n :noh<CR>
 
