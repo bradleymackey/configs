@@ -97,7 +97,7 @@
 [push]
     default = simple
 [help]
-    autocorrect = 1
+    autocorrect = prompt
 [protocol]
     version = 2
 
