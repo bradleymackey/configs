@@ -136,6 +136,9 @@ alias ls="exa"
 alias gap="git add -p"
 alias js="node"
 
+# use 'bat' as the pager
+export PAGER="bat"
+
 # CUSTOM SCRIPTS from the config
 PATH="$PATH:$HOME/configs/shell/my_scripts"
 
