@@ -62,24 +62,25 @@ colors:
     cyan: "0xb49368"
     white: "0xe4d4c8"
 
-# My fav fonts (which I like to change often):
+# My fav fonts (which I like to change often, and need to be Nerd Font patched):
 # family: Meslo LG S DZ
 # family: JetBrains Mono NL
 # family: Hack
+# family: Ubuntu Mono
 
 font:
   size: 14.0
   normal:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Regular
   bold:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Bold
   italic:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Italic
   bold_italic:
-    family: Hack Nerd Font
+    family: JetBrainsMono Nerd Font
     style: Bold Italic
   # 'spacing' between lines and letters
   offset:
