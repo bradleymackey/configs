@@ -67,21 +67,22 @@ colors:
 # family: JetBrains Mono NL
 # family: Hack
 # family: Ubuntu Mono
+# family: Fira Code
 
 font:
   size: 14.0
   normal:
-    family: JetBrainsMono Nerd Font
+    family: FiraCode Nerd Font
     style: Regular
   bold:
-    family: JetBrainsMono Nerd Font
+    family: FiraCode Nerd Font
     style: Bold
   italic:
-    family: JetBrainsMono Nerd Font
-    style: Italic
+    family: FiraCode Nerd Font
+    style: Regular
   bold_italic:
-    family: JetBrainsMono Nerd Font
-    style: Bold Italic
+    family: FiraCode Nerd Font
+    style: Bold
   # 'spacing' between lines and letters
   offset:
     x: 0
