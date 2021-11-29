@@ -146,8 +146,9 @@ end
 -- LANG SERVER CONFIGS
 local lspconfig = require('lspconfig')
 -- update capabilities with lsp_status
-lspconfig.capabilities = vim.tbl_extend('keep', lspconfig.capabilities or {}, lsp_status.capabilities)
--- update capaabilities with nvim cmp completions
+-- (was causing errors and seems to work just fine without it?)
+-- lspconfig.capabilities = vim.tbl_extend('keep', lspconfig.capabilities or {}, lsp_status.capabilities)
+-- update capabilities with nvim cmp completions
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 lspconfig.clangd.setup { 
