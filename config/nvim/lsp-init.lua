@@ -205,17 +205,13 @@ local sources = {
   null_ls.builtins.code_actions.gitsigns,
 }
 
-null_ls.config({
-  diagnostics_format = "#{m}",
-  debounce = 250,
-  default_timeout = 5000,
-  sources = sources
-})
-
-lspconfig["null-ls"].setup({
-    -- see the nvim-lspconfig documentation for available configuration options
+null_ls.setup({
     capabilities = capabilities,
-    on_attach = on_attach
+    on_attach = on_attach,
+    diagnostics_format = "#{m}",
+    debounce = 250,
+    default_timeout = 5000,
+    sources = sources,
 })
 
 -- FORMATTER is used to get FORMATTING (because I'm hitting prettier bugs using null-ls for formatting as well)
