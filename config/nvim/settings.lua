@@ -47,8 +47,8 @@ vim.o.smartcase = true
 vim.o.gdefault = true -- (g search) option by default
 
 -- UNDO
-vim.o.undodir = '~/.vimdid'
-vim.o.undofile = true
+vim.opt.undodir = vim.fn.stdpath('config') .. '/vimdid'
+vim.opt.undofile = true
 
 -- VIMDIFF
 vim.opt.diffopt:append({ iwhite = true }) -- no whitespace
