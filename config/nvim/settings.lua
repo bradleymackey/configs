@@ -48,3 +48,7 @@ vim.o.gdefault = true -- (g search) option by default
 -- UNDO
 vim.o.undodir = '~/.vimdid'
 vim.o.undofile = true
+
+-- VIMDIFF
+vim.opt.diffopt:append({ iwhite = true }) -- no whitespace
+vim.opt.diffopt:append({ algorithm = 'patience' }) -- https://vimways.org/2018/the-power-of-diff/
