@@ -13,11 +13,6 @@ luafile $HOME/.config/nvim/todo-init.lua
 luafile $HOME/.config/nvim/nvim-tree.lua
 
 """"""""""""""""""""""""""""""""""""""""
-" LSP (native LSP displays errors/warnings)
-" Using EFM Langserver, it also can give linter messages
-
-
-""""""""""""""""""""""""""""""""""""""""
 " # Misc configurations
 
 " Help filetype detection
