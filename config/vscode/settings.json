@@ -219,5 +219,6 @@
   ],
   "editor.bracketPairColorization.enabled": true,
   "workbench.editor.splitInGroupLayout": "vertical",
-  "editor.guides.bracketPairs": true
+  "editor.guides.bracketPairs": true,
+  "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A"
 }
