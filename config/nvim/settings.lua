@@ -1,6 +1,7 @@
 -- BASIC
 vim.o.shell = '/bin/zsh'
 vim.o.encoding = 'utf-8'
+vim.o.fileencoding = 'utf-8'
 vim.o.ignorecase = true
 -- vim.o.nocompatible = true
 vim.o.hidden = true
