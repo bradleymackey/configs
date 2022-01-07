@@ -1,15 +1,5 @@
 -- Abstract:
--- Setup of the native Neovim LSP
--- Called from `init.vim`
-
-require('gitsigns').setup {
-  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
-    virt_text = true,
-    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-    delay = 1500,
-  },
-}
+-- Setup of the native Neovim LSP and Diagnostics
 
 vim.g['formatting_enabled'] = 1
 vim.api.nvim_exec([[
@@ -212,78 +202,4 @@ null_ls.setup({
     debounce = 250,
     default_timeout = 5000,
     sources = sources,
-})
-
--- FORMATTER is used to get FORMATTING (because I'm hitting prettier bugs using null-ls for formatting as well)
-
-local formatter = require('formatter')
-
-local prettier = function() 
-  return {
-    exe = "prettier",
-    args = {"--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))},
-    stdin = true
-  }
-end
-
-local clang_format = function()
-  return {
-    exe = "clang-format",
-    args = {"--assume-filename", vim.api.nvim_buf_get_name(0)},
-    stdin = true,
-    cwd = vim.fn.expand('%:p:h')  -- Run clang-format in cwd of the file.
-  }
-end
-
-local rustfmt = function()
-  return {
-    exe = "rustfmt",
-    args = {"--emit=stdout"},
-    stdin = true
-  }
-end
-
-local fixjson = function()
-  return {
-    exe = "fixjson",
-    args = {},
-    stdin = true
-  }
-end
-
-local black = function()
-  return {
-    exe = "black",
-    args = { "--quiet", "--fast", "-" },
-    stdin = true
-  }
-end
-
-formatter.setup({
-  filetype = {
-    javascript = {
-      prettier
-    },
-    typescript = {
-      prettier
-    },
-    yaml = {
-      prettier
-    },
-    json = {
-      prettier
-    },
-    cpp = {
-      clang_format
-    },
-    c = {
-      clang_format
-    },
-    rust = {
-      rustfmt
-    },
-    python = {
-      black
-    }
-  }
 })

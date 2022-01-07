@@ -47,14 +47,23 @@ return require('packer').startup(function()
       },
       config = function()
         require('nvim-tree-config')
-        vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
       end
   }
   use 'wfxr/minimap.vim'
 
   -- EDITOR
-  use 'mhartington/formatter.nvim'
-  use 'lewis6991/gitsigns.nvim'
+  use {
+    'mhartington/formatter.nvim',
+    config = function()
+      require('formatter-config')
+    end
+  }
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns-config')
+    end
+  }
   use {'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
   use 'junegunn/fzf.vim'
   -- 'gcc' to comment line, 'gc' if in visual mode
