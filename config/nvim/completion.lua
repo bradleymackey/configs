@@ -51,6 +51,3 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
-
--- autopairs -- BRACKET COMPLETION
-require('nvim-autopairs').setup{}

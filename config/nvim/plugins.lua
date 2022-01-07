@@ -68,7 +68,12 @@ return require('packer').startup(function()
   use 'godlygeek/tabular'
   use 'folke/todo-comments.nvim'
   use 'tpope/vim-sleuth'
-  use 'windwp/nvim-autopairs'
+  use {
+    'windwp/nvim-autopairs',
+    config = function()
+      require('nvim-autopairs').setup{}
+    end
+  }
 
   -- SYNTAX
   use {
