@@ -5,7 +5,7 @@ return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- EXPERIMENTAL
-  use 'github/copilot.nvim'
+  use 'github/copilot.vim'
 
   -- LSP
   use 'neovim/nvim-lspconfig'
