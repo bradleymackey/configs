@@ -44,7 +44,10 @@ return require('packer').startup(function()
       'kyazdani42/nvim-tree.lua',
       requires = {
         'kyazdani42/nvim-web-devicons', -- optional, for file icon
-      }
+      },
+      config = function()
+        vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+      end
   }
   use 'wfxr/minimap.vim'
 
