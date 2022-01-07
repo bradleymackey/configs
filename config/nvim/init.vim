@@ -2,7 +2,7 @@
 " Neovim should be installed, as well as vim-plug (https://github.com/junegunn/vim-plug)
 " (vim-plug is used as the dependency manager)
 
-source $HOME/.config/nvim/plugins.vim
+luafile $HOME/.config/nvim/plugins.lua
 source $HOME/.config/nvim/colors.vim
 source $HOME/.config/nvim/bindings.vim
 luafile $HOME/.config/nvim/settings.lua
@@ -25,19 +25,6 @@ autocmd BufRead *.xlsx.axlsx set filetype=ruby
 
 nnoremap <silent> <C-n> :NvimTreeToggle<CR>
 nnoremap <silent> <leader>r :NvimTreeRefresh<CR>
-
-" ## Color Scheme
-nnoremap <silent> <leader><CR> :colorscheme base16-one-light<CR>
-nnoremap <silent> <leader><CR><CR> :colorscheme base16-woodland<CR>
-
-" ### Vim Rooter
-let g:rooter_manual_only = 1
-
-" ### Firebase
-let g:vim_firestore_warnings = 0
-
-" ### Vim-Rainbow
-let g:rainbow_active = 0 " toggle via :RainbowToggle
 
 " ### Lightline
 let g:lightline = {
@@ -68,6 +55,6 @@ function! LinterStatus() abort
 endfunction
 
 " ### JavaScript
-let javaScript_fold=0
+let g:javaScript_fold=0
 autocmd BufReadPost .eslintrc setlocal filetype=json
 autocmd BufReadPost .prettierrc setlocal filetype=json

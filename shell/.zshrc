@@ -180,6 +180,9 @@ export PATH
 # AUTOJUMP
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
 
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # ##### HACKING FUNCTIONS #####
 urlencode() {
     local _length="${#1}"
@@ -223,4 +226,5 @@ if [[ $WANTS_TMUX ]] && [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE
     # Launches tmux in a session called 'base'.
     tmux attach -t base || tmux new -s base
 fi
+
 
