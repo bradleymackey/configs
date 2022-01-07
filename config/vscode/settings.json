@@ -206,7 +206,7 @@
   "workbench.editor.untitled.hint": "hidden",
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
-  "workbench.colorTheme": "GitHub Dark",
+  "workbench.colorTheme": "GitHub Light",
   "redhat.telemetry.enabled": false,
   "typescript.tsserver.log": "off",
   "firestorerules.usePrettierFormatter": true,
@@ -220,5 +220,8 @@
   "editor.bracketPairColorization.enabled": true,
   "workbench.editor.splitInGroupLayout": "vertical",
   "editor.guides.bracketPairs": true,
-  "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A"
+  "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A",
+  "editor.padding.top": 20,
+  "editor.padding.bottom": 20,
+  "editor.lineHeight": 1.6
 }
