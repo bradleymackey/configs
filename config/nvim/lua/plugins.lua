@@ -46,6 +46,7 @@ return require('packer').startup(function()
         'kyazdani42/nvim-web-devicons', -- optional, for file icon
       },
       config = function()
+        require('nvim-tree-config')
         vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
       end
   }
@@ -58,7 +59,13 @@ return require('packer').startup(function()
   use 'junegunn/fzf.vim'
   -- 'gcc' to comment line, 'gc' if in visual mode
   use 'tomtom/tcomment_vim'
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use { 
+    'nvim-treesitter/nvim-treesitter', 
+    run = ':TSUpdate',
+    config = function()
+      require('tree-sitter-config')
+    end
+  }
   use {
     'airblade/vim-rooter',
     config = function()
@@ -66,7 +73,12 @@ return require('packer').startup(function()
     end
   }
   use 'godlygeek/tabular'
-  use 'folke/todo-comments.nvim'
+  use {
+    'folke/todo-comments.nvim',
+    config = function()
+      require('todo-config')
+    end
+  }
   use 'tpope/vim-sleuth'
   use {
     'windwp/nvim-autopairs',
