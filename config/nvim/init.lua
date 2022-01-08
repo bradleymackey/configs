@@ -7,7 +7,9 @@ require('completion')
 require('lsp')
 
 -- Native Vim Scripts
-vim.cmd 'source ~/.config/nvim/vim/colors.vim'
-vim.cmd 'source ~/.config/nvim/vim/bindings.vim'
-vim.cmd 'source ~/.config/nvim/vim/filetype.vim'
-vim.cmd 'source ~/.config/nvim/vim/lightline.vim'
+local path = vim.fn.stdpath('config') .. '/vim/'
+local sourced = 'source ' .. path
+vim.cmd(sourced .. 'colors.vim')
+vim.cmd(sourced .. 'bindings.vim')
+vim.cmd(sourced .. 'filetype.vim')
+vim.cmd(sourced .. 'lightline.vim')
