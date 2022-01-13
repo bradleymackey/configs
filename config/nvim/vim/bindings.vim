@@ -11,6 +11,9 @@ nnoremap <Leader>` :echo "You got it :^)"<CR>
 " ; as : in normal mode
 nnoremap ; :
 
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
+
 " Quick-save
 nmap <leader>w :w<CR>
 nmap <leader>q :wq<CR>

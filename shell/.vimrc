@@ -28,6 +28,9 @@ set splitbelow
 
 let mapleader = "\<Space>"
 
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
+
 " Quick-save
 nmap <leader>w :w<CR>
 nmap <leader>q :wq<CR>
