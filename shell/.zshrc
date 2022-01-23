@@ -118,6 +118,7 @@ fi
 alias e='nvim'
 alias nv='nvim'
 alias v='nvim'
+alias p='pnpm'
 
 # FASTLANE
 export LC_ALL=en_US.UTF-8
