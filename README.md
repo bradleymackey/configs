@@ -22,7 +22,7 @@ There may be better alternatives to some of these tools below, but they work wel
   - Multiplexer: [`tmux`](https://github.com/tmux/tmux/wiki)
   - Colors: [`base16`](https://github.com/chriskempson/base16)
 - Editor: [`neovim`](https://neovim.io)
-  - Package Manager: [`vim-plug`](https://github.com/junegunn/vim-plug)
+  - Package Manager: [`packer.nvim`](https://github.com/wbthomason/packer.nvim)
   - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
   - LSP: Native with [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig) to bootstrap
   - Lint/Diagnostics: [`null-ls`](https://github.com/jose-elias-alvarez/null-ls.nvim)
