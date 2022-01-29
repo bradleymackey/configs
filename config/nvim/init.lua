@@ -3,7 +3,6 @@
 
 require('plugins')
 require('settings')
-require('completion')
 require('lsp')
 
 -- Native Vim Scripts
