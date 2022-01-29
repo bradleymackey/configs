@@ -25,8 +25,7 @@ There may be better alternatives to some of these tools below, but they work wel
   - Package Manager: [`packer.nvim`](https://github.com/wbthomason/packer.nvim)
   - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
   - LSP: Native with [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig) to bootstrap
-  - Lint/Diagnostics: [`null-ls`](https://github.com/jose-elias-alvarez/null-ls.nvim)
-  - Format: [`mhartington/formatter.nvim`](https://github.com/mhartington/formatter.nvim)
+  - Lint/Diagnostics/Format: [`null-ls`](https://github.com/jose-elias-alvarez/null-ls.nvim)
   - (_see config file for more_)
 - Shell Tools:
   - Package Manager: [`brew`](https://brew.sh)

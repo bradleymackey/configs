@@ -53,12 +53,6 @@ return require('packer').startup(function()
 
   -- EDITOR
   use {
-    'mhartington/formatter.nvim',
-    config = function()
-      require('formatter-config')
-    end
-  }
-  use {
     'lewis6991/gitsigns.nvim',
     config = function()
       require('gitsigns-config')

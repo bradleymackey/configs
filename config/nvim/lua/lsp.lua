@@ -1,20 +1,6 @@
 -- Abstract:
 -- Setup of the native Neovim LSP and Diagnostics
 
-vim.g['formatting_enabled'] = 1
-vim.api.nvim_exec([[
-command FormatToggle call ToggleFormattingImpl()
-function! ToggleFormattingImpl()
-    if g:formatting_enabled
-        let g:formatting_enabled = 0
-        echo "Format-on-write has been disabled"
-    else
-        let g:formatting_enabled = 1
-        echo "Format-on-write has been enabled"
-    endif
-endfunction
-]], false)
-
 -- LSP setup
 -- Customise diagnostic handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -118,19 +104,6 @@ local on_attach = function(client, bufnr)
     ]], false)
   end
 
-  -- Format known formatable langs only
-  vim.api.nvim_exec([[
-  augroup FormatAutogroup
-  autocmd!
-  autocmd BufWritePost *.js,*.ts,*.rs,*.c,*.cpp,*.py,*.json,*.yaml,*.yml call FormatWriteMaybe()
-  function! FormatWriteMaybe()
-    if g:formatting_enabled
-      FormatWrite
-    endif
-  endfunction
-  augroup END
-  ]], true)
-
 end
 
 -- LANG SERVER CONFIGS
@@ -182,24 +155,31 @@ lspconfig.tsserver.setup {
     end
 }
 
--- null-ls is used to get DIAGNOSTICS ONLY (don't use it for formatting)
-
+-- null-ls is used for non-lsp stuff
 local null_ls = require("null-ls")
-
-local sources = {
-  -- (not used for formatting, as we keep hitting bugs)
-  -- null_ls.builtins.formatting.prettier,
-  null_ls.builtins.diagnostics.write_good,
-  null_ls.builtins.diagnostics.eslint_d,
-  null_ls.builtins.diagnostics.flake8,
-  null_ls.builtins.code_actions.gitsigns,
-}
+local formatting = null_ls.builtins.formatting
+local diagnostics = null_ls.builtins.diagnostics
+local code_actions = null_ls.builtins.code_actions
 
 null_ls.setup({
     capabilities = capabilities,
-    on_attach = on_attach,
+    on_attach = function(client)
+        -- Trigger formatting if the client supports it.
+        if client.resolved_capabilities.document_formatting then
+            vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+        end
+    end,
     diagnostics_format = "#{m}",
     debounce = 250,
     default_timeout = 5000,
-    sources = sources,
+    sources = {
+        formatting.prettier,
+        formatting.black,
+        formatting.clang_format,
+        formatting.rustfmt,
+        diagnostics.write_good,
+        diagnostics.eslint_d,
+        diagnostics.flake8,
+        code_actions.gitsigns,
+    },
 })
