@@ -165,11 +165,6 @@ export OPENBLAS=$(brew --prefix openblas || "")
 # SOURCEKIT-LSP
 PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 
-# 'n' is a Node Version manager, installed elsewhere
-alias fnm="n"
-alias nvm="n"
-export N_PREFIX="$HOME/.n"
-PATH="$N_PREFIX/bin:$PATH"
 # yarn
 PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 

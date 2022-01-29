@@ -31,7 +31,7 @@ There may be better alternatives to some of these tools below, but they work wel
 - Shell Tools:
   - Package Manager: [`brew`](https://brew.sh)
   - Grep: [`ripgrep`](https://github.com/BurntSushi/ripgrep)
-  - Node.js Versioner: [`n`](https://github.com/tj/n)
+  - Node.js Versioner: [`pnpm`](https://pnpm.io)
   - Python Versioner: [`pyenv`](https://github.com/pyenv/pyenv)
   - Rust Versioner: [`rustup`](https://rustup.rs)
 
