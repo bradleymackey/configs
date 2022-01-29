@@ -8,10 +8,42 @@ return require('packer').startup(function()
   use 'github/copilot.vim'
 
   -- LSP
-  use 'neovim/nvim-lspconfig'
+  use {
+    'neovim/nvim-lspconfig'
+  }
   use 'nvim-lua/plenary.nvim'
   use {
     'jose-elias-alvarez/null-ls.nvim',
+    config = function()
+      -- null-ls is used for non-lsp stuff
+      local null_ls = require("null-ls")
+      local formatting = null_ls.builtins.formatting
+      local diagnostics = null_ls.builtins.diagnostics
+      local code_actions = null_ls.builtins.code_actions
+
+      null_ls.setup({
+        capabilities = capabilities,
+        on_attach = function(client)
+          -- Trigger formatting if the client supports it.
+          if client.resolved_capabilities.document_formatting then
+            vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+          end
+        end,
+        diagnostics_format = "#{m}",
+        debounce = 250,
+        default_timeout = 5000,
+        sources = {
+          formatting.prettier,
+          formatting.black,
+          formatting.clang_format,
+          formatting.rustfmt,
+          diagnostics.write_good,
+          diagnostics.eslint_d,
+          diagnostics.flake8,
+          code_actions.gitsigns,
+        },
+      })
+    end,
     requires = { 'nvim-lua/plenary.nvim' }
   }
   use 'nvim-lua/lsp-status.nvim'
