@@ -5,7 +5,13 @@ return require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
   -- EXPERIMENTAL
-  use 'github/copilot.vim'
+  use {
+    'github/copilot.vim',
+    config = function()
+      vim.cmd("imap <silent><script><expr> <C-L> copilot#Accept()")
+      vim.cmd("let g:copilot_no_tab_map = v:true")
+    end
+  }
 
   -- LSP
   use {
