@@ -168,6 +168,9 @@ PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 # yarn
 PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
+# npm
+export NO_UPDATE_NOTIFIER=1
+
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
 
