@@ -117,7 +117,7 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protoco
 lspconfig.clangd.setup { 
     handlers = lsp_status.extensions.clangd.setup(),
     capabilities = capabilities,
-    on_attach = on_attach
+    on_attach = on_attach,
 }
 
 lspconfig.pyright.setup {
@@ -148,7 +148,7 @@ lspconfig.rust_analyzer.setup {
 lspconfig.tsserver.setup {
     capabilities = capabilities,
     on_attach = function(client, buf)
-        -- we use prettier to format, not tsserver
+        -- we use null-ls to format, not tsserver
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.document_range_formatting = false
         on_attach(client, buf)

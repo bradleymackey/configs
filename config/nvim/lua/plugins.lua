@@ -41,7 +41,6 @@ return require('packer').startup(function()
         sources = {
           formatting.prettier,
           formatting.black,
-          formatting.clang_format,
           formatting.rustfmt,
           diagnostics.write_good,
           diagnostics.eslint_d,
