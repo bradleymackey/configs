@@ -54,7 +54,6 @@ return require('packer').startup(function()
   use 'nvim-lua/lsp-status.nvim'
 
   -- COMPLETION
-  use 'ray-x/lsp_signature.nvim'
   use {
     'hrsh7th/nvim-cmp',
     config = function()
@@ -67,7 +66,8 @@ return require('packer').startup(function()
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-vsnip',
       'hrsh7th/vim-vsnip',
-      'onsails/lspkind-nvim'
+      'onsails/lspkind-nvim',
+      'hrsh7th/cmp-nvim-lsp-signature-help'
     }
   }
 

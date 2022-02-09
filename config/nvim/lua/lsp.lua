@@ -57,19 +57,6 @@ local on_attach = function(client, bufnr)
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Nvim Compe does not have native signature completion
-  -- we use 'ray-x/lsp_signature.nvim' to get this behaviour
-  -- https://github.com/ray-x/lsp_signature.nvim#full-configuration
-  require "lsp_signature".on_attach({
-      bind = true, -- This is mandatory, otherwise border config won't get registered.
-      hint_enable = false,
-      floating_window = true,
-      handler_opts = {
-          border = "single"
-      },
-      decorator = {"**", "**"}
-  })
-
   -- LSP status bar
   lsp_status.on_attach(client)
 
