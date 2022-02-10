@@ -41,7 +41,6 @@ return require('packer').startup(function()
         sources = {
           formatting.prettier,
           formatting.black,
-          formatting.rustfmt,
           diagnostics.write_good,
           diagnostics.eslint_d,
           diagnostics.flake8,
