@@ -10,6 +10,7 @@ return require('packer').startup(function()
     config = function()
       vim.cmd("imap <silent><script><expr> <C-L> copilot#Accept()")
       vim.cmd("let g:copilot_no_tab_map = v:true")
+      vim.cmd("let g:copilot_enabled = v:false")
     end
   }
 
