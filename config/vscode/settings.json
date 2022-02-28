@@ -223,5 +223,6 @@
   "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A",
   "editor.padding.top": 20,
   "editor.padding.bottom": 20,
-  "editor.lineHeight": 1.6
+  "editor.lineHeight": 1.6,
+  "vsicons.dontShowNewVersionMessage": true
 }
