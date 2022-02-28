@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-echo "Installing npm packages"
+echo "Installing pnpm global packages"
 
 # packages
-npm i -g \
+pnpm add -g \
     fixjson \
     jsonlint \
     firebase-tools \
