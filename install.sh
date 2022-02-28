@@ -1,8 +1,12 @@
 #!/bin/sh
 
-echo "Running install script..."
+### VARIABLES
+CONF_PATH=~/configs/config
+SHELL_PATH=~/configs/shell
+INSTALL_PATH=~/configs/installers
 
-# setup
+### SCRIPT
+echo "Running install script..."
 
 # (only create the .config directory if it doesn't exist)
 mkdir -p ~/.config
@@ -12,22 +16,22 @@ git submodule update --init --recursive
 
 # git
 echo "Linking git..."
-ln -s ~/configs/config/.gitconfig ~/.gitconfig 
-ln -s ~/configs/config/.gitignore ~/.gitignore
+ln -s $CONF_PATH/.gitconfig ~/.gitconfig 
+ln -s $CONF_PATH/.gitignore ~/.gitignore
 git config credential.helper store
 
 # shell + editor
 echo "Shell and editor setup..."
-ln -s ~/configs/shell/.tmux.conf ~/.tmux.conf
-ln -s ~/configs/shell/my_scripts ~/.my_scripts
-ln -s ~/configs/shell/.zshrc ~/.zshrc
-ln -s ~/configs/shell/.vimrc ~/.vimrc
-ln -s ~/configs/config/nvim ~/.config/nvim
-ln -s ~/configs/config/nvim/vimdid ~/.vimdid
-ln -s ~/configs/config/base16-shell ~/.config/base16-shell
-ln -s ~/configs/config/kitty ~/.config/kitty
-ln -s ~/configs/config/alacritty ~/.config/alacritty
-ln -s ~/configs/config/efm-langserver ~/.config/efm-langserver
+ln -s $SHELL_PATH/.tmux.conf ~/.tmux.conf
+ln -s $SHELL_PATH/my_scripts ~/.my_scripts
+ln -s $SHELL_PATH/.zshrc ~/.zshrc
+ln -s $SHELL_PATH/.vimrc ~/.vimrc
+ln -s $CONF_PATH/nvim ~/.config/nvim
+ln -s $CONF_PATH/nvim/vimdid ~/.vimdid
+ln -s $CONF_PATH/base16-shell ~/.config/base16-shell
+ln -s $CONF_PATH/kitty ~/.config/kitty
+ln -s $CONF_PATH/alacritty ~/.config/alacritty
+ln -s $CONF_PATH/efm-langserver ~/.config/efm-langserver
 
 # ----- other tools -----
 
@@ -38,13 +42,14 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # changes should now take effect
 source ~/.zshrc
 
+
 ### Install packages
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    source ~/configs/installers/brew.sh
-    source ~/configs/installers/macos.sh
+    source $INSTALL_PATH/brew.sh
+    source $INSTALL_PATH/macos.sh
 fi
-source ~/configs/installers/node.sh
-source ~/configs/installers/rust.sh
+source $INSTALL_PATH/node.sh
+source $INSTALL_PATH/rust.sh
 
 # final load to take effect
 source ~/.zshrc
