@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Setting up MacOS..."
+echo "Setting up macOS..."
 
 echo "Setup Dock"
 defaults write com.apple.dock orientation left
