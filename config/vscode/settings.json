@@ -21,7 +21,7 @@
 
   "editor.suggestFontSize": 0,
   "editor.renderIndentGuides": true,
-  "editor.fontFamily": "JetBrains Mono NL",
+  "editor.fontFamily": "Meslo LG S DZ",
   "editor.fontLigatures": true,
   "editor.fontSize": 14,
   "editor.fontWeight": "400",
@@ -224,5 +224,6 @@
   "editor.padding.top": 20,
   "editor.padding.bottom": 20,
   "editor.lineHeight": 1.6,
-  "vsicons.dontShowNewVersionMessage": true
+  "vsicons.dontShowNewVersionMessage": true,
+  "window.zoomLevel": 1
 }
