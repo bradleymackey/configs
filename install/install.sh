@@ -25,7 +25,6 @@ ln -s $CONF_PATH/nvim/vimdid ~/.vimdid
 ln -s $CONF_PATH/base16-shell ~/.config/base16-shell
 ln -s $CONF_PATH/kitty ~/.config/kitty
 ln -s $CONF_PATH/alacritty ~/.config/alacritty
-ln -s $CONF_PATH/efm-langserver ~/.config/efm-langserver
 
 ### Install packages
 if [[ "$OSTYPE" == "darwin"* ]]; then
