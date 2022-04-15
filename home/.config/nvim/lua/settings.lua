@@ -29,7 +29,7 @@ vim.o.shiftwidth = 4
 vim.o.softtabstop = 4
 vim.o.number = true
 vim.o.rnu = true
-vim.o.laststatus = 2
+vim.o.laststatus = 3 -- 'global' statusline
 vim.o.mouse = 'a' -- mouse to click, scroll
 -- allow backspace in insert mode
 vim.opt.backspace = {'indent', 'eol', 'start'}
