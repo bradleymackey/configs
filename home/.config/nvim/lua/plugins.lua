@@ -42,7 +42,7 @@ return require('packer').startup(function()
         sources = {
           formatting.prettier,
           formatting.black,
-          diagnostics.write_good,
+          -- diagnostics.write_good,
           diagnostics.eslint_d,
           diagnostics.flake8,
           code_actions.gitsigns,
