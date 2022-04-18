@@ -1,0 +1,4 @@
+#!/bin/bash
+# Usage:
+#   rename_all "*.txt" "s/old/new/g"
+LC_ALL=C find . -type f -name "$1" -exec sed -i '' "$2" {} +
