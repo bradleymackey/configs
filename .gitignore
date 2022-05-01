@@ -4,3 +4,4 @@
 **/*.key
 **/*key*.json
 **/.*_history
+.DS_Store
