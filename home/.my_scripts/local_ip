@@ -1,2 +1,14 @@
 #!/bin/bash
-mac_out=$(ipconfig getifaddr en0 2> /dev/null) && echo -n "$mac_out" || linux_out=$(hostname -I 2> /dev/null) && echo -n "$linux_out" | awk '{print $1}' || echo -n "Offline"
+mac_out=$(ifconfig 2> /dev/null | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' 2> /dev/null)
+linux_out=$(hostname -I 2> /dev/null | awk '{print $1}' 2> /dev/null)
+
+# Will be an empty string if currently offline.
+if [ ! -z "$mac_out" ]
+then
+    echo -n "$mac_out"
+elif [ ! -z "$linux_out" ]
+then
+    echo -n "$linux_out"
+else
+    echo -n "Offline"
+fi
