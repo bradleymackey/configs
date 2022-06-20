@@ -166,11 +166,11 @@ export OPENBLAS=$(brew --prefix openblas || "")
 # SOURCEKIT-LSP
 PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 
-# yarn
-PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
+
+# PNPM (node)
+export PNPM_HOME="$HOME/Library/pnpm"
 
 export PATH
 
@@ -195,10 +195,6 @@ urlencode() {
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-
-# PNPM (node package manager)
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
 
 # gcloud completions
 source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
