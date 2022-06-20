@@ -108,6 +108,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export ARCHFLAGS="-arch arm64"
 export DO_NOT_TRACK=1
+export NO_UPDATE_NOTIFIER=1
 
 # EDITOR (neovim if local, vim if not)
 if [[ -n $SSH_CONNECTION ]]; then
@@ -167,9 +168,6 @@ PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
 
 # yarn
 PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-# npm
-export NO_UPDATE_NOTIFIER=1
 
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
