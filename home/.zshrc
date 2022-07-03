@@ -171,6 +171,7 @@ PATH="$HOME/.cargo/bin:$PATH"
 
 # PNPM (node)
 export PNPM_HOME="$HOME/Library/pnpm"
+PATH="$PNPM_HOME:$PATH"
 
 export PATH
 
