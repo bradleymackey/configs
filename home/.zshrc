@@ -162,9 +162,6 @@ PATH=$(pyenv root)/shims:$PATH
 # helps with build failures for some modules that occur on Apple Silicon (scipy, statsmodels)
 export OPENBLAS=$(brew --prefix openblas || "")
 
-# SOURCEKIT-LSP
-PATH="$PATH:$HOME/dev/sourcekit-lsp/.build/release/"
-
 # CARGO (rust)
 PATH="$HOME/.cargo/bin:$PATH"
 
