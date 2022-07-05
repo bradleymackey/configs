@@ -203,7 +203,16 @@ source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completi
 # clangd
 export PATH="$PATH:/opt/homebrew/opt/llvm/bin/"
 
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# Bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 eval "$(fnm env)"
+
+export PATH
 
 # DO THIS LAST!!!
 # -> Launch to tmux if 
