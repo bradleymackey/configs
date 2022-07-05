@@ -194,10 +194,10 @@ urlencode() {
 export PATH="$PATH:$HOME/.rvm/bin"
 
 # gcloud completions
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+source "$brew_prefix/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 # clangd
-export PATH="$PATH:/opt/homebrew/opt/llvm/bin/"
+export PATH="$PATH:$brew_prefix/opt/llvm/bin/"
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
