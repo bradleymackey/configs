@@ -106,7 +106,6 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})(%{$fg[green]%}✓"
 #
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export ARCHFLAGS="-arch arm64"
 export DO_NOT_TRACK=1
 export NO_UPDATE_NOTIFIER=1
 
