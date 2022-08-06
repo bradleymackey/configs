@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ### VARIABLES
-HOME_PATH=~/configs/shell
+HOME_PATH=~/configs/home
 CONFIG_PATH=~/configs/home/.config
 INSTALL_PATH=~/configs/install
 
@@ -17,10 +17,10 @@ git submodule update --init --recursive
 # shell + editor
 echo "Shell and editor setup..."
 ln -s $HOME_PATH/.tmux.conf ~/.tmux.conf
-ln -s $SHELL_PATH/my_scripts ~/.my_scripts
-ln -s $SHELL_PATH/.zshrc ~/.zshrc
-ln -s $SHELL_PATH/.vimrc ~/.vimrc
-ln -s $SHELL_PATH/.lldbinit ~/.lldbinit
+ln -s $HOME_PATH/my_scripts ~/.my_scripts
+ln -s $HOME_PATH/.zshrc ~/.zshrc
+ln -s $HOME_PATH/.vimrc ~/.vimrc
+ln -s $HOME_PATH/.lldbinit ~/.lldbinit
 ln -s $CONF_PATH/nvim ~/.config/nvim
 ln -s $CONF_PATH/nvim/vimdid ~/.vimdid
 ln -s $CONF_PATH/base16-shell ~/.config/base16-shell
