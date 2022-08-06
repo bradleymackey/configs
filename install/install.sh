@@ -20,6 +20,7 @@ ln -s $HOME_PATH/.tmux.conf ~/.tmux.conf
 ln -s $SHELL_PATH/my_scripts ~/.my_scripts
 ln -s $SHELL_PATH/.zshrc ~/.zshrc
 ln -s $SHELL_PATH/.vimrc ~/.vimrc
+ln -s $SHELL_PATH/.lldbinit ~/.lldbinit
 ln -s $CONF_PATH/nvim ~/.config/nvim
 ln -s $CONF_PATH/nvim/vimdid ~/.vimdid
 ln -s $CONF_PATH/base16-shell ~/.config/base16-shell
