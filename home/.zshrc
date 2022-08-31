@@ -212,6 +212,8 @@ eval "$(rbenv init - zsh)"
 
 export PATH
 
+fortune quotes
+
 # DO THIS LAST!!!
 # -> Launch to tmux if 
 #   1. we have tmux installed
