@@ -208,6 +208,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 eval "$(fnm env)"
 
+eval "$(rbenv init - zsh)"
+
 export PATH
 
 # DO THIS LAST!!!
