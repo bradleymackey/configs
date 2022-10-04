@@ -1,5 +1,9 @@
 vim.cmd [[packadd packer.nvim]]
 
+-- Disable netrw
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
+
 return require('packer').startup(function()
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
