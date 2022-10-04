@@ -81,7 +81,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>f', ':Format<CR>', opts)
 
   -- Highlight matching references to word using the LSP
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilties.documentHighlightProvider then
     vim.api.nvim_exec([[
       augroup lsp_document_highlight
         autocmd! * <buffer>
@@ -136,8 +136,8 @@ lspconfig.tsserver.setup {
     capabilities = capabilities,
     on_attach = function(client, buf)
         -- we use null-ls to format, not tsserver
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilties.documentFormattingProvider = false
+        client.server_capabilties.documentRangeFormattingProvider = false
         on_attach(client, buf)
     end
 }
