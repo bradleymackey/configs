@@ -99,7 +99,7 @@ local lspconfig = require('lspconfig')
 -- (was causing errors and seems to work just fine without it?)
 -- lspconfig.capabilities = vim.tbl_extend('keep', lspconfig.capabilities or {}, lsp_status.capabilities)
 -- update capabilities with nvim cmp completions
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 lspconfig.clangd.setup { 
     handlers = lsp_status.extensions.clangd.setup(),
