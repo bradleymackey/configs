@@ -37,7 +37,7 @@ return require('packer').startup(function()
         on_attach = function(client)
           -- Trigger formatting if the client supports it.
           if client.server_capabilities.documentFormattingProvider then
-            vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+            vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = false })")
           end
         end,
         diagnostics_format = "#{m}",
