@@ -5,9 +5,7 @@
 -- Customise diagnostic handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- Enable underline, use default values
-        underline = false,
-        -- Enable virtual text for diagnostics
+        underline = true,
         virtual_text = {
             spacing = 8
         },
