@@ -88,30 +88,32 @@ end
 
 -- LANG SERVER CONFIGS
 local lspconfig = require('lspconfig')
--- update capabilities with lsp_status
--- (was causing errors and seems to work just fine without it?)
--- lspconfig.capabilities = vim.tbl_extend('keep', lspconfig.capabilities or {}, lsp_status.capabilities)
--- update capabilities with nvim cmp completions
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local cmp_nvim = require('cmp_nvim_lsp')
+function default_capabilities()
+    return cmp_nvim.default_capabilities()
+end
 
+local clang_capabilties = default_capabilities()
+-- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428#issuecomment-997226723
+clang_capabilties.offsetEncoding = { 'utf-16' }
 lspconfig.clangd.setup { 
     handlers = lsp_status.extensions.clangd.setup(),
-    capabilities = capabilities,
+    capabilities = clang_capabilties,
     on_attach = on_attach,
 }
 
 lspconfig.pyright.setup {
-    capabilities = capabilities,
+    capabilities = default_capabilities(),
     on_attach = on_attach
 }
 
 lspconfig.sourcekit.setup { 
-    capabilities = capabilities,
+    capabilities = default_capabilities(),
     on_attach = on_attach
 }
 
 lspconfig.rust_analyzer.setup { 
-    capabilities = capabilities,
+    capabilities = default_capabilities(),
     flags = {
       debounce_text_changes = 150,
     },
@@ -126,7 +128,7 @@ lspconfig.rust_analyzer.setup {
 }
 
 lspconfig.tsserver.setup {
-    capabilities = capabilities,
+    capabilities = default_capabilities(),
     on_attach = function(client, buf)
         -- we use null-ls to format, not tsserver
         client.server_capabilities.documentFormattingProvider = false
