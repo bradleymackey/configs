@@ -26,6 +26,7 @@ ln -s $CONF_PATH/nvim/vimdid ~/.vimdid
 ln -s $CONF_PATH/base16-shell ~/.config/base16-shell
 ln -s $CONF_PATH/kitty ~/.config/kitty
 ln -s $CONF_PATH/alacritty ~/.config/alacritty
+ln -s $CONF_PATH/helix ~/.config/helix
 ln -s $CONF_PATH/swift_po ~/.config/swift_po
 
 ### Install packages
