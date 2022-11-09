@@ -9,6 +9,7 @@ require('lsp')
 local path = vim.fn.stdpath('config') .. '/vim/'
 local sourced = 'source ' .. path
 vim.cmd(sourced .. 'colors.vim')
+vim.cmd(sourced .. 'diagnostics.vim')
 vim.cmd(sourced .. 'bindings.vim')
 vim.cmd(sourced .. 'filetype.vim')
 vim.cmd(sourced .. 'lightline.vim')

@@ -65,3 +65,6 @@ au('TextYankPost', {
     vim.highlight.on_yank { higroup = 'IncSearch', timeout = 300 }
   end,
 })
+
+-- DIAGNOSTICS
+
