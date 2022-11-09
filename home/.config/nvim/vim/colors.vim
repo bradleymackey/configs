@@ -13,15 +13,6 @@ endif
 colorscheme base16-ia-dark
 call g:Base16hi("MatchParen", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold,italic", "")
 
-" nvim-cmp supports kind highlights, this scheme matches vs code dark,
-" and looks pretty neat
-highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
-highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6
-highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
-highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0
-highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
-highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
-
 " Override some of the LSP default colors
 
 " gets the color of an existing group name
