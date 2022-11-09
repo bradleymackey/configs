@@ -54,3 +54,14 @@ vim.opt.undofile = true
 -- VIMDIFF
 vim.opt.diffopt:append({ iwhite = true }) -- no whitespace
 vim.opt.diffopt:append({ algorithm = 'patience' }) -- https://vimways.org/2018/the-power-of-diff/
+
+-- COMMANDS
+local ag = vim.api.nvim_create_augroup
+local au = vim.api.nvim_create_autocmd
+au('TextYankPost', {
+  group = ag('yank_highlight', {}),
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank { higroup = 'IncSearch', timeout = 300 }
+  end,
+})
