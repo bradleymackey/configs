@@ -49,40 +49,6 @@ hi link LspReferenceRead Visual
 hi link LspReferenceText Visual
 hi link LspReferenceWrite Visual
 
-" < 0.6
-exec 'hi LspDiagnosticsVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('ErrorMsg', 'fg', 'cterm')
-
-exec 'hi LspDiagnosticsVirtualTextWarning cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-
-exec 'hi LspDiagnosticsVirtualTextHint cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-
-exec 'hi LspDiagnosticsVirtualTextInformation cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
-            \' guibg=NONE' .
-            \' guifg=' . s:get_syn('Label', 'fg', 'gui') .
-            \' ctermbg=NONE' .
-            \' ctermfg=' . s:get_syn('Label', 'fg', 'cterm')
-sign define LspDiagnosticsSignInformation text=@ texthl=Label linehl= numhl=Label
-sign define LspDiagnosticsSignHint text=> texthl=Label linehl= numhl=Label
-sign define LspDiagnosticsSignWarning text=* texthl=Label linehl= numhl=Label
-sign define LspDiagnosticsSignError text=! texthl=Error linehl= numhl=Error
-hi link LspDiagnosticsFloatingError WarningMsg
-hi link LspDiagnosticsFloatingWarning Label
-hi link LspDiagnosticsFloatingHint Label
-hi link LspDiagnosticsFloatingInformation Label
-
-" >= 0.6
 exec 'hi DiagnosticVirtualTextError cterm=' . s:lsp_tf . ' gui=' . s:lsp_tf .
             \' guibg=NONE' .
             \' guifg=' . s:get_syn('ErrorMsg', 'fg', 'gui') .
