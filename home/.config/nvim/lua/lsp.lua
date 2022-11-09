@@ -87,6 +87,7 @@ local on_attach = function(client, bufnr)
 end
 
 -- LANG SERVER CONFIGS
+local util = require "lspconfig/util"
 local lspconfig = require('lspconfig')
 local cmp_nvim = require('cmp_nvim_lsp')
 function default_capabilities()
@@ -135,4 +136,20 @@ lspconfig.tsserver.setup {
         client.server_capabilities.documentRangeFormattingProvider = false
         on_attach(client, buf)
     end
+}
+
+lspconfig.gopls.setup {
+    capabilities = default_capabilities(),
+    on_attach = on_attach,
+    cmd = {"gopls", "serve"},
+    filetypes = {"go", "gomod"},
+    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+    settings = {
+      gopls = {
+        analyses = {
+          unusedparams = true,
+        },
+        staticcheck = true,
+      },
+    },
 }
