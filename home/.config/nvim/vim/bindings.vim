@@ -50,6 +50,10 @@ nnoremap <silent> * *zz
 nnoremap <silent> # #zz
 nnoremap <silent> g* g*zz
 
+" Jumping Centered
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
 " Ctrl-C or Ctrl-J for Esc (because ESC is far away)
 nnoremap <C-j> <Esc>
 inoremap <C-j> <Esc>
