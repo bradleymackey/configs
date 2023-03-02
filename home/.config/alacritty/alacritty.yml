@@ -63,25 +63,25 @@ colors:
     white: "0xe4d4c8"
 
 # My fav fonts (which I like to change often, and need to be Nerd Font patched):
-# family: Meslo LG S DZ
+# family: Meslo LG S DZ (MesloLGS Nerd Font Mono)
 # family: JetBrains Mono NL
-# family: Hack
-# family: Ubuntu Mono
+# family: Hack (Hack Nerd Font Mono)
+# family: Ubuntu Mono (UbuntuMono Nerd Font Mono)
 # family: Fira Code
 
 font:
   size: 14.0
   normal:
-    family: UbuntuMono Nerd Font Mono
+    family: MesloLGS Nerd Font Mono
     style: Regular
   bold:
-    family: UbuntuMono Nerd Font Mono
+    family: MesloLGS Nerd Font Mono
     style: Bold
   italic:
-    family: UbuntuMono Nerd Font Mono
+    family: MesloLGS Nerd Font Mono
     style: Regular
   bold_italic:
-    family: UbuntuMono Nerd Font Mono
+    family: MesloLGS Nerd Font Mono
     style: Bold
   # 'spacing' between lines and letters
   offset:
@@ -89,6 +89,6 @@ font:
     y: 1
   glyph_offset:
     x: 0
-    y: 2
+    y: 3
 # debug:
 #   render_timer: true
