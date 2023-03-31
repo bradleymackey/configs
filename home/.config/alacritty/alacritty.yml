@@ -4,10 +4,6 @@ live_config_reload: true
 shell:
   program: /bin/zsh
 
-# this screws with macOS because ALT+3 is #
-# therefore, just ignore this special alt behaviour
-alt_send_esc: false
-
 window:
   opacity: 1.0
   dimensions:
@@ -17,6 +13,16 @@ window:
     x: 2
     y: 2
   decorations: full
+
+  # This screws with macOS because ALT+3 is #
+  # therefore, just ignore this special alt behaviour
+  #
+  # Make `Option` key behave as `Alt` (macOS only):
+  #   - OnlyLeft
+  #   - OnlyRight
+  #   - Both
+  #   - None (default)
+  option_as_alt: None
 
 cursor:
   style: Block
