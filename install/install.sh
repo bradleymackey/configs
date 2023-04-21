@@ -19,6 +19,7 @@ echo "Shell and editor setup..."
 ln -s $HOME_PATH/.tmux.conf ~/.tmux.conf
 ln -s $HOME_PATH/my_scripts ~/.my_scripts
 ln -s $HOME_PATH/.zshrc ~/.zshrc
+ln -s $HOME_PATH/.zshmain ~/.zshmain
 ln -s $HOME_PATH/.vimrc ~/.vimrc
 ln -s $HOME_PATH/.lldbinit ~/.lldbinit
 ln -s $CONF_PATH/nvim ~/.config/nvim
