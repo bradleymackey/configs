@@ -1,10 +1,7 @@
-# Actual setup for ZSH
+# ZSH MAIN CONFIG
+# (theme & heavy plugin setup)
 
-[[ $- == *i* ]] && IS_INTERACTIVE=1 || NOT_INTERACTIVE=1
-
-#
-### OH MY ZSH 
-#
+# OH MY ZSH 
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -82,46 +79,8 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[blue]%})%{$reset_color%} "
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%})(%{$fg[yellow]%}✕"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})(%{$fg[green]%}✓"
 
-#
-### CUSTOM CONFIGURATION
-#
-export MANPATH="/usr/local/man:$MANPATH"
-export LANG=en_US.UTF-8
-export DO_NOT_TRACK=1
-export NO_UPDATE_NOTIFIER=1
-
-# EDITOR (neovim if local, vim if not)
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
-alias e='nvim'
-alias nv='nvim'
-alias v='nvim'
-alias p='pnpm'
-
 # FASTLANE
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export PATH="$HOME/.fastlane/bin:$PATH"
-
-# ALIASES
-# (run alias for a full list of all zsh aliases)
-alias grep='rg'
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias fl="bundle exec fastlane"
-alias up="cd .."
-alias lfi="curl -H 'Accept: ../../../../../../../../../etc/passwd{{'"
-alias ls="exa"
-alias gap="git add -p"
-alias js="node"
-
-export PAGER="less"
-
-# CUSTOM SCRIPTS from the config
-PATH="$PATH:$HOME/.my_scripts"
+PATH="$HOME/.fastlane/bin:$PATH"
 
 # JAVA
 alias JAVA_HOME='/usr/libexec/java_home'
@@ -135,7 +94,7 @@ PATH="/Library/apache-maven-3.3.9/bin/:$PATH"
 export GOPATH="$HOME/go"
 PATH="$PATH:$GOPATH/bin"
 
-# PYTHON
+# Python
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
@@ -143,14 +102,12 @@ PATH=$(pyenv root)/shims:$PATH
 # helps with build failures for some modules that occur on Apple Silicon (scipy, statsmodels)
 export OPENBLAS=$(brew --prefix openblas || "")
 
-# CARGO (rust)
+# CARGO (Rust)
 PATH="$HOME/.cargo/bin:$PATH"
 
-# PNPM (node)
+# PNPM (JS)
 export PNPM_HOME="$HOME/Library/pnpm"
 PATH="$PNPM_HOME:$PATH"
-
-export PATH
 
 # AUTOJUMP
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
@@ -158,39 +115,22 @@ export PATH
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# ##### HACKING FUNCTIONS #####
-urlencode() {
-    local _length="${#1}"
-    for (( _offset = 0 ; _offset < _length ; _offset++ )); do
-        _print_offset="${1:_offset:1}"
-        case "${_print_offset}" in
-            [a-zA-Z0-9.~_-]) printf "${_print_offset}" ;;
-            ' ') printf + ;;
-            *) printf '%%%X' "'${_print_offset}" ;;
-        esac
-    done
-}
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-# gcloud completions
+# gcloud
 source "$brew_prefix/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 # clangd
-export PATH="$PATH:$brew_prefix/opt/llvm/bin/"
+PATH="$PATH:$brew_prefix/opt/llvm/bin/"
 
-# bun completions
+# Bun (JS)
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# Bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+PATH="$BUN_INSTALL/bin:$PATH"
 
-# COMMANDS
-
+# Node.js
 eval "$(fnm env)"
 
+# Ruby
+PATH="$PATH:$HOME/.rvm/bin"
 eval "$(rbenv init - zsh)"
 
 [[ -x "$(command -v fortune)" ]] && HAS_FORTUNE=1
