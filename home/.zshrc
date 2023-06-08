@@ -69,3 +69,5 @@ else
     source "$HOME/.zshmain"
 fi
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
