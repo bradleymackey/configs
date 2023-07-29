@@ -32,7 +32,7 @@ require('nvim-tree').setup {
   },
   git = {
     enable = true,
-    ignore = true,
+    ignore = false,
     timeout = 400,
   },
   -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
