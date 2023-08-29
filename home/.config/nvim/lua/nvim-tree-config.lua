@@ -63,13 +63,6 @@ require('nvim-tree').setup {
     side = 'left',
     preserve_window_proportions = true,
     number = false,
-    mappings = {
-      -- custom only false will merge the list with the default mappings
-      -- if true, it will only use your list to set the mappings
-      custom_only = false,
-      -- list of mappings to set on the tree manually
-      list = {}
-    }
   },
   trash = {
     cmd = "trash",
