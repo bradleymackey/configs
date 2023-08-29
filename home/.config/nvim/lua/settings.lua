@@ -16,6 +16,10 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.api.nvim_command 'set noshowmode'
 
+-- Disable netrw
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- EDITOR
 vim.o.re = 0
 vim.o.autoindent = true

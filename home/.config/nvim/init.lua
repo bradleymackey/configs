@@ -1,8 +1,10 @@
 -- ** NEOVIM INIT SCRIPT **
--- Please install 'Packer' on your machine first, then run :PackerSync
 
-require('plugins')
+vim.g.mapleader = " "
+
 require('settings')
+require('lazy-config')
+require('lazy').setup('lazy-plugins')
 require('lsp')
 
 -- Native Vim Scripts
@@ -12,4 +14,3 @@ vim.cmd(sourced .. 'colors.vim')
 vim.cmd(sourced .. 'diagnostics.vim')
 vim.cmd(sourced .. 'bindings.vim')
 vim.cmd(sourced .. 'filetype.vim')
-vim.cmd(sourced .. 'lightline.vim')
