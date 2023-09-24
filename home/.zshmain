@@ -101,6 +101,8 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 PATH=$(pyenv root)/shims:$PATH
 # helps with build failures for some modules that occur on Apple Silicon (scipy, statsmodels)
 export OPENBLAS=$(brew --prefix openblas || "")
+## Poetry
+PATH="$HOME/.local/bin:$PATH"
 
 # CARGO (Rust)
 PATH="$HOME/.cargo/bin:$PATH"
