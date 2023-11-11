@@ -12,4 +12,7 @@ PATH="/opt/homebrew:$PATH"
 echo "Installing brew dependencies..."
 brew bundle --file ~/config/home/Brewfile
 
+# Install fzf completions
+$(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc
+
 echo "Brew stuff installed!"
