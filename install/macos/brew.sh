@@ -7,10 +7,10 @@ echo "Installing brew (requires xcode command line)..."
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # path is set in .zshrc already, but we need it for the rest of this session
-PATH="/opt/homebrew:$PATH"
+PATH="/opt/homebrew/bin:$PATH"
 
 echo "Installing brew dependencies..."
-brew bundle --file ~/config/home/Brewfile
+brew bundle --file ~/configs/home/Brewfile
 
 # Install fzf completions
 $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc
