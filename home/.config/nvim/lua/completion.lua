@@ -1,6 +1,14 @@
 -- nvim-cmp - AUTOCOMPLETION ENGINE
 local cmp = require'cmp'
 
+local has_words_before = function()
+  -- For Tab completion support of multiple lines
+  -- https://github.com/zbirenbaum/copilot-cmp
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
+end
+
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -19,11 +27,21 @@ cmp.setup({
       i = cmp.mapping.confirm({ select = true }),
       c = cmp.mapping.confirm({ select = false }),
     }),
+    ["<Tab>"] = vim.schedule_wrap(function(fallback)
+      -- For Copilot support
+      if cmp.visible() and has_words_before() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+      else
+        fallback()
+      end
+    end
+    ),
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'vsnip' },
+    { name = 'copilot' },
   }, {
     { name = 'buffer' },
   }),
@@ -32,6 +50,7 @@ cmp.setup({
       buffer = "[B]",
       nvim_lsp = "[L]",
       vsnip = "[S]",
+      copilot = "[C]",
       nvim_lua = "[Lua]",
       latex_symbols = "[Latex]",
     })}),

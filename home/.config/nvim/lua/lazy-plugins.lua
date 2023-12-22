@@ -124,9 +124,6 @@ return {
             suggestion = { enabled = false },
             panel = { enabled = false },
         },
-        config = function() 
-            require("copilot").setup({})
-        end,
     },
 
     -- COMPLETION
@@ -148,7 +145,7 @@ return {
             {
                 "zbirenbaum/copilot-cmp",
                 opts = {},
-            }
+            },
         },
         config = function()
             require("completion")
