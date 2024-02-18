@@ -167,7 +167,7 @@ return {
               formatting.prettier,
               formatting.black,
               -- diagnostics.write_good,
-              diagnostics.eslint_d,
+              diagnostics.eslint,
               diagnostics.flake8,
               code_actions.gitsigns,
             },
