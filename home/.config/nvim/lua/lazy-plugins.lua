@@ -113,6 +113,40 @@ return {
     {
         "nvim-lua/lsp-status.nvim"
     },
+    {
+        "nvimtools/none-ls.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        config = function()
+          -- null-ls is used for non-lsp stuff
+          local null_ls = require("null-ls")
+          local formatting = null_ls.builtins.formatting
+          local diagnostics = null_ls.builtins.diagnostics
+          local code_actions = null_ls.builtins.code_actions
+
+          null_ls.setup({
+            capabilities = capabilities,
+            on_attach = function(client)
+              -- Trigger formatting if the client supports it.
+              if client.server_capabilities.documentFormattingProvider then
+                vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = false })")
+              end
+            end,
+            diagnostics_format = "#{m}",
+            debounce = 250,
+            default_timeout = 5000,
+            sources = {
+              formatting.prettier,
+              formatting.black,
+              -- diagnostics.write_good,
+              diagnostics.eslint_d,
+              diagnostics.flake8,
+              code_actions.gitsigns,
+            },
+          })
+        end,
+    },
 
     -- COPILOT
     {
