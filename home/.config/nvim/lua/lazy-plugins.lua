@@ -11,7 +11,7 @@ return {
         branch = "v3.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            -- "nvim-tree/nvim-web-devicons", -- lots of the icons are broken, ignore for now
             "MunifTanjim/nui.nvim",
         },
         config = function()
