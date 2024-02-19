@@ -11,7 +11,7 @@ return {
         branch = "v3.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            -- "nvim-tree/nvim-web-devicons", -- lots of the icons are broken, ignore for now
+            -- "nvim-tree/nvim-web-devicons", -- see circles.nvim config below
             "MunifTanjim/nui.nvim",
         },
         config = function()
@@ -48,6 +48,15 @@ return {
         config = function()
             load_vim_config('lightline.vim')
         end,
+    },
+    {
+        "projekt0n/circles.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("circles").setup()
+        end
     },
 
     -- EDITOR
