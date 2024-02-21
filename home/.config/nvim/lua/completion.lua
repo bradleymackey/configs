@@ -17,6 +17,24 @@ cmp.setup({
       vim.fn["vsnip#anonymous"](args.body)
     end,
   },
+  sorting = {
+    priority_weight = 2,
+    comparators = {
+      require("copilot_cmp.comparators").prioritize,
+
+      -- Below is the default comparitor list and order for nvim-cmp
+      cmp.config.compare.offset,
+      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+      cmp.config.compare.exact,
+      cmp.config.compare.score,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.locality,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
   mapping = {
     ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
@@ -46,14 +64,11 @@ cmp.setup({
     { name = 'buffer' },
   }),
   formatting = {
-    format = require("lspkind").cmp_format({with_text = false, menu = ({
-      buffer = "[B]",
-      nvim_lsp = "[L]",
-      vsnip = "[S]",
-      copilot = "[C]",
-      nvim_lua = "[Lua]",
-      latex_symbols = "[Latex]",
-    })}),
+    format = require("lspkind").cmp_format({
+      mode = "symbol",
+      max_width = 60,
+      symbol_map = { Copilot = "" }
+    })
   },
 })
 
