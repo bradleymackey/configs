@@ -44,10 +44,21 @@ return {
         "chriskempson/base16-vim"
     },
     {
-        "itchyny/lightline.vim",
+        "nvim-lualine/lualine.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
-            load_vim_config('lightline.vim')
-        end,
+            require('lualine').setup {
+                sections = {
+                    lualine_c = {
+                        {
+                            'filename',
+                            file_status = true,
+                            path = 1,
+                        }
+                    },
+                }
+            }
+        end
     },
     {
         "projekt0n/circles.nvim",
