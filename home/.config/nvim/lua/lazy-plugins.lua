@@ -56,6 +56,9 @@ return {
                             path = 1,
                         }
                     },
+                },
+                extensions = {
+                    "lazy", "neo-tree", "fzf"
                 }
             }
         end
