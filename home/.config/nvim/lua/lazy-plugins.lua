@@ -41,7 +41,7 @@ return {
         end
     },
     {
-        "chriskempson/base16-vim"
+        "RRethy/base16-nvim",
     },
     {
         "nvim-lualine/lualine.nvim",
