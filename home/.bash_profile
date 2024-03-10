@@ -21,7 +21,6 @@ if [[ $WANTS_TMUX ]] && [[ $HAS_TMUX ]] && [[ $NOT_TMUX ]] && [[ $IS_INTERACTIVE
 then
     # Launches tmux in a session called 'base'.
     # That will then take over the session.
+    echo "➜ Launching TMUX."
     tmux attach -t base || tmux new -s base
-else
-    echo "➜ Not launching TMUX."
 fi
