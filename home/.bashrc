@@ -7,12 +7,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-# Customize the default prompt
-# gives us git status and name of the current folder only
-# (not bold though!)
-PROMPT="%(?:%{$fg[green]%}• :%{$fg[red]%}• )"
-PROMPT+='%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
-
 # GLOBALS
 
 export LC_ALL=en_US.UTF-8
@@ -123,7 +117,7 @@ export OSH="$HOME/.oh-my-bash"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
-OSH_THEME="font"
+OSH_THEME="robbyrussell"
 
 # If you set OSH_THEME to "random", you can ignore themes you don't like.
 # OMB_THEME_RANDOM_IGNORED=("powerbash10k" "wanelo")
