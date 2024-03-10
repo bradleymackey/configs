@@ -1,51 +1,9 @@
+#!/bin/bash
 # .bash_profile
-#
 # For interactive shells, bootstraps the launch of tmux.
 
-[[ -s "$HOME/.profile" ]] && source "$HOME/.profile" # Load the default .profile
-
-# Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS2" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
-
-# PATH
-
-PATH=$HOME/bin:/usr/local/bin:$PATH
-PATH=/opt/homebrew/bin:$PATH
-PATH="$PATH:$HOME/.my_scripts"
-
-export PATH
-
-# GLOBALS
-
-export LC_ALL=en_US.UTF-8
-export MANPATH="/usr/local/man:$MANPATH"
-export LANG=en_US.UTF-8
-export DO_NOT_TRACK=1
-export NO_UPDATE_NOTIFIER=1
-export PAGER="less"
-
-# ALIASES
-
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
-alias e='nvim'
-alias nv='nvim'
-alias v='nvim'
-alias p='pnpm'
-alias grep='rg'
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias fl="bundle exec fastlane"
-alias up="cd .."
-alias ls="exa"
-alias gap="git add -p"
-alias js="node"
+source ~/.profile
+source ~/.bashrc
 
 # -> Launch to tmux if 
 #   1. we have tmux installed
@@ -65,7 +23,5 @@ then
     # That will then take over the session.
     tmux attach -t base || tmux new -s base
 else
-    # We don't want to launch tmux now, so perform the setup in the current session.
-    # I don't think this is needed for bash, as .bashrc is loaded each time
-    # source "$HOME/.zshmain"
+    echo "➜ Not launching TMUX."
 fi

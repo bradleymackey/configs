@@ -1,8 +1,52 @@
+# .bashrc
+# Variables and setup. 
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS2" ] && \
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+
 # Customize the default prompt
 # gives us git status and name of the current folder only
 # (not bold though!)
 PROMPT="%(?:%{$fg[green]%}• :%{$fg[red]%}• )"
 PROMPT+='%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+
+# GLOBALS
+
+export LC_ALL=en_US.UTF-8
+export MANPATH="/usr/local/man:$MANPATH"
+export LANG=en_US.UTF-8
+export DO_NOT_TRACK=1
+export NO_UPDATE_NOTIFIER=1
+export PAGER="less"
+
+# ALIASES
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+alias e='nvim'
+alias nv='nvim'
+alias v='nvim'
+alias p='pnpm'
+alias grep='rg'
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias fl="bundle exec fastlane"
+alias up="cd .."
+alias ls="exa"
+alias gap="git add -p"
+alias js="node"
+
+# PATH
+
+PATH=$HOME/bin:/usr/local/bin:$PATH
+PATH=/opt/homebrew/bin:$PATH
+PATH="$PATH:$HOME/.my_scripts"
 
 # FASTLANE
 PATH="$HOME/.fastlane/bin:$PATH"
@@ -42,16 +86,8 @@ PATH="$PNPM_HOME:$PATH"
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# gcloud
-source "$brew_prefix/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-
 # clangd
 PATH="$PATH:$brew_prefix/opt/llvm/bin/"
-
-# Bun (JS)
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-export BUN_INSTALL="$HOME/.bun"
-PATH="$BUN_INSTALL/bin:$PATH"
 
 # Node.js
 eval "$(fnm env)"
