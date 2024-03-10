@@ -21,6 +21,7 @@ export LANG=en_US.UTF-8
 export DO_NOT_TRACK=1
 export NO_UPDATE_NOTIFIER=1
 export PAGER="less"
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # ALIASES
 
