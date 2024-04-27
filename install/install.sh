@@ -36,6 +36,8 @@ ln -s $CONF_PATH/swift_po ~/.config/swift_po
 if [[ "$OSTYPE" == "darwin"* ]]; then
     source $INSTALL_PATH/macos/macos.sh
     source $INSTALL_PATH/macos/brew.sh
+    ln -s $HOME_PATH/config.nu ~/Library/Application\ Support/nushell/config.nu
+    ln -s $HOME_PATH/env.nu ~/Library/Application\ Support/nushell/env.nu
 fi
 source $INSTALL_PATH/node.sh
 source $INSTALL_PATH/rust.sh
