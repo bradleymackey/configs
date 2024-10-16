@@ -134,6 +134,7 @@ return {
             "JoosepAlviste/nvim-ts-context-commentstring",
             "nvim-treesitter/nvim-treesitter-textobjects",
             "RRethy/nvim-treesitter-textsubjects",
+            { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
         },
         config = function()
             require("treesitter-config")

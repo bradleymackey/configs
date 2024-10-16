@@ -68,3 +68,5 @@ else
     # We don't want to launch tmux now, so perform the setup in the current session.
     source "$HOME/.zshmain"
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
