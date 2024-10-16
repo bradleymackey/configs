@@ -131,7 +131,7 @@ lspconfig.rust_analyzer.setup {
     on_attach = on_attach,
 }
 
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
     capabilities = default_capabilities(),
     on_attach = function(client, buf)
         -- we use null-ls to format, not tsserver
