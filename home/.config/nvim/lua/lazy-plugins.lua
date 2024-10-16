@@ -191,8 +191,8 @@ return {
               formatting.prettier,
               formatting.black,
               -- diagnostics.write_good,
-              diagnostics.eslint,
-              diagnostics.flake8,
+              -- diagnostics.eslint,
+              -- diagnostics.flake8,
               code_actions.gitsigns,
             },
           })
