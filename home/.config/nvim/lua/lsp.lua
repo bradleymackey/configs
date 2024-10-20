@@ -131,8 +131,16 @@ lspconfig.rust_analyzer.setup {
     on_attach = on_attach,
 }
 
+lspconfig.denols.setup {
+    on_attach = on_attach,
+    capabilities = default_capabilities(),
+    root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+}
+
 lspconfig.ts_ls.setup {
     capabilities = default_capabilities(),
+    root_dir = lspconfig.util.root_pattern("package.json"),
+    single_file_support = false,
     on_attach = function(client, buf)
         -- we use null-ls to format, not tsserver
         client.server_capabilities.documentFormattingProvider = false
