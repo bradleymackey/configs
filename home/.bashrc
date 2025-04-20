@@ -95,6 +95,9 @@ eval "$(rbenv init - zsh)"
 export MODULAR_HOME="$HOME/.modular"
 PATH="$PATH:$HOME/.modular/pkg/packages.modular.com_mojo/bin"
 
+# OrbStack
+source ~/.orbstack/shell/init.bash 2>/dev/null || :
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/Users/bradley/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
