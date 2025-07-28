@@ -222,18 +222,6 @@ return {
         end,
     },
 
-    -- COPILOT
-    {
-        "zbirenbaum/copilot.lua",
-        enabled = true,
-        cmd = "Copilot",
-        event = "InsertEnter",
-        opts = {
-            suggestion = { enabled = false },
-            panel = { enabled = false },
-        },
-    },
-
     -- COMPLETION
     {
         "hrsh7th/nvim-cmp",
@@ -250,10 +238,6 @@ return {
             "hrsh7th/vim-vsnip",
             "onsails/lspkind-nvim",
             "hrsh7th/cmp-nvim-lsp-signature-help",
-            {
-                "zbirenbaum/copilot-cmp",
-                opts = {},
-            },
         },
         config = function()
             require("completion")
