@@ -33,6 +33,10 @@ alias fl="bundle exec fastlane"
 alias up="cd .."
 alias gap="git add -p"
 alias js="node"
+alias gd="git diff"
+alias gds="git diff --stat"
+alias glg="git log --oneline"
+alias gp="git push"
 
 # PATH
 
