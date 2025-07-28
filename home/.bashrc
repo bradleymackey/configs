@@ -29,8 +29,6 @@ alias nv='nvim'
 alias v='nvim'
 alias p='pnpm'
 alias grep='rg'
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
 alias fl="bundle exec fastlane"
 alias up="cd .."
 alias ls="exa"
@@ -60,8 +58,6 @@ PATH="$PATH:$GOPATH/bin"
 
 # Python
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 PATH=$(pyenv root)/shims:$PATH
 # helps with build failures for some modules that occur on Apple Silicon (scipy, statsmodels)
 export OPENBLAS=$(brew --prefix openblas || "")
@@ -86,6 +82,10 @@ PATH="$PATH:$brew_prefix/opt/llvm/bin/"
 
 # Node.js
 eval "$(fnm env)"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+PATH=$BUN_INSTALL/bin:$PATH
 
 # Ruby
 PATH="$PATH:$HOME/.rvm/bin"
@@ -260,6 +260,3 @@ source "$OSH"/oh-my-bash.sh
 
 export PATH
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
