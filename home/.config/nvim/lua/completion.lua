@@ -3,7 +3,6 @@ local cmp = require'cmp'
 
 local has_words_before = function()
   -- For Tab completion support of multiple lines
-  -- https://github.com/zbirenbaum/copilot-cmp
   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
@@ -20,8 +19,6 @@ cmp.setup({
   sorting = {
     priority_weight = 2,
     comparators = {
-      require("copilot_cmp.comparators").prioritize,
-
       -- Below is the default comparitor list and order for nvim-cmp
       cmp.config.compare.offset,
       -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
@@ -59,7 +56,6 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'vsnip' },
-    { name = 'copilot' },
   }, {
     { name = 'buffer' },
   }),
@@ -67,7 +63,6 @@ cmp.setup({
     format = require("lspkind").cmp_format({
       mode = "symbol",
       max_width = 60,
-      symbol_map = { Copilot = "" }
     })
   },
 })
