@@ -11,7 +11,35 @@ success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set
 [git_metrics]
 disabled = false
 added_style = 'bold blue'
+deleted_style = 'bold red'
 format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+cherry_pick = '[🍒 PICKING](bold red)'
+rebase = '[↔️ REBASING](bold yellow)'
+merge = '[🚚 MERGING](bold magenta)'
+bisect = '[➗ BISECTING](bold green)'
+am = '[✉️ APPLYING](bold cyan)'
+
+[git_status]
+format = '[$conflicted$untracked$stashed$modified$staged$renamed$deleted$ahead_behind$diverged$unpulled$unpushed]($style)'
+# Symbols and styles for different states
+conflicted = '✖️$count ' # Files with merge conflicts
+untracked = '?$count '   # New files not yet staged
+stashed = '$count '      # Changes stashed
+modified = 'M$count '    # Modified files not yet staged
+staged = 'A$count '      # Staged changes (added or modified)
+renamed = 'R$count '     # Renamed files
+deleted = 'D$count '     # Deleted files
+# Ahead/Behind indicators (relative to upstream)
+ahead = '⇡$count'       # Commits ahead of upstream
+behind = '⇣$count'      # Commits behind upstream
+diverged = '⇕$ahead⇕$behind' # Both ahead and behind
+# Unpulled/Unpushed for clarity on remote status
+unpulled = '↓$count'    # Commits on remote not yet pulled
+unpushed = '↑$count'    # Commits locally not yet pushed
+style = 'bold yellow' # General style for the git_status module
 
 # Disable the package module, hiding it from the prompt completely
 [package]
