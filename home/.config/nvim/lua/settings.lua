@@ -14,7 +14,7 @@ vim.o.timeoutlen = 300
 vim.opt.shortmess:append({ c = true })
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.api.nvim_command 'set noshowmode'
+vim.o.showmode = false
 
 -- Disable netrw
 vim.g.loaded_netrw = 1

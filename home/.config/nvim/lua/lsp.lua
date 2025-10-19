@@ -25,7 +25,7 @@ vim.lsp.handlers["textDocument/formatting"] = function(err, _, result, _, bufnr)
         vim.lsp.util.apply_text_edits(result, bufnr)
         vim.fn.winrestview(view)
         if bufnr == vim.api.nvim_get_current_buf() then
-            vim.api.nvim_command("noautocmd :update")
+            vim.cmd("noautocmd update")
         end
     end
 end
