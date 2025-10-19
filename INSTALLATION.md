@@ -253,7 +253,8 @@ When adding new features:
 2. Add corresponding tests in `test/install.test.ts`
 3. Update this documentation
 4. Run tests to ensure nothing breaks: `bun test`
-5. Test in dry-run mode: `./go.sh --dry-run`
+5. Test in dry-run mode: `bun run dry-run`
+6. Test in verification mode: `bun run verify`
 
 ## Troubleshooting
 

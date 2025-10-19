@@ -104,16 +104,20 @@ bun run test
 bun run test:watch
 ```
 
-The test suite validates:
+The test suite includes **47 comprehensive tests** validating:
+
+- Verification mode functionality
 - Dry-run mode functionality
 - Symlink creation and management
 - Idempotency (safe to run multiple times)
 - Backup of existing files
+- File preservation (no data loss)
 - Script syntax validation
 - Directory creation
-- Error handling
+- Error handling and edge cases
 - Git integration
-- Platform detection
+- Platform detection (macOS-specific features)
+- CLI argument combinations
 
 I'm a fan of configs working, and working fast.
 There may be better alternatives to some of these tools below, but they work well for me in my workflow.
@@ -128,11 +132,16 @@ There may be better alternatives to some of these tools below, but they work wel
   - Multiplexer: [`tmux`](https://github.com/tmux/tmux/wiki)
   - Colors: [`base16`](https://github.com/chriskempson/base16)
 - Editor: [`neovim`](https://neovim.io)
-  - Package Manager: [`packer.nvim`](https://github.com/wbthomason/packer.nvim)
+  - Package Manager: [`lazy.nvim`](https://github.com/folke/lazy.nvim)
+  - File Explorer: [`neo-tree`](https://github.com/nvim-neo-tree/neo-tree.nvim)
   - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
-  - LSP: Native with [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig) to bootstrap
-  - Lint/Diagnostics/Format: [`null-ls`](https://github.com/jose-elias-alvarez/null-ls.nvim)
-  - (_see config file for more_)
+  - LSP: Native with [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig)
+  - Linting: [`nvim-lint`](https://github.com/mfussenegger/nvim-lint)
+  - Formatting: [`none-ls.nvim`](https://github.com/nvimtools/none-ls.nvim) (null-ls successor)
+  - Completion: [`nvim-cmp`](https://github.com/hrsh7th/nvim-cmp)
+  - Treesitter: [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter)
+  - Auto-reload: Files automatically reload on external changes
+  - (_see config files for complete plugin list_)
 - Shell Tools:
   - Package Manager: [`brew`](https://brew.sh)
   - Grep: [`ripgrep`](https://github.com/BurntSushi/ripgrep)
