@@ -17,6 +17,7 @@ const packages = [
   "prettier",
   "prettier_d_slim",
   "pyright",
+  "markdownlint-cli",
 ];
 
 try {
