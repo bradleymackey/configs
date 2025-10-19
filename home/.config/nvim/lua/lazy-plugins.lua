@@ -16,11 +16,19 @@ return {
     },
     config = function()
       require("neo-tree").setup({
+        -- Sync root with current working directory
+        sync_root_with_cwd = true,
         filesystem = {
           filtered_items = {
             visible = true,
             hide_dotfiles = false,
             hide_gitignored = false,
+          },
+          -- Enable filesystem watcher to automatically update on external changes
+          use_libuv_file_watcher = true,
+          -- Follow current file
+          follow_current_file = {
+            enabled = true,
           },
         },
         window = {

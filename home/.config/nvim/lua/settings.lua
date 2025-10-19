@@ -20,6 +20,14 @@ vim.o.showmode = false
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- AUTO-RELOAD FILES
+-- Automatically check for file changes when they are modified externally
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
+  group = vim.api.nvim_create_augroup("auto_checktime", { clear = true }),
+  command = "checktime",
+})
+
 -- EDITOR
 vim.o.re = 0
 vim.o.autoindent = true
