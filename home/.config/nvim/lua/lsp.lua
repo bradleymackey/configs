@@ -20,7 +20,7 @@ vim.lsp.handlers["textDocument/formatting"] = function(err, _, result, _, bufnr)
     if err ~= nil or result == nil then
         return
     end
-    if not vim.api.nvim_buf_get_option(bufnr, "modified") then
+    if not vim.bo[bufnr].modified then
         local view = vim.fn.winsaveview()
         vim.lsp.util.apply_text_edits(result, bufnr)
         vim.fn.winrestview(view)

@@ -17,7 +17,7 @@ vim.o.splitbelow = true
 vim.api.nvim_command 'set noshowmode'
 
 -- Disable netrw
-vim.g.loaded = 1
+vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 -- EDITOR
