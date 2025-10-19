@@ -1,0 +1,27 @@
+{
+  "name": "configs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Personal development environment configuration and dotfiles",
+  "scripts": {
+    "install": "bun install/install.ts",
+    "install:dry-run": "bun install/install.ts --dry-run",
+    "install:dotfiles": "bun install/install.ts --skip-packages",
+    "install:verbose": "bun install/install.ts --verbose",
+    "dry-run": "bun install/install.ts --dry-run",
+    "verify": "bun install/install.ts --verify",
+    "usage": "bun install/install.ts --help",
+    "test": "bun test test/",
+    "test:watch": "bun test --watch test/"
+  },
+  "keywords": [
+    "dotfiles",
+    "configuration",
+    "development-environment"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
