@@ -246,6 +246,7 @@ return {
             sources = {
               formatting.prettier,
               formatting.black,
+              formatting.stylua,
               code_actions.gitsigns,
             },
           })
