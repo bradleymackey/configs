@@ -87,8 +87,6 @@ local on_attach = function(client, bufnr)
 end
 
 -- LANG SERVER CONFIGS
-local util = require "lspconfig/util"
-local lspconfig = require('lspconfig')
 local cmp_nvim = require('cmp_nvim_lsp')
 function default_capabilities()
     return cmp_nvim.default_capabilities()
@@ -97,68 +95,112 @@ end
 local clang_capabilties = default_capabilities()
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428#issuecomment-997226723
 clang_capabilties.offsetEncoding = { 'utf-16' }
-lspconfig.clangd.setup { 
-    handlers = lsp_status.extensions.clangd.setup(),
+
+-- clangd
+vim.lsp.config.clangd = {
+    cmd = { 'clangd' },
+    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
+    root_markers = { '.clangd', '.clang-tidy', '.clang-format', 'compile_commands.json', 'compile_flags.txt', 'configure.ac', '.git' },
     capabilities = clang_capabilties,
-    on_attach = on_attach,
+    handlers = lsp_status.extensions.clangd.setup(),
 }
+vim.lsp.enable('clangd')
 
-lspconfig.pyright.setup {
+-- pyright
+vim.lsp.config.pyright = {
+    cmd = { 'pyright-langserver', '--stdio' },
+    filetypes = { 'python' },
+    root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile', 'pyrightconfig.json', '.git' },
     capabilities = default_capabilities(),
-    on_attach = on_attach
-}
-
-lspconfig.sourcekit.setup { 
-    capabilities = default_capabilities(),
-    on_attach = on_attach
-}
-
-lspconfig.rust_analyzer.setup { 
-    capabilities = default_capabilities(),
-    flags = {
-      debounce_text_changes = 150,
-    },
     settings = {
-      ["rust-analyzer"] = {
-        checkOnSave = true,
-        cargo = {
-          allFeatures = true,
+        python = {
+            analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = 'workspace',
+            },
         },
-      },
     },
-    on_attach = on_attach,
 }
+vim.lsp.enable('pyright')
 
-lspconfig.denols.setup {
-    on_attach = on_attach,
+-- sourcekit
+vim.lsp.config.sourcekit = {
+    cmd = { 'sourcekit-lsp' },
+    filetypes = { 'swift', 'c', 'cpp', 'objective-c', 'objective-cpp' },
+    root_markers = { 'Package.swift', '.git' },
     capabilities = default_capabilities(),
-    root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
 }
+vim.lsp.enable('sourcekit')
 
-lspconfig.ts_ls.setup {
+-- rust_analyzer
+vim.lsp.config.rust_analyzer = {
+    cmd = { 'rust-analyzer' },
+    filetypes = { 'rust' },
+    root_markers = { 'Cargo.toml', 'rust-project.json', '.git' },
     capabilities = default_capabilities(),
-    root_dir = lspconfig.util.root_pattern("package.json"),
+    settings = {
+        ["rust-analyzer"] = {
+            checkOnSave = true,
+            cargo = {
+                allFeatures = true,
+            },
+        },
+    },
+}
+vim.lsp.enable('rust_analyzer')
+
+-- denols
+vim.lsp.config.denols = {
+    cmd = { 'deno', 'lsp' },
+    filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
+    root_markers = { 'deno.json', 'deno.jsonc' },
+    capabilities = default_capabilities(),
+}
+vim.lsp.enable('denols')
+
+-- ts_ls (TypeScript)
+vim.lsp.config.ts_ls = {
+    cmd = { 'typescript-language-server', '--stdio' },
+    filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
+    root_markers = { 'package.json' },
     single_file_support = false,
-    on_attach = function(client, buf)
-        -- we use null-ls to format, not tsserver
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-        on_attach(client, buf)
-    end
-}
-
-lspconfig.gopls.setup {
     capabilities = default_capabilities(),
-    on_attach = on_attach,
-    cmd = {"gopls", "serve"},
-    filetypes = {"go", "gomod"},
-    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+}
+vim.lsp.enable('ts_ls')
+
+-- gopls
+vim.lsp.config.gopls = {
+    cmd = { 'gopls', 'serve' },
+    filetypes = { 'go', 'gomod' },
+    root_markers = { 'go.work', 'go.mod', '.git' },
+    capabilities = default_capabilities(),
     settings = {
-      gopls = {
-        analyses = {
-          unusedparams = true,
+        gopls = {
+            analyses = {
+                unusedparams = true,
+            },
+            staticcheck = true,
         },
-        staticcheck = true,
-      },
     },
 }
+vim.lsp.enable('gopls')
+
+-- Set up on_attach callback for all LSP clients
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        local bufnr = args.buf
+        
+        if client then
+            on_attach(client, bufnr)
+            
+            -- Special handling for ts_ls
+            if client.name == 'ts_ls' then
+                -- we use null-ls to format, not tsserver
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
+            end
+        end
+    end,
+})
