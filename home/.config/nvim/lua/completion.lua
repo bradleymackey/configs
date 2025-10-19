@@ -1,11 +1,13 @@
 -- nvim-cmp - AUTOCOMPLETION ENGINE
-local cmp = require'cmp'
+local cmp = require("cmp")
 
 local has_words_before = function()
   -- For Tab completion support of multiple lines
-  if vim.bo.buftype == "prompt" then return false end
+  if vim.bo.buftype == "prompt" then
+    return false
+  end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
 end
 
 cmp.setup({
@@ -33,43 +35,43 @@ cmp.setup({
     },
   },
   mapping = {
-    ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's', 'c' }),
-    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's', 'c' }),
-    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping({
+    ["<Tab>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s", "c" }),
+    ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s", "c" }),
+    ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+    ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<CR>"] = cmp.mapping({
       i = cmp.mapping.confirm({ select = true }),
       c = cmp.mapping.confirm({ select = false }),
     }),
   },
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_signature_help' },
-    { name = 'vsnip' },
+    { name = "nvim_lsp" },
+    { name = "nvim_lsp_signature_help" },
+    { name = "vsnip" },
   }, {
-    { name = 'buffer' },
+    { name = "buffer" },
   }),
   formatting = {
     format = require("lspkind").cmp_format({
       mode = "symbol",
       max_width = 60,
-    })
+    }),
   },
 })
 
 -- Use buffer source for `/`.
-cmp.setup.cmdline('/', {
+cmp.setup.cmdline("/", {
   sources = {
-    { name = 'buffer' }
-  }
+    { name = "buffer" },
+  },
 })
 
 -- Use cmdline & path source for ':'.
-cmp.setup.cmdline(':', {
+cmp.setup.cmdline(":", {
   sources = cmp.config.sources({
-    { name = 'path' }
+    { name = "path" },
   }, {
-    { name = 'cmdline' }
-  })
+    { name = "cmdline" },
+  }),
 })
