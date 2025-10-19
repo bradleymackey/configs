@@ -94,5 +94,41 @@ end, {
   desc = 'Re-enable autoformat-on-save',
 })
 
+vim.api.nvim_create_user_command('FormatStatus', function()
+  local buf_disabled = vim.b.disable_autoformat
+  local global_disabled = vim.g.disable_autoformat
+  
+  -- Check for .nvim-no-format marker file
+  local root_dir = vim.fs.root(0, { '.git', 'package.json', 'Cargo.toml', 'go.mod', 'pyproject.toml' })
+  local marker_exists = root_dir and vim.fn.filereadable(root_dir .. '/.nvim-no-format') == 1
+  
+  local status = "Autoformat Status:\n"
+  status = status .. "  Buffer: " .. (buf_disabled and "disabled" or "enabled") .. "\n"
+  status = status .. "  Global: " .. (global_disabled and "disabled" or "enabled") .. "\n"
+  status = status .. "  Project marker (.nvim-no-format): " .. (marker_exists and "found (disabled)" or "not found") .. "\n"
+  status = status .. "\n"
+  status = status .. "Overall: " .. ((buf_disabled or global_disabled or marker_exists) and "DISABLED" or "ENABLED")
+  
+  print(status)
+end, {
+  desc = 'Show autoformat status',
+})
+
+-- Notify when opening a project with .nvim-no-format
+au('BufEnter', {
+  group = ag('autoformat_notification', {}),
+  callback = function()
+    if vim.b.autoformat_notified then
+      return
+    end
+    
+    local root_dir = vim.fs.root(0, { '.git', 'package.json', 'Cargo.toml', 'go.mod', 'pyproject.toml' })
+    if root_dir and vim.fn.filereadable(root_dir .. '/.nvim-no-format') == 1 then
+      vim.b.autoformat_notified = true
+      vim.notify('Autoformatting disabled (.nvim-no-format found)', vim.log.levels.INFO)
+    end
+  end,
+})
+
 -- DIAGNOSTICS
 
