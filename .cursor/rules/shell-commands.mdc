@@ -1,3 +1,9 @@
+---
+description: Shell command guidelines and ripgrep usage
+globs: ["**/*.sh", "**/*.bash", "**/*.ts"]
+alwaysApply: true
+---
+
 # Shell Commands
 
 ## Use ripgrep instead of grep

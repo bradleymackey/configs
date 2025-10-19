@@ -1,3 +1,9 @@
+---
+description: Testing conventions with Bun test runner
+globs: ["**/*.test.ts", "**/*.spec.ts"]
+alwaysApply: false
+---
+
 # Testing
 
 - Use Bun's built-in test runner: `bun test`

@@ -1,3 +1,9 @@
+---
+description: Code style and best practices
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: true
+---
+
 # Code Style
 
 - Use clear, descriptive variable names

@@ -1,3 +1,9 @@
+---
+description: Installation script conventions and structure
+globs: ["install/**/*.ts"]
+alwaysApply: false
+---
+
 # Installation Scripts
 
 - All installation scripts are in TypeScript under `install/`

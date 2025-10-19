@@ -1,3 +1,9 @@
+---
+description: Shell configuration guidelines (bash only)
+globs: ["**/.bashrc", "**/.bash_profile", "**/*.sh", "**/*.bash"]
+alwaysApply: true
+---
+
 # Shell Configuration
 
 - This project uses **bash only**, no zsh support
