@@ -202,12 +202,42 @@ return {
           local formatting = null_ls.builtins.formatting
           local code_actions = null_ls.builtins.code_actions
 
+          -- Helper function to check if autoformatting should be disabled
+          local function is_autoformat_disabled()
+            -- Check for buffer-local variable
+            if vim.b.disable_autoformat then
+              return true
+            end
+            
+            -- Check for global variable
+            if vim.g.disable_autoformat then
+              return true
+            end
+            
+            -- Check for .nvim-no-format marker file in project root
+            local root_dir = vim.fs.root(0, { '.git', 'package.json', 'Cargo.toml', 'go.mod', 'pyproject.toml' })
+            if root_dir and vim.fn.filereadable(root_dir .. '/.nvim-no-format') == 1 then
+              return true
+            end
+            
+            return false
+          end
+
           null_ls.setup({
             capabilities = capabilities,
-            on_attach = function(client)
+            on_attach = function(client, bufnr)
               -- Trigger formatting if the client supports it.
               if client.server_capabilities.documentFormattingProvider then
-                vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = false })")
+                local group = vim.api.nvim_create_augroup('AutoFormat', { clear = false })
+                vim.api.nvim_create_autocmd('BufWritePre', {
+                  group = group,
+                  buffer = bufnr,
+                  callback = function()
+                    if not is_autoformat_disabled() then
+                      vim.lsp.buf.format({ async = false })
+                    end
+                  end,
+                })
               end
             end,
             diagnostics_format = "#{m}",

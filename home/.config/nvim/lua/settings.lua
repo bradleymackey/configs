@@ -70,5 +70,29 @@ au('TextYankPost', {
   end,
 })
 
+-- Autoformat toggle commands
+vim.api.nvim_create_user_command('FormatDisable', function(args)
+  if args.bang then
+    -- FormatDisable! will disable formatting globally
+    vim.g.disable_autoformat = true
+    print('Autoformat disabled globally')
+  else
+    -- FormatDisable will disable formatting for current buffer
+    vim.b.disable_autoformat = true
+    print('Autoformat disabled for this buffer')
+  end
+end, {
+  desc = 'Disable autoformat-on-save',
+  bang = true,
+})
+
+vim.api.nvim_create_user_command('FormatEnable', function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+  print('Autoformat enabled')
+end, {
+  desc = 'Re-enable autoformat-on-save',
+})
+
 -- DIAGNOSTICS
 
