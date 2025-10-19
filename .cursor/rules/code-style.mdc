@@ -1,0 +1,8 @@
+# Code Style
+
+- Use clear, descriptive variable names
+- Add colored console output for user feedback (INFO, SUCCESS, WARN, ERROR)
+- Always handle errors gracefully with try-catch
+- Provide helpful error messages
+- Use async/await for asynchronous operations
+- Prefer explicit over implicit

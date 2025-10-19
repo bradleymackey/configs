@@ -1,0 +1,32 @@
+# Shell Commands
+
+## Use ripgrep instead of grep
+
+- ALWAYS use `rg` (ripgrep) instead of `grep` for pattern searching
+- `grep` is aliased to `rg` in this environment
+- Ripgrep is faster and has better defaults (respects .gitignore, colored output, etc.)
+
+Examples:
+```bash
+# Good - use rg
+rg "pattern" file.txt
+rg -i "case-insensitive" .
+rg -n "with line numbers" src/
+
+# Bad - don't use grep
+grep "pattern" file.txt  # This will work but use rg instead
+```
+
+## Common rg flags
+
+- `-i` or `--ignore-case`: Case insensitive search
+- `-n` or `--line-number`: Show line numbers
+- `-l` or `--files-with-matches`: Only show filenames
+- `-c` or `--count`: Show count of matches
+- `-v` or `--invert-match`: Invert match
+- `-A NUM`: Show NUM lines after match
+- `-B NUM`: Show NUM lines before match
+- `-C NUM`: Show NUM lines around match
+- `-t TYPE`: Search only files of TYPE (e.g., `-t ts` for TypeScript)
+- `--hidden`: Search hidden files
+- `--no-ignore`: Don't respect .gitignore

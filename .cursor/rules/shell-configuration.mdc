@@ -1,0 +1,5 @@
+# Shell Configuration
+
+- This project uses **bash only**, no zsh support
+- Do not add zsh-specific configurations or scripts
+- Shell configuration files: `.bashrc`, `.bash_profile`

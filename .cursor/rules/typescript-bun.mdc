@@ -1,0 +1,6 @@
+# TypeScript/Bun
+
+- This project uses Bun as the JavaScript runtime
+- All scripts are written in TypeScript, not bash
+- Use `bun` commands for running scripts, not `node`
+- Package manager commands use `bun` (e.g., `bun install`, `bun test`)

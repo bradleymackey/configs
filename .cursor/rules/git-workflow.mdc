@@ -1,0 +1,6 @@
+# Git Workflow
+
+- Write clear, concise commit messages
+- Test all changes before committing
+- Run `bun test` to verify tests pass
+- Use `bun run dry-run` to preview installation changes

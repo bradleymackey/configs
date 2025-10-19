@@ -1,0 +1,6 @@
+# Testing
+
+- Use Bun's built-in test runner: `bun test`
+- Test files end with `.test.ts`
+- All tests should be comprehensive and verify actual behavior
+- Tests should use isolated temporary directories to avoid affecting real system

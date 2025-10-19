@@ -1,0 +1,7 @@
+# Installation Scripts
+
+- All installation scripts are in TypeScript under `install/`
+- Main installer: `install/install.ts`
+- Platform-specific scripts in subdirectories (e.g., `install/macos/`)
+- Scripts should support `--dry-run`, `--skip-packages`, `--verbose`, `--help`
+- Use `bun run <script-name>` for predefined package.json scripts
