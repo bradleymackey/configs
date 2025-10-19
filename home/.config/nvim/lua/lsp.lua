@@ -150,16 +150,31 @@ vim.lsp.config.rust_analyzer = {
 }
 vim.lsp.enable('rust_analyzer')
 
--- denols
+-- Helper function to detect Deno projects
+local function is_deno_project(path)
+    local markers = { 'deno.json', 'deno.jsonc' }
+    for _, marker in ipairs(markers) do
+        if vim.fn.filereadable(path .. '/' .. marker) == 1 then
+            return true
+        end
+    end
+    return false
+end
+
+-- Helper function to detect Node projects
+local function is_node_project(path)
+    return vim.fn.filereadable(path .. '/package.json') == 1
+end
+
+-- denols (only for Deno projects)
 vim.lsp.config.denols = {
     cmd = { 'deno', 'lsp' },
     filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
     root_markers = { 'deno.json', 'deno.jsonc' },
     capabilities = default_capabilities(),
 }
-vim.lsp.enable('denols')
 
--- ts_ls (TypeScript)
+-- ts_ls (TypeScript - only for Node projects)
 vim.lsp.config.ts_ls = {
     cmd = { 'typescript-language-server', '--stdio' },
     filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
@@ -167,7 +182,33 @@ vim.lsp.config.ts_ls = {
     single_file_support = false,
     capabilities = default_capabilities(),
 }
-vim.lsp.enable('ts_ls')
+
+-- Conditionally enable denols or ts_ls based on project type
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' },
+    callback = function(args)
+        local bufnr = args.buf
+        local bufname = vim.api.nvim_buf_get_name(bufnr)
+        
+        if bufname == '' then
+            return
+        end
+        
+        -- Find the root directory
+        local root_dir = vim.fs.root(bufnr, { 'deno.json', 'deno.jsonc', 'package.json', '.git' })
+        
+        if not root_dir then
+            return
+        end
+        
+        -- Check which type of project this is
+        if is_deno_project(root_dir) then
+            vim.lsp.enable('denols', bufnr)
+        elseif is_node_project(root_dir) then
+            vim.lsp.enable('ts_ls', bufnr)
+        end
+    end,
+})
 
 -- gopls
 vim.lsp.config.gopls = {
