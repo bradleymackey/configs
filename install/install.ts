@@ -452,7 +452,9 @@ async function main() {
   if (!DRY_RUN) {
     try {
       logInfo("Configuring git credential helper...");
-      await $`git config --global credential.helper store`.quiet();
+      const gitConfigPath = join(HOME_DIR, ".gitconfig");
+      // Use --file to explicitly target the gitconfig in HOME_DIR
+      await $`git config --file ${gitConfigPath} credential.helper store`.quiet();
       logSuccess("Git credential helper configured");
     } catch {
       logWarn("Failed to set git credential helper");

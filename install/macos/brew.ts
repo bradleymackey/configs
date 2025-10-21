@@ -2,9 +2,13 @@
 
 import { $ } from "bun";
 import { existsSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const HOME = process.env.HOME || "~";
+const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
+const CONFIGS_ROOT = join(SCRIPT_DIR, "..", "..");
+const HOME_PATH = join(CONFIGS_ROOT, "home");
 
 console.log("Installing brew (requires xcode command line)...");
 
@@ -23,7 +27,7 @@ try {
   process.env.PATH = `/opt/homebrew/bin:${process.env.PATH}`;
 
   console.log("Installing brew dependencies...");
-  const brewfilePath = join(HOME, "configs", "home", "Brewfile");
+  const brewfilePath = join(HOME_PATH, "Brewfile");
   
   if (existsSync(brewfilePath)) {
     await $`brew bundle --file ${brewfilePath}`;
