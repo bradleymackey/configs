@@ -143,35 +143,22 @@ function safeMkdir(dir: string): boolean {
   }
 }
 
-// Helper function to run external script
-async function runScript(
-  scriptPath: string,
-  description: string
+// Helper function to run installation function
+async function runInstallFunction(
+  installFn: () => Promise<void>,
+  description: string,
 ): Promise<boolean> {
-  if (!existsSync(scriptPath)) {
-    logError(`Script not found: ${scriptPath}`);
-    return false;
-  }
-
   if (DRY_RUN) {
-    logDryRun(`Would run: ${description} (${scriptPath})`);
+    logDryRun(`Would run: ${description}`);
     return true;
   }
 
   logInfo(`Running: ${description}`);
-  
-  try {
-    const result = VERBOSE
-      ? await $`bun ${scriptPath}`.nothrow()
-      : await $`bun ${scriptPath}`.quiet().nothrow();
 
-    if (result.exitCode === 0) {
-      logSuccess(`${description} completed`);
-      return true;
-    } else {
-      logWarn(`${description} failed (continuing)`);
-      return false;
-    }
+  try {
+    await installFn();
+    logSuccess(`${description} completed`);
+    return true;
   } catch (error) {
     logWarn(`${description} failed (continuing)`);
     if (VERBOSE) {
@@ -182,7 +169,10 @@ async function runScript(
 }
 
 // Verification mode - check status of symlinks without making changes
-function verifySymlink(source: string, target: string): {
+function verifySymlink(
+  source: string,
+  target: string,
+): {
   status: "ok" | "missing" | "wrong" | "not-symlink" | "source-missing";
   message: string;
 } {
@@ -289,7 +279,10 @@ async function main() {
     const configSymlinks = [
       [join(CONFIG_PATH, "nvim"), join(HOME_DIR, ".config", "nvim")],
       [join(CONFIG_PATH, "nvim", "vimdid"), join(HOME_DIR, ".vimdid")],
-      [join(CONFIG_PATH, "base16-shell"), join(HOME_DIR, ".config", "base16-shell")],
+      [
+        join(CONFIG_PATH, "base16-shell"),
+        join(HOME_DIR, ".config", "base16-shell"),
+      ],
       [join(CONFIG_PATH, "kitty"), join(HOME_DIR, ".config", "kitty")],
       [join(CONFIG_PATH, "alacritty"), join(HOME_DIR, ".config", "alacritty")],
       [join(CONFIG_PATH, "helix"), join(HOME_DIR, ".config", "helix")],
@@ -301,15 +294,27 @@ async function main() {
     // macOS specific
     if (process.platform === "darwin") {
       allSymlinks.push(
-        [join(HOME_PATH, "config.nu"), join(HOME_DIR, "Library", "Application Support", "nushell", "config.nu")],
-        [join(HOME_PATH, "env.nu"), join(HOME_DIR, "Library", "Application Support", "nushell", "env.nu")]
+        [
+          join(HOME_PATH, "config.nu"),
+          join(
+            HOME_DIR,
+            "Library",
+            "Application Support",
+            "nushell",
+            "config.nu",
+          ),
+        ],
+        [
+          join(HOME_PATH, "env.nu"),
+          join(HOME_DIR, "Library", "Application Support", "nushell", "env.nu"),
+        ],
       );
     }
 
     console.log("");
     for (const [source, target] of allSymlinks) {
       const result = verifySymlink(source, target);
-      
+
       switch (result.status) {
         case "ok":
           console.log(`${colors.green}✓${colors.reset} ${result.message}`);
@@ -338,22 +343,37 @@ async function main() {
     console.log("Summary:");
     console.log(`  ${colors.green}${results.ok} OK${colors.reset}`);
     if (results.missing > 0) {
-      console.log(`  ${colors.yellow}${results.missing} Missing${colors.reset}`);
+      console.log(
+        `  ${colors.yellow}${results.missing} Missing${colors.reset}`,
+      );
     }
     if (results.wrong > 0) {
-      console.log(`  ${colors.red}${results.wrong} Wrong target${colors.reset}`);
+      console.log(
+        `  ${colors.red}${results.wrong} Wrong target${colors.reset}`,
+      );
     }
     if (results.notSymlink > 0) {
-      console.log(`  ${colors.red}${results.notSymlink} Not a symlink${colors.reset}`);
+      console.log(
+        `  ${colors.red}${results.notSymlink} Not a symlink${colors.reset}`,
+      );
     }
     if (results.sourceMissing > 0) {
-      console.log(`  ${colors.red}${results.sourceMissing} Source missing${colors.reset}`);
+      console.log(
+        `  ${colors.red}${results.sourceMissing} Source missing${colors.reset}`,
+      );
     }
 
-    const hasIssues = results.missing + results.wrong + results.notSymlink + results.sourceMissing > 0;
+    const hasIssues =
+      results.missing +
+        results.wrong +
+        results.notSymlink +
+        results.sourceMissing >
+      0;
     if (hasIssues) {
       console.log("");
-      logInfo("Run 'bun install/install.ts' to fix missing or incorrect symlinks");
+      logInfo(
+        "Run 'bun install/install.ts' to fix missing or incorrect symlinks",
+      );
       process.exit(1);
     } else {
       console.log("");
@@ -413,7 +433,10 @@ async function main() {
   const configSymlinks = [
     [join(CONFIG_PATH, "nvim"), join(HOME_DIR, ".config", "nvim")],
     [join(CONFIG_PATH, "nvim", "vimdid"), join(HOME_DIR, ".vimdid")],
-    [join(CONFIG_PATH, "base16-shell"), join(HOME_DIR, ".config", "base16-shell")],
+    [
+      join(CONFIG_PATH, "base16-shell"),
+      join(HOME_DIR, ".config", "base16-shell"),
+    ],
     [join(CONFIG_PATH, "kitty"), join(HOME_DIR, ".config", "kitty")],
     [join(CONFIG_PATH, "alacritty"), join(HOME_DIR, ".config", "alacritty")],
     [join(CONFIG_PATH, "helix"), join(HOME_DIR, ".config", "helix")],
@@ -429,21 +452,38 @@ async function main() {
     logInfo("Detected macOS, setting up macOS-specific configurations...");
 
     // Nushell configuration
-    const nushellDir = join(HOME_DIR, "Library", "Application Support", "nushell");
+    const nushellDir = join(
+      HOME_DIR,
+      "Library",
+      "Application Support",
+      "nushell",
+    );
     safeMkdir(nushellDir);
-    await safeSymlink(join(HOME_PATH, "config.nu"), join(nushellDir, "config.nu"));
+    await safeSymlink(
+      join(HOME_PATH, "config.nu"),
+      join(nushellDir, "config.nu"),
+    );
     await safeSymlink(join(HOME_PATH, "env.nu"), join(nushellDir, "env.nu"));
 
     if (!SKIP_PACKAGES) {
-      await runScript(join(INSTALL_PATH, "macos", "macos.ts"), "macOS system settings");
-      await runScript(join(INSTALL_PATH, "macos", "brew.ts"), "Homebrew installation");
+      const { setupMacOS } = await import("./macos/macos.ts");
+      const { installBrew } = await import("./macos/brew.ts");
+
+      await runInstallFunction(() => setupMacOS(), "macOS system settings");
+      await runInstallFunction(
+        () => installBrew(CONFIGS_ROOT),
+        "Homebrew installation",
+      );
     }
   }
 
   // Package installations
   if (!SKIP_PACKAGES) {
-    await runScript(join(INSTALL_PATH, "node.ts"), "Node.js packages");
-    await runScript(join(INSTALL_PATH, "rust.ts"), "Rust toolchain");
+    const { installNodePackages } = await import("./node.ts");
+    const { installRust } = await import("./rust.ts");
+
+    await runInstallFunction(() => installNodePackages(), "Node.js packages");
+    await runInstallFunction(() => installRust(), "Rust toolchain");
   } else {
     logInfo("Skipping package installations (--skip-packages flag)");
   }

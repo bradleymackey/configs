@@ -2,8 +2,6 @@
 
 import { $ } from "bun";
 
-console.log("Installing pnpm global packages");
-
 const packages = [
   "fixjson",
   "jsonlint",
@@ -20,10 +18,26 @@ const packages = [
   "markdownlint-cli",
 ];
 
-try {
-  await $`pnpm add -g ${packages}`;
-  console.log("Node stuff installed!");
-} catch (error) {
-  console.error("Failed to install Node packages:", error);
-  process.exit(1);
+/**
+ * Install global Node.js packages via pnpm
+ */
+export async function installNodePackages(): Promise<void> {
+  console.log("Installing pnpm global packages");
+
+  try {
+    await $`pnpm add -g ${packages}`;
+    console.log("Node stuff installed!");
+  } catch (error) {
+    console.error("Failed to install Node packages:", error);
+    throw error;
+  }
+}
+
+// If run directly as a script
+if (import.meta.main) {
+  try {
+    await installNodePackages();
+  } catch (error) {
+    process.exit(1);
+  }
 }
