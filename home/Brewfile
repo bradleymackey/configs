@@ -44,6 +44,7 @@ brew "httpx"
 brew "hyperfine"
 brew "imagemagick"
 brew "irssi"
+brew "lazygit"
 brew "llvm"
 brew "luajit", args: ["HEAD"]
 brew "luajit-openresty"
