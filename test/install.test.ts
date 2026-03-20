@@ -387,6 +387,94 @@ describe("Installation Script Syntax", () => {
     }
   });
 
+  test(
+    "Brewfile should not contain deprecated, disabled, or removed formulae",
+    async () => {
+      const brewfilePath = join(CONFIGS_ROOT, "home", "Brewfile");
+      const content = await Bun.file(brewfilePath).text();
+
+      // Parse all entries from the Brewfile
+      const formulae: string[] = [];
+      const casks: string[] = [];
+      for (const line of content.split("\n")) {
+        const brewMatch = line.match(/^brew\s+"([^"]+)"/);
+        if (brewMatch) formulae.push(brewMatch[1]);
+        const caskMatch = line.match(/^cask\s+"([^"]+)"/);
+        if (caskMatch) casks.push(caskMatch[1]);
+      }
+
+      expect(formulae.length).toBeGreaterThan(0);
+
+      const issues: string[] = [];
+
+      // Batch-query all formulae at once for speed
+      const formulaeResult =
+        await $`brew info --json=v2 ${formulae}`.nothrow();
+      if (formulaeResult.exitCode !== 0) {
+        // Batch failed — identify which formulae are missing individually
+        const found = new Set<string>();
+        try {
+          const partial = JSON.parse(formulaeResult.stdout.toString());
+          for (const f of partial.formulae) found.add(f.full_name);
+        } catch {}
+        for (const name of formulae) {
+          if (!found.has(name)) {
+            const check = await $`brew info --json=v2 ${name}`.nothrow();
+            if (check.exitCode !== 0) {
+              issues.push(`${name} (not found in Homebrew)`);
+            }
+          }
+        }
+      }
+
+      // Check returned formulae for deprecated/disabled
+      try {
+        const json = JSON.parse(formulaeResult.stdout.toString());
+        for (const f of json.formulae) {
+          if (f.deprecated) issues.push(`${f.full_name} (deprecated)`);
+          if (f.disabled) issues.push(`${f.full_name} (disabled)`);
+        }
+      } catch {}
+
+      // Batch-query all casks at once
+      if (casks.length > 0) {
+        const casksResult =
+          await $`brew info --json=v2 --cask ${casks}`.nothrow();
+        if (casksResult.exitCode !== 0) {
+          const found = new Set<string>();
+          try {
+            const partial = JSON.parse(casksResult.stdout.toString());
+            for (const c of partial.casks) found.add(c.token);
+          } catch {}
+          for (const name of casks) {
+            if (!found.has(name)) {
+              const check =
+                await $`brew info --json=v2 --cask ${name}`.nothrow();
+              if (check.exitCode !== 0) {
+                issues.push(`${name} (cask not found in Homebrew)`);
+              }
+            }
+          }
+        }
+
+        try {
+          const json = JSON.parse(casksResult.stdout.toString());
+          for (const c of json.casks) {
+            if (c.deprecated) issues.push(`${c.token} (deprecated)`);
+            if (c.disabled) issues.push(`${c.token} (disabled)`);
+          }
+        } catch {}
+      }
+
+      if (issues.length > 0) {
+        throw new Error(
+          `Brewfile contains outdated dependencies:\n  ${issues.join("\n  ")}`,
+        );
+      }
+    },
+    30_000,
+  );
+
   test("macos/macos.ts should export setupMacOS function", async () => {
     const macosPath = join(CONFIGS_ROOT, "install", "macos", "macos.ts");
     if (existsSync(macosPath)) {
