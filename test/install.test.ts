@@ -390,6 +390,14 @@ describe("Installation Script Syntax", () => {
   test(
     "Brewfile should not contain deprecated, disabled, or removed formulae",
     async () => {
+      // Ensure Homebrew is installed before checking formulae
+      const brewCheck = await $`which brew`.nothrow().quiet();
+      if (brewCheck.exitCode !== 0) {
+        console.log("Homebrew not found, installing...");
+        await $`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`;
+        process.env.PATH = `/opt/homebrew/bin:${process.env.PATH}`;
+      }
+
       const brewfilePath = join(CONFIGS_ROOT, "home", "Brewfile");
       const content = await Bun.file(brewfilePath).text();
 
