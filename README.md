@@ -104,20 +104,7 @@ bun run test
 bun run test:watch
 ```
 
-The test suite includes **47 comprehensive tests** validating:
-
-- Verification mode functionality
-- Dry-run mode functionality
-- Symlink creation and management
-- Idempotency (safe to run multiple times)
-- Backup of existing files
-- File preservation (no data loss)
-- Script syntax validation
-- Directory creation
-- Error handling and edge cases
-- Git integration
-- Platform detection (macOS-specific features)
-- CLI argument combinations
+The test suite validates symlink creation, idempotency, backup/restore, verification mode, dry-run mode, error handling, edge cases, git integration, platform detection, and CLI argument combinations.
 
 I'm a fan of configs working, and working fast.
 There may be better alternatives to some of these tools below, but they work well for me in my workflow.
@@ -127,25 +114,30 @@ There may be better alternatives to some of these tools below, but they work wel
 - OS: macOS arm64 (configs should be almost Linux compatible)
 - Version Control: `git`
 - Terminal:
-  - Shell: `bash`
-  - Emulator: [`Alacritty`](https://github.com/alacritty/alacritty)
+  - Shell: `bash`, [`nushell`](https://www.nushell.sh)
+  - Emulator: [`Ghostty`](https://ghostty.org)
   - Multiplexer: [`tmux`](https://github.com/tmux/tmux/wiki)
   - Colors: [`base16`](https://github.com/chriskempson/base16)
-- Editor: [`neovim`](https://neovim.io)
-  - Package Manager: [`lazy.nvim`](https://github.com/folke/lazy.nvim)
-  - File Explorer: [`neo-tree`](https://github.com/nvim-neo-tree/neo-tree.nvim)
-  - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
-  - LSP: Native with [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig)
-  - Linting: [`nvim-lint`](https://github.com/mfussenegger/nvim-lint)
-  - Formatting: [`none-ls.nvim`](https://github.com/nvimtools/none-ls.nvim) (null-ls successor)
-  - Completion: [`nvim-cmp`](https://github.com/hrsh7th/nvim-cmp)
-  - Treesitter: [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter)
-  - Auto-reload: Files automatically reload on external changes
-  - (_see config files for complete plugin list_)
+- Editors:
+  - [`neovim`](https://neovim.io)
+    - Package Manager: [`lazy.nvim`](https://github.com/folke/lazy.nvim)
+    - File Explorer: [`neo-tree`](https://github.com/nvim-neo-tree/neo-tree.nvim)
+    - Colors: [`base16-vim`](https://github.com/chriskempson/base16-vim)
+    - LSP: Native with [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig)
+    - Linting: [`nvim-lint`](https://github.com/mfussenegger/nvim-lint)
+    - Formatting: [`none-ls.nvim`](https://github.com/nvimtools/none-ls.nvim) (null-ls successor)
+    - Completion: [`nvim-cmp`](https://github.com/hrsh7th/nvim-cmp)
+    - Treesitter: [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter)
+    - Auto-reload: Files automatically reload on external changes
+    - (_see config files for complete plugin list_)
+  - [`helix`](https://helix-editor.com)
 - Shell Tools:
   - Package Manager: [`brew`](https://brew.sh)
+  - Prompt: [`starship`](https://starship.rs)
   - Grep: [`ripgrep`](https://github.com/BurntSushi/ripgrep)
-  - Node.js Versioner: [`pnpm`](https://pnpm.io)
+  - Git UI: [`lazygit`](https://github.com/jesseduffield/lazygit)
+  - Node.js Version Manager: [`fnm`](https://github.com/Schniz/fnm)
+  - Node.js Package Manager: [`pnpm`](https://pnpm.io)
   - Python Versioner: [`pyenv`](https://github.com/pyenv/pyenv)
   - Rust Versioner: [`rustup`](https://rustup.rs)
 

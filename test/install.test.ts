@@ -118,8 +118,6 @@ describe("Installation Script", () => {
     const expectedDirs = [
       "nvim",
       "base16-shell",
-      "kitty",
-      "alacritty",
       "helix",
       "swift_po",
     ];
@@ -980,7 +978,7 @@ describe("Verification Mode", () => {
 
     // Should check .config items
     expect(result).toContain("nvim");
-    expect(result).toContain("kitty");
+    expect(result).toContain("helix");
   });
 
   test("should handle mixed states correctly", async () => {

@@ -283,8 +283,6 @@ async function main() {
         join(CONFIG_PATH, "base16-shell"),
         join(HOME_DIR, ".config", "base16-shell"),
       ],
-      [join(CONFIG_PATH, "kitty"), join(HOME_DIR, ".config", "kitty")],
-      [join(CONFIG_PATH, "alacritty"), join(HOME_DIR, ".config", "alacritty")],
       [join(CONFIG_PATH, "helix"), join(HOME_DIR, ".config", "helix")],
       [join(CONFIG_PATH, "swift_po"), join(HOME_DIR, ".config", "swift_po")],
     ];
@@ -437,8 +435,6 @@ async function main() {
       join(CONFIG_PATH, "base16-shell"),
       join(HOME_DIR, ".config", "base16-shell"),
     ],
-    [join(CONFIG_PATH, "kitty"), join(HOME_DIR, ".config", "kitty")],
-    [join(CONFIG_PATH, "alacritty"), join(HOME_DIR, ".config", "alacritty")],
     [join(CONFIG_PATH, "helix"), join(HOME_DIR, ".config", "helix")],
     [join(CONFIG_PATH, "swift_po"), join(HOME_DIR, ".config", "swift_po")],
   ];
