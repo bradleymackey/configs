@@ -816,7 +816,7 @@ describe("Verification Mode", () => {
 
     // Should report missing symlinks
     expect(result).toContain("Not linked:");
-    expect(result).toContain("Summary:");
+    expect(result).toContain("Symlinks:");
     expect(result).toContain("Missing");
 
     // Should exit with error code when there are issues
@@ -836,9 +836,13 @@ describe("Verification Mode", () => {
       .nothrow()
       .text();
 
-    expect(result).toContain("Summary:");
+    expect(result).toContain("Symlinks:");
     expect(result).toContain("OK");
-    expect(result).toContain("All symlinks are correctly configured!");
+    // May say "All checks passed!" or "All symlinks are correctly configured!" depending on env
+    expect(
+      result.includes("All checks passed!") ||
+        result.includes("All symlinks are correctly configured!"),
+    ).toBe(true);
 
     // Should exit with success code
     const exitResult =
@@ -859,7 +863,7 @@ describe("Verification Mode", () => {
       .text();
 
     expect(result).toContain("Wrong target:");
-    expect(result).toContain("Summary:");
+    expect(result).toContain("Symlinks:");
     expect(result).toContain("Wrong target");
 
     // Should exit with error code
@@ -879,7 +883,7 @@ describe("Verification Mode", () => {
       .text();
 
     expect(result).toContain("Not a symlink:");
-    expect(result).toContain("Summary:");
+    expect(result).toContain("Symlinks:");
 
     // Should exit with error code
     const exitResult =
@@ -903,7 +907,7 @@ describe("Verification Mode", () => {
           .text();
 
         expect(result).toContain("Source does not exist:");
-        expect(result).toContain("Summary:");
+        expect(result).toContain("Symlinks:");
 
         // Should exit with error code
         const exitResult =
@@ -979,6 +983,10 @@ describe("Verification Mode", () => {
     // Should check .config items
     expect(result).toContain("nvim");
     expect(result).toContain("helix");
+
+    // Should include environment checks
+    expect(result).toContain("Checking environment");
+    expect(result).toContain("Environment:");
   });
 
   test("should handle mixed states correctly", async () => {
@@ -1001,7 +1009,7 @@ describe("Verification Mode", () => {
     // Should have both OK and issues
     expect(result).toContain("OK:");
     expect(result).toContain("Not a symlink:");
-    expect(result).toContain("Summary:");
+    expect(result).toContain("Symlinks:");
 
     // Should exit with error
     const exitResult =

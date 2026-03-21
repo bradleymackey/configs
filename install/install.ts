@@ -337,8 +337,112 @@ async function main() {
       }
     }
 
+    // Environment checks
     console.log("");
-    console.log("Summary:");
+    logInfo("Checking environment...");
+    console.log("");
+
+    let envIssues = 0;
+
+    // Check inside tmux
+    if (process.env.TMUX) {
+      console.log(`${colors.green}✓${colors.reset} OK: Inside tmux session`);
+    } else {
+      console.log(`${colors.yellow}✗${colors.reset} Not inside tmux`);
+      envIssues++;
+    }
+
+    // Check shell is bash
+    const currentShell = process.env.SHELL || "";
+    if (currentShell.endsWith("/bash")) {
+      console.log(
+        `${colors.green}✓${colors.reset} OK: Default shell is bash (${currentShell})`,
+      );
+    } else {
+      console.log(
+        `${colors.yellow}✗${colors.reset} Default shell is not bash (${currentShell || "unknown"})`,
+      );
+      envIssues++;
+    }
+
+    // Check git remote uses SSH
+    try {
+      const remoteUrl =
+        await $`git -C ${CONFIGS_ROOT} remote get-url origin`.text();
+      const url = remoteUrl.trim();
+      if (url.startsWith("git@")) {
+        console.log(
+          `${colors.green}✓${colors.reset} OK: Git remote uses SSH (${url})`,
+        );
+      } else {
+        console.log(
+          `${colors.yellow}✗${colors.reset} Git remote uses HTTPS, not SSH (${url})`,
+        );
+        envIssues++;
+      }
+    } catch {
+      console.log(
+        `${colors.yellow}✗${colors.reset} Could not determine git remote URL`,
+      );
+      envIssues++;
+    }
+
+    // Check key CLI tools
+    const requiredTools = [
+      "brew",
+      "nvim",
+      "tmux",
+      "git",
+      "rg",
+      "fzf",
+      "starship",
+      "lazygit",
+      "fnm",
+      "node",
+      "pnpm",
+      "deno",
+      "bun",
+      "rustup",
+      "cargo",
+      "rustc",
+      "pyenv",
+    ];
+
+    for (const tool of requiredTools) {
+      const check = await $`which ${tool}`.nothrow().quiet();
+      if (check.exitCode === 0) {
+        console.log(
+          `${colors.green}✓${colors.reset} OK: ${tool} is installed`,
+        );
+      } else {
+        console.log(
+          `${colors.yellow}✗${colors.reset} ${tool} is not installed`,
+        );
+        envIssues++;
+      }
+    }
+
+    // Check fzf completions are installed
+    try {
+      const fzfPrefix = (await $`brew --prefix`.nothrow().quiet().text()).trim();
+      const fzfInstallDir = join(fzfPrefix, "opt", "fzf");
+      if (existsSync(join(fzfInstallDir, "shell", "key-bindings.bash"))) {
+        console.log(
+          `${colors.green}✓${colors.reset} OK: fzf shell completions installed`,
+        );
+      } else {
+        console.log(
+          `${colors.yellow}✗${colors.reset} fzf shell completions not installed (run: $(brew --prefix)/opt/fzf/install)`,
+        );
+        envIssues++;
+      }
+    } catch {
+      // Skip if brew not available
+    }
+
+    // Symlink summary
+    console.log("");
+    console.log("Symlinks:");
     console.log(`  ${colors.green}${results.ok} OK${colors.reset}`);
     if (results.missing > 0) {
       console.log(
@@ -361,21 +465,36 @@ async function main() {
       );
     }
 
-    const hasIssues =
+    // Environment summary
+    console.log("");
+    console.log("Environment:");
+    if (envIssues > 0) {
+      console.log(
+        `  ${colors.yellow}${envIssues} issue${envIssues === 1 ? "" : "s"}${colors.reset}`,
+      );
+    } else {
+      console.log(`  ${colors.green}All checks passed${colors.reset}`);
+    }
+
+    const symlinkIssues =
       results.missing +
         results.wrong +
         results.notSymlink +
         results.sourceMissing >
       0;
-    if (hasIssues) {
+    if (symlinkIssues) {
       console.log("");
       logInfo(
         "Run 'bun install/install.ts' to fix missing or incorrect symlinks",
       );
       process.exit(1);
-    } else {
+    } else if (envIssues > 0) {
       console.log("");
       logSuccess("All symlinks are correctly configured!");
+      process.exit(0);
+    } else {
+      console.log("");
+      logSuccess("All checks passed!");
       process.exit(0);
     }
   }
