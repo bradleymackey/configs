@@ -23,7 +23,7 @@ bisect = '[➗ BISECTING](bold green)'
 am = '[✉️ APPLYING](bold cyan)'
 
 [git_status]
-format = '[$conflicted$untracked$stashed$modified$staged$renamed$deleted$ahead_behind$diverged$unpulled$unpushed]($style)'
+format = '[$conflicted$untracked$stashed$modified$staged$renamed$deleted$ahead_behind]($style)'
 # Symbols and styles for different states
 conflicted = '✖️$count ' # Files with merge conflicts
 untracked = '?$count '   # New files not yet staged
@@ -36,9 +36,6 @@ deleted = 'D$count '     # Deleted files
 ahead = '⇡$count'       # Commits ahead of upstream
 behind = '⇣$count'      # Commits behind upstream
 diverged = '⇕$ahead⇕$behind' # Both ahead and behind
-# Unpulled/Unpushed for clarity on remote status
-unpulled = '↓$count'    # Commits on remote not yet pulled
-unpushed = '↑$count'    # Commits locally not yet pushed
 style = 'bold yellow' # General style for the git_status module
 
 # Disable the package module, hiding it from the prompt completely
