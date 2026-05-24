@@ -1,6 +1,15 @@
 -- Abstract:
 -- Setup of 'treesitter', which provides semantic highlighting
 
+-- ts_context_commentstring crashes on CursorHold when a buffer has no treesitter parser (terminals, help, etc.)
+-- Disable its built-in autocmd and replace with a pcall-guarded one
+require("ts_context_commentstring").setup({ enable_autocmd = false })
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    pcall(require("ts_context_commentstring.internal").update_commentstring)
+  end,
+})
+
 -- The prisma repo uses 'main' but nvim-treesitter falls back to 'master' when the revision download fails
 require("nvim-treesitter.parsers").get_parser_configs().prisma = {
   install_info = {
