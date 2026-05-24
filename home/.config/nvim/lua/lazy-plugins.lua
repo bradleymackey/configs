@@ -124,26 +124,12 @@ return {
   { "tomtom/tcomment_vim" },
   {
     "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    main = "nvim-treesitter.configs",
-    cmd = {
-      "TSUpdate",
-      "TSInstall",
-      "TSInstallInfo",
-      "TSModuleInfo",
-      "TSConfigInfo",
-      "TSUpdateSync",
-    },
-    keys = {
-      { "v", desc = "Increment selection", mode = "x" },
-      { "V", desc = "Shrink selection", mode = "x" },
-    },
     dependencies = {
       "hiphish/rainbow-delimiters.nvim",
       "JoosepAlviste/nvim-ts-context-commentstring",
       "nvim-treesitter/nvim-treesitter-textobjects",
-      { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
     },
     config = function()
       require("treesitter-config")
