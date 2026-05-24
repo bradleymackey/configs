@@ -10,16 +10,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
--- The prisma repo uses 'main' but nvim-treesitter falls back to 'master' when the revision download fails
-require("nvim-treesitter.parsers").get_parser_configs().prisma = {
-  install_info = {
-    url = "https://github.com/victorhqc/tree-sitter-prisma",
-    files = { "src/parser.c" },
-    branch = "main",
-  },
-  filetype = "prisma",
-}
-
 require("nvim-treesitter.configs").setup({
   ensure_installed = {
     "tsx",
