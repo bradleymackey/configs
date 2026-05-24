@@ -9,6 +9,9 @@
 node_modules/
 bun.lockb
 
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
 # Test artifacts
 *.backup.*
 
