@@ -21,7 +21,6 @@ async function listInstalledComponents(): Promise<string[]> {
  */
 export async function installRust(): Promise<StepResult> {
   const changes: SummaryItem[] = [];
-  console.log("Installing rust...");
 
   try {
     // rustup itself
@@ -92,19 +91,19 @@ export async function installRust(): Promise<StepResult> {
       }
     }
 
-    console.log("Installing cargo-edit...");
     const cargoEditCheck = await $`cargo install --list`.nothrow().quiet();
     const alreadyHasCargoEdit = cargoEditCheck.stdout
       .toString()
       .includes("cargo-edit ");
-    await $`cargo install cargo-edit`;
+    if (!alreadyHasCargoEdit) {
+      await $`cargo install cargo-edit`;
+    }
     changes.push({
       category: "Package step",
       name: "cargo-edit",
       status: alreadyHasCargoEdit ? "unchanged" : "created",
     });
 
-    console.log("Rust stuff installed!");
     return { ok: true, changes };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

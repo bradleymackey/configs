@@ -59,7 +59,6 @@ async function isDeprecated(pkg: string): Promise<string | null> {
  * Mutates `packages` in-place so installNodePackages won't re-add them.
  */
 export async function auditNodePackages(): Promise<StepResult> {
-  console.log("Auditing pnpm global packages for deprecations...");
   const changes: SummaryItem[] = [];
   const installed = await listGlobalPackages();
 
@@ -126,8 +125,6 @@ export async function auditNodePackages(): Promise<StepResult> {
  * Install global Node.js packages via pnpm
  */
 export async function installNodePackages(): Promise<StepResult> {
-  console.log("Installing pnpm global packages");
-
   if (packages.length === 0) {
     return {
       ok: true,
@@ -156,7 +153,6 @@ export async function installNodePackages(): Promise<StepResult> {
           ? "created"
           : "failed",
     }));
-    console.log("Node stuff installed!");
     return { ok: true, changes };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

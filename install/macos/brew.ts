@@ -10,7 +10,6 @@ import type { StepResult, SummaryItem } from "../types.ts";
  * Install Homebrew and packages from Brewfile
  */
 export async function installBrew(configsRoot?: string): Promise<StepResult> {
-  console.log("Installing brew (requires xcode command line)...");
   const changes: SummaryItem[] = [];
 
   const CONFIGS_ROOT =
@@ -29,7 +28,6 @@ export async function installBrew(configsRoot?: string): Promise<StepResult> {
         status: "created",
       });
     } else {
-      console.log("Homebrew already installed");
       changes.push({
         category: "Package step",
         name: "Homebrew",
@@ -39,7 +37,6 @@ export async function installBrew(configsRoot?: string): Promise<StepResult> {
 
     process.env.PATH = `/opt/homebrew/bin:${process.env.PATH}`;
 
-    console.log("Installing brew dependencies...");
     const brewfilePath = join(HOME_PATH, "Brewfile");
 
     if (existsSync(brewfilePath)) {
@@ -61,16 +58,24 @@ export async function installBrew(configsRoot?: string): Promise<StepResult> {
       });
     }
 
-    console.log("Installing fzf completions...");
-    const fzfPath = await $`brew --prefix`.text();
-    await $`${fzfPath.trim()}/opt/fzf/install --key-bindings --completion --no-update-rc`;
-    changes.push({
-      category: "Package step",
-      name: "fzf completions",
-      status: "unchanged",
-    });
+    const fzfPath = (await $`brew --prefix`.quiet().text()).trim();
+    const fzfBindings = join(fzfPath, "opt", "fzf", "shell", "key-bindings.bash");
+    if (existsSync(fzfBindings)) {
+      changes.push({
+        category: "Package step",
+        name: "fzf completions",
+        status: "unchanged",
+      });
+    } else {
+      console.log("Installing fzf completions...");
+      await $`${fzfPath}/opt/fzf/install --key-bindings --completion --no-update-rc`.quiet();
+      changes.push({
+        category: "Package step",
+        name: "fzf completions",
+        status: "created",
+      });
+    }
 
-    console.log("Brew stuff installed!");
     return { ok: true, changes };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -85,7 +90,6 @@ export async function installBrew(configsRoot?: string): Promise<StepResult> {
  * can decide what to do.
  */
 export async function auditBrewfile(configsRoot?: string): Promise<StepResult> {
-  console.log("Auditing Brewfile for deprecations...");
   const changes: SummaryItem[] = [];
 
   const CONFIGS_ROOT =
@@ -140,8 +144,8 @@ export async function auditBrewfile(configsRoot?: string): Promise<StepResult> {
     if (items.length === 0) return;
     const result =
       kind === "formula"
-        ? await $`brew info --json=v2 ${items}`.nothrow()
-        : await $`brew info --json=v2 --cask ${items}`.nothrow();
+        ? await $`brew info --json=v2 ${items}`.nothrow().quiet()
+        : await $`brew info --json=v2 --cask ${items}`.nothrow().quiet();
 
     let parsed: any = null;
     try {
