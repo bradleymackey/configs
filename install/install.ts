@@ -478,6 +478,10 @@ async function main() {
       ],
       [join(CONFIG_PATH, "helix"), join(HOME_DIR, ".config", "helix")],
       [join(CONFIG_PATH, "swift_po"), join(HOME_DIR, ".config", "swift_po")],
+      [
+        join(CONFIG_PATH, "starship.toml"),
+        join(HOME_DIR, ".config", "starship.toml"),
+      ],
     ];
 
     const allSymlinks = [...homeSymlinks, ...configSymlinks];
@@ -735,6 +739,10 @@ async function main() {
     ],
     [join(CONFIG_PATH, "helix"), join(HOME_DIR, ".config", "helix")],
     [join(CONFIG_PATH, "swift_po"), join(HOME_DIR, ".config", "swift_po")],
+    [
+      join(CONFIG_PATH, "starship.toml"),
+      join(HOME_DIR, ".config", "starship.toml"),
+    ],
   ];
 
   for (const [source, target] of configSymlinks) {
