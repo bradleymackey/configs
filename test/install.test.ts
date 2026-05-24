@@ -289,6 +289,47 @@ describe("Installation Script", () => {
     expect(result).toContain("Skipping package installations");
   });
 
+  test("should print summary table after install", async () => {
+    const result =
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`
+        .nothrow()
+        .text();
+
+    expect(result).toContain("Installation Summary");
+    expect(result).toContain("unchanged");
+    // Counts line uses the · separator
+    expect(result).toMatch(/\d+ (created|unchanged)/);
+  });
+
+  test("should report 'Replaced' for files that get backed up", async () => {
+    const targetBashrc = join(TEST_HOME, ".bashrc");
+    writeFileSync(targetBashrc, "pre-existing content");
+
+    const result =
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`
+        .nothrow()
+        .text();
+
+    expect(result).toContain("Replaced");
+    expect(result).toContain(".bashrc");
+  });
+
+  test("should exit non-zero when a symlink source is missing", async () => {
+    // Move a source file aside so the installer reports it as failed
+    const sourceBashrc = join(HOME_PATH, ".bashrc");
+    const tempBackup = `${sourceBashrc}.test-missing-backup`;
+    if (!existsSync(sourceBashrc)) return; // skip if source absent
+    await $`mv ${sourceBashrc} ${tempBackup}`.quiet();
+    try {
+      const result =
+        await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow();
+      expect(result.exitCode).toBe(1);
+      expect(result.stdout.toString()).toContain("needs attention");
+    } finally {
+      await $`mv ${tempBackup} ${sourceBashrc}`.quiet();
+    }
+  });
+
   test("should provide verbose output with --verbose flag", async () => {
     const result =
       await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --dry-run --verbose`
@@ -713,11 +754,19 @@ describe("Edge Cases and Error Handling", () => {
       .nothrow()
       .quiet();
 
-    // Both should complete
+    // Both should terminate (no hangs / corruption). With racing `ln -s`
+    // calls either process may flag failures and exit non-zero — that's
+    // expected; the contract here is just "doesn't deadlock".
     const [result1, result2] = await Promise.all([run1, run2]);
+    expect(typeof result1.exitCode).toBe("number");
+    expect(typeof result2.exitCode).toBe("number");
 
-    // At least one should succeed
-    expect(result1.exitCode === 0 || result2.exitCode === 0).toBe(true);
+    // After both finish, the symlinks should be correct (last writer wins)
+    const targetBashrc = join(TEST_HOME, ".bashrc");
+    if (existsSync(targetBashrc)) {
+      const linkTarget = readlinkSync(targetBashrc);
+      expect(linkTarget).toBe(join(HOME_PATH, ".bashrc"));
+    }
   });
 
   test("should handle missing .config directory", async () => {

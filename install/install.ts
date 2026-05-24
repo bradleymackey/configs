@@ -8,8 +8,9 @@
 import { parseArgs } from "util";
 import { $ } from "bun";
 import { existsSync, readlinkSync, mkdirSync, renameSync } from "fs";
-import { join, dirname } from "path";
+import { join, dirname, basename } from "path";
 import { fileURLToPath } from "url";
+import type { ItemStatus, SummaryItem, StepResult } from "./types.ts";
 
 // Colors for terminal output
 const colors = {
@@ -18,6 +19,7 @@ const colors = {
   green: "\x1b[0;32m",
   yellow: "\x1b[1;33m",
   blue: "\x1b[0;34m",
+  dim: "\x1b[2m",
 };
 
 // Configuration
@@ -25,7 +27,6 @@ const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const CONFIGS_ROOT = join(SCRIPT_DIR, "..");
 const HOME_PATH = join(CONFIGS_ROOT, "home");
 const CONFIG_PATH = join(CONFIGS_ROOT, "home", ".config");
-const INSTALL_PATH = join(CONFIGS_ROOT, "install");
 const HOME_DIR = process.env.HOME || "~";
 
 // Parse command line arguments
@@ -44,6 +45,13 @@ const DRY_RUN = args["dry-run"] as boolean;
 const SKIP_PACKAGES = args["skip-packages"] as boolean;
 const VERBOSE = args.verbose as boolean;
 const VERIFY = args.verify as boolean;
+
+// Accumulated state for the end-of-run summary
+const summary: SummaryItem[] = [];
+
+function record(item: SummaryItem) {
+  summary.push(item);
+}
 
 // Logging functions
 function logInfo(message: string) {
@@ -69,102 +77,188 @@ function logDryRun(message: string) {
 }
 
 // Helper function to safely create symlinks
-async function safeSymlink(source: string, target: string): Promise<boolean> {
+async function safeSymlink(
+  source: string,
+  target: string,
+): Promise<ItemStatus> {
+  const name = basename(target);
+
   if (DRY_RUN) {
     logDryRun(`Would create symlink: ${target} -> ${source}`);
-    return true;
+    record({ category: "Symlink", name, status: "skipped", detail: "dry-run" });
+    return "skipped";
   }
 
-  // Check if source exists
   if (!existsSync(source)) {
     logError(`Source does not exist: ${source}`);
-    return false;
+    record({
+      category: "Symlink",
+      name,
+      status: "failed",
+      detail: `source missing: ${source}`,
+    });
+    return "failed";
   }
 
-  // If target already exists
   if (existsSync(target)) {
     try {
-      // If it's already a symlink to the correct location, skip
       const linkTarget = readlinkSync(target);
       if (linkTarget === source) {
         logInfo(`Symlink already exists: ${target} -> ${source}`);
-        return true;
+        record({ category: "Symlink", name, status: "unchanged" });
+        return "unchanged";
       }
     } catch {
-      // Not a symlink, continue to backup
+      // Not a symlink — fall through to backup path
     }
 
-    // Backup existing file/directory
     const backup = `${target}.backup.${Date.now()}`;
     logWarn(`Target exists, backing up: ${target} -> ${backup}`);
     try {
       renameSync(target, backup);
     } catch (error) {
       logError(`Failed to backup: ${error}`);
-      return false;
+      record({
+        category: "Symlink",
+        name,
+        status: "failed",
+        detail: `backup failed: ${error}`,
+      });
+      return "failed";
+    }
+
+    try {
+      await $`ln -s ${source} ${target}`.quiet();
+      logSuccess(`Created symlink: ${target} -> ${source}`);
+      record({
+        category: "Symlink",
+        name,
+        status: "replaced",
+        detail: `backup: ${basename(backup)}`,
+      });
+      return "replaced";
+    } catch (error) {
+      logError(`Failed to create symlink: ${target} -> ${source}`);
+      if (VERBOSE) console.error(error);
+      record({
+        category: "Symlink",
+        name,
+        status: "failed",
+        detail: `${error}`,
+      });
+      return "failed";
     }
   }
 
-  // Create the symlink
   try {
     await $`ln -s ${source} ${target}`.quiet();
     logSuccess(`Created symlink: ${target} -> ${source}`);
-    return true;
+    record({ category: "Symlink", name, status: "created" });
+    return "created";
   } catch (error) {
     logError(`Failed to create symlink: ${target} -> ${source}`);
-    if (VERBOSE) {
-      console.error(error);
-    }
-    return false;
+    if (VERBOSE) console.error(error);
+    record({ category: "Symlink", name, status: "failed", detail: `${error}` });
+    return "failed";
   }
 }
 
 // Helper function to safely create directory
-function safeMkdir(dir: string): boolean {
+function safeMkdir(dir: string): ItemStatus {
+  const name = dir.replace(HOME_DIR, "~");
+
   if (DRY_RUN) {
     if (!existsSync(dir)) {
       logDryRun(`Would create directory: ${dir}`);
+      record({
+        category: "Directory",
+        name,
+        status: "skipped",
+        detail: "dry-run",
+      });
+    } else {
+      record({ category: "Directory", name, status: "unchanged" });
     }
-    return true;
+    return existsSync(dir) ? "unchanged" : "skipped";
   }
 
   if (existsSync(dir)) {
     logInfo(`Directory already exists: ${dir}`);
-    return true;
+    record({ category: "Directory", name, status: "unchanged" });
+    return "unchanged";
   }
 
   try {
     mkdirSync(dir, { recursive: true });
     logSuccess(`Created directory: ${dir}`);
-    return true;
+    record({ category: "Directory", name, status: "created" });
+    return "created";
   } catch (error) {
     logError(`Failed to create directory: ${dir}`);
-    return false;
+    record({
+      category: "Directory",
+      name,
+      status: "failed",
+      detail: `${error}`,
+    });
+    return "failed";
   }
 }
 
-// Helper function to run installation function
-async function runInstallFunction(
-  installFn: () => Promise<void>,
+// Run a package-step function and fold its StepResult into the summary
+async function runInstallStep(
+  installFn: () => Promise<StepResult>,
   description: string,
-): Promise<boolean> {
+): Promise<StepResult> {
   if (DRY_RUN) {
     logDryRun(`Would run: ${description}`);
-    return true;
+    record({
+      category: "Package step",
+      name: description,
+      status: "skipped",
+      detail: "dry-run",
+    });
+    return { ok: true, changes: [] };
   }
 
   logInfo(`Running: ${description}`);
 
   try {
-    await installFn();
-    logSuccess(`${description} completed`);
-    return true;
+    const result = await installFn();
+    if (result.changes && result.changes.length > 0) {
+      for (const change of result.changes) summary.push(change);
+    }
+    if (result.ok) {
+      logSuccess(`${description} completed`);
+      // Only record the umbrella line if no granular changes were reported
+      if (!result.changes || result.changes.length === 0) {
+        record({
+          category: "Package step",
+          name: description,
+          status: "unchanged",
+        });
+      }
+    } else {
+      logWarn(`${description} failed (continuing)`);
+      record({
+        category: "Package step",
+        name: description,
+        status: "failed",
+        detail: result.error,
+      });
+    }
+    return result;
   } catch (error) {
     logWarn(`${description} failed (continuing)`);
-    if (VERBOSE) {
-      console.error(error);
-    }
-    return false;
+    if (VERBOSE) console.error(error);
+    const message = error instanceof Error ? error.message : String(error);
+    record({
+      category: "Package step",
+      name: description,
+      status: "failed",
+      detail: message,
+    });
+    return { ok: false, error: message };
   }
 }
 
@@ -176,7 +270,6 @@ function verifySymlink(
   status: "ok" | "missing" | "wrong" | "not-symlink" | "source-missing";
   message: string;
 } {
-  // Check if source exists
   if (!existsSync(source)) {
     return {
       status: "source-missing",
@@ -184,7 +277,6 @@ function verifySymlink(
     };
   }
 
-  // Check if target exists
   if (!existsSync(target)) {
     return {
       status: "missing",
@@ -192,7 +284,6 @@ function verifySymlink(
     };
   }
 
-  // Check if target is a symlink
   try {
     const linkTarget = readlinkSync(target);
     if (linkTarget === source) {
@@ -214,6 +305,110 @@ function verifySymlink(
   }
 }
 
+// --- Summary table renderer -------------------------------------------------
+
+const STATUS_GLYPH: Record<ItemStatus, string> = {
+  unchanged: "✓",
+  created: "+",
+  replaced: "~",
+  failed: "!",
+  skipped: "·",
+};
+
+const STATUS_COLOR: Record<ItemStatus, string> = {
+  unchanged: colors.green,
+  created: colors.green,
+  replaced: colors.yellow,
+  failed: colors.red,
+  skipped: colors.dim,
+};
+
+const STATUS_LABEL: Record<ItemStatus, string> = {
+  unchanged: "Unchanged",
+  created: "Created",
+  replaced: "Replaced",
+  failed: "Needs attention",
+  skipped: "Skipped",
+};
+
+function truncate(s: string, max: number): string {
+  if (s.length <= max) return s;
+  return s.slice(0, Math.max(0, max - 1)) + "…";
+}
+
+function printSummary(items: SummaryItem[]) {
+  console.log("");
+  console.log(`${colors.blue}Installation Summary${colors.reset}`);
+
+  if (items.length === 0) {
+    console.log("  (nothing to report)");
+    return;
+  }
+
+  // Stable status ordering so failures float to the bottom
+  const order: ItemStatus[] = [
+    "failed",
+    "replaced",
+    "created",
+    "unchanged",
+    "skipped",
+  ];
+  const sorted = [...items].sort((a, b) => {
+    const oa = order.indexOf(a.status);
+    const ob = order.indexOf(b.status);
+    if (oa !== ob) return oa - ob;
+    if (a.category !== b.category) return a.category.localeCompare(b.category);
+    return a.name.localeCompare(b.name);
+  });
+
+  const labelWidth = Math.max(
+    ...Object.values(STATUS_LABEL).map((s) => s.length),
+  );
+  const categoryWidth = Math.max(
+    ...sorted.map((i) => i.category.length),
+    "Category".length,
+  );
+  const nameWidth = Math.min(
+    40,
+    Math.max(...sorted.map((i) => i.name.length), "Name".length),
+  );
+
+  const divider = "─".repeat(
+    labelWidth + categoryWidth + nameWidth + 40 + 8,
+  );
+  console.log(divider);
+
+  for (const item of sorted) {
+    const color = STATUS_COLOR[item.status];
+    const glyph = STATUS_GLYPH[item.status];
+    const label = STATUS_LABEL[item.status].padEnd(labelWidth);
+    const cat = item.category.padEnd(categoryWidth);
+    const name = truncate(item.name, nameWidth).padEnd(nameWidth);
+    const detail = item.detail ? `  ${colors.dim}${item.detail}${colors.reset}` : "";
+    console.log(`  ${color}${glyph} ${label}${colors.reset}  ${cat}  ${name}${detail}`);
+  }
+
+  console.log(divider);
+
+  const counts: Record<ItemStatus, number> = {
+    unchanged: 0,
+    created: 0,
+    replaced: 0,
+    failed: 0,
+    skipped: 0,
+  };
+  for (const item of items) counts[item.status]++;
+
+  const parts: string[] = [];
+  if (counts.unchanged) parts.push(`${counts.unchanged} unchanged`);
+  if (counts.created) parts.push(`${counts.created} created`);
+  if (counts.replaced) parts.push(`${counts.replaced} replaced`);
+  if (counts.failed)
+    parts.push(`${colors.red}${counts.failed} needs attention${colors.reset}`);
+  if (counts.skipped) parts.push(`${counts.skipped} skipped`);
+  console.log(`  ${parts.join(" · ")}`);
+}
+
 // Show usage information
 function showHelp() {
   console.log(`
@@ -231,13 +426,13 @@ OPTIONS:
 EXAMPLES:
     # Preview what would be installed
     bun install/install.ts --dry-run
-    
+
     # Check status of all symlinks
     bun install/install.ts --verify
-    
+
     # Install only dotfile symlinks (skip brew, rust, etc.)
     bun install/install.ts --skip-packages
-    
+
     # Install with verbose output
     bun install/install.ts --verbose
 `);
@@ -263,7 +458,6 @@ async function main() {
       sourceMissing: 0,
     };
 
-    // Home directory dotfiles
     const homeSymlinks = [
       [join(HOME_PATH, ".tmux.conf"), join(HOME_DIR, ".tmux.conf")],
       [join(HOME_PATH, ".my_scripts"), join(HOME_DIR, ".my_scripts")],
@@ -275,7 +469,6 @@ async function main() {
       [join(HOME_PATH, ".gitignore"), join(HOME_DIR, ".gitignore")],
     ];
 
-    // .config directory items
     const configSymlinks = [
       [join(CONFIG_PATH, "nvim"), join(HOME_DIR, ".config", "nvim")],
       [join(CONFIG_PATH, "nvim", "vimdid"), join(HOME_DIR, ".vimdid")],
@@ -289,7 +482,6 @@ async function main() {
 
     const allSymlinks = [...homeSymlinks, ...configSymlinks];
 
-    // macOS specific
     if (process.platform === "darwin") {
       allSymlinks.push(
         [
@@ -337,14 +529,12 @@ async function main() {
       }
     }
 
-    // Environment checks
     console.log("");
     logInfo("Checking environment...");
     console.log("");
 
     let envIssues = 0;
 
-    // Check inside tmux
     if (process.env.TMUX) {
       console.log(`${colors.green}✓${colors.reset} OK: Inside tmux session`);
     } else {
@@ -352,7 +542,6 @@ async function main() {
       envIssues++;
     }
 
-    // Check shell is bash
     const currentShell = process.env.SHELL || "";
     if (currentShell.endsWith("/bash")) {
       console.log(
@@ -365,7 +554,6 @@ async function main() {
       envIssues++;
     }
 
-    // Check git remote uses SSH
     try {
       const remoteUrl =
         await $`git -C ${CONFIGS_ROOT} remote get-url origin`.text();
@@ -387,7 +575,6 @@ async function main() {
       envIssues++;
     }
 
-    // Check key CLI tools
     const requiredTools = [
       "brew",
       "nvim",
@@ -422,7 +609,6 @@ async function main() {
       }
     }
 
-    // Check fzf completions are installed
     try {
       const fzfPrefix = (await $`brew --prefix`.nothrow().quiet().text()).trim();
       const fzfInstallDir = join(fzfPrefix, "opt", "fzf");
@@ -440,7 +626,6 @@ async function main() {
       // Skip if brew not available
     }
 
-    // Symlink summary
     console.log("");
     console.log("Symlinks:");
     console.log(`  ${colors.green}${results.ok} OK${colors.reset}`);
@@ -465,7 +650,6 @@ async function main() {
       );
     }
 
-    // Environment summary
     console.log("");
     console.log("Environment:");
     if (envIssues > 0) {
@@ -507,10 +691,8 @@ async function main() {
 
   logInfo(`Configs root: ${CONFIGS_ROOT}`);
 
-  // Create necessary directories
   safeMkdir(join(HOME_DIR, ".config"));
 
-  // Fetch submodules if this is a git repo
   if (existsSync(join(CONFIGS_ROOT, ".git"))) {
     if (DRY_RUN) {
       logDryRun("Would fetch git submodules");
@@ -527,10 +709,8 @@ async function main() {
     logWarn("Not a git repository, skipping submodule update");
   }
 
-  // Shell and editor symlinks
   logInfo("Setting up shell and editor configurations...");
 
-  // Home directory dotfiles
   const homeSymlinks = [
     [join(HOME_PATH, ".tmux.conf"), join(HOME_DIR, ".tmux.conf")],
     [join(HOME_PATH, ".my_scripts"), join(HOME_DIR, ".my_scripts")],
@@ -546,7 +726,6 @@ async function main() {
     await safeSymlink(source, target);
   }
 
-  // .config directory items
   const configSymlinks = [
     [join(CONFIG_PATH, "nvim"), join(HOME_DIR, ".config", "nvim")],
     [join(CONFIG_PATH, "nvim", "vimdid"), join(HOME_DIR, ".vimdid")],
@@ -562,11 +741,9 @@ async function main() {
     await safeSymlink(source, target);
   }
 
-  // macOS specific
   if (process.platform === "darwin") {
     logInfo("Detected macOS, setting up macOS-specific configurations...");
 
-    // Nushell configuration
     const nushellDir = join(
       HOME_DIR,
       "Library",
@@ -582,33 +759,35 @@ async function main() {
 
     if (!SKIP_PACKAGES) {
       const { setupMacOS } = await import("./macos/macos.ts");
-      const { installBrew } = await import("./macos/brew.ts");
+      const { installBrew, auditBrewfile } = await import("./macos/brew.ts");
 
-      await runInstallFunction(() => setupMacOS(), "macOS system settings");
-      await runInstallFunction(
+      await runInstallStep(() => setupMacOS(), "macOS system settings");
+      await runInstallStep(
         () => installBrew(CONFIGS_ROOT),
         "Homebrew installation",
+      );
+      await runInstallStep(
+        () => auditBrewfile(CONFIGS_ROOT),
+        "Brewfile deprecation audit",
       );
     }
   }
 
-  // Package installations
   if (!SKIP_PACKAGES) {
-    const { installNodePackages } = await import("./node.ts");
+    const { installNodePackages, auditNodePackages } = await import("./node.ts");
     const { installRust } = await import("./rust.ts");
 
-    await runInstallFunction(() => installNodePackages(), "Node.js packages");
-    await runInstallFunction(() => installRust(), "Rust toolchain");
+    await runInstallStep(() => auditNodePackages(), "pnpm globals audit");
+    await runInstallStep(() => installNodePackages(), "Node.js packages");
+    await runInstallStep(() => installRust(), "Rust toolchain");
   } else {
     logInfo("Skipping package installations (--skip-packages flag)");
   }
 
-  // Set git credential helper
   if (!DRY_RUN) {
     try {
       logInfo("Configuring git credential helper...");
       const gitConfigPath = join(HOME_DIR, ".gitconfig");
-      // Use --file to explicitly target the gitconfig in HOME_DIR
       await $`git config --file ${gitConfigPath} credential.helper store`.quiet();
       logSuccess("Git credential helper configured");
     } catch {
@@ -621,9 +800,13 @@ async function main() {
   if (!DRY_RUN) {
     logInfo("You may need to restart your shell or run: source ~/.bashrc");
   }
+
+  printSummary(summary);
+
+  const hasFailures = summary.some((i) => i.status === "failed");
+  if (hasFailures) process.exit(1);
 }
 
-// Run main function
 main().catch((error) => {
   logError(`Installation failed: ${error.message}`);
   if (VERBOSE) {
