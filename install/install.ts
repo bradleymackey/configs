@@ -792,17 +792,6 @@ async function main() {
     logInfo("Skipping package installations (--skip-packages flag)");
   }
 
-  if (!DRY_RUN) {
-    try {
-      logInfo("Configuring git credential helper...");
-      const gitConfigPath = join(HOME_DIR, ".gitconfig");
-      await $`git config --file ${gitConfigPath} credential.helper store`.quiet();
-      logSuccess("Git credential helper configured");
-    } catch {
-      logWarn("Failed to set git credential helper");
-    }
-  }
-
   logSuccess("Installation completed!");
 
   if (!DRY_RUN) {

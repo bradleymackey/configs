@@ -589,14 +589,6 @@ describe("Git Integration", () => {
     }
   });
 
-  test("should configure git credential helper", async () => {
-    const result =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`
-        .nothrow()
-        .text();
-
-    expect(result).toContain("git credential helper");
-  });
 });
 
 describe("File Preservation", () => {
