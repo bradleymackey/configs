@@ -275,7 +275,7 @@ describe("Installation Script", () => {
   test("should handle missing source files gracefully", async () => {
     // This should not crash even if some source files are missing
     const result =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow().quiet();
 
     expect(result.exitCode).toBe(0);
   });
@@ -322,7 +322,7 @@ describe("Installation Script", () => {
     await $`mv ${sourceBashrc} ${tempBackup}`.quiet();
     try {
       const result =
-        await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow();
+        await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow().quiet();
       expect(result.exitCode).toBe(1);
       expect(result.stdout.toString()).toContain("needs attention");
     } finally {
@@ -398,7 +398,7 @@ describe("Installation Script", () => {
 
 describe("Installation Script Syntax", () => {
   test("main install script should have valid TypeScript syntax", async () => {
-    const result = await $`bun --no-install ${INSTALL_SCRIPT} --help`.nothrow();
+    const result = await $`bun --no-install ${INSTALL_SCRIPT} --help`.nothrow().quiet();
     expect(result.exitCode).toBe(0);
   });
 
@@ -456,7 +456,7 @@ describe("Installation Script Syntax", () => {
 
       // Batch-query all formulae at once for speed
       const formulaeResult =
-        await $`brew info --json=v2 ${formulae}`.nothrow();
+        await $`brew info --json=v2 ${formulae}`.nothrow().quiet();
       if (formulaeResult.exitCode !== 0) {
         // Batch failed — identify which formulae are missing individually
         const found = new Set<string>();
@@ -466,7 +466,7 @@ describe("Installation Script Syntax", () => {
         } catch {}
         for (const name of formulae) {
           if (!found.has(name)) {
-            const check = await $`brew info --json=v2 ${name}`.nothrow();
+            const check = await $`brew info --json=v2 ${name}`.nothrow().quiet();
             if (check.exitCode !== 0) {
               issues.push(`${name} (not found in Homebrew)`);
             }
@@ -486,7 +486,7 @@ describe("Installation Script Syntax", () => {
       // Batch-query all casks at once
       if (casks.length > 0) {
         const casksResult =
-          await $`brew info --json=v2 --cask ${casks}`.nothrow();
+          await $`brew info --json=v2 --cask ${casks}`.nothrow().quiet();
         if (casksResult.exitCode !== 0) {
           const found = new Set<string>();
           try {
@@ -496,7 +496,7 @@ describe("Installation Script Syntax", () => {
           for (const name of casks) {
             if (!found.has(name)) {
               const check =
-                await $`brew info --json=v2 --cask ${name}`.nothrow();
+                await $`brew info --json=v2 --cask ${name}`.nothrow().quiet();
               if (check.exitCode !== 0) {
                 issues.push(`${name} (cask not found in Homebrew)`);
               }
@@ -537,7 +537,7 @@ describe("Installation Script Syntax", () => {
 
     // These should fail because packages aren't installed, but they should parse correctly
     if (existsSync(nodePath)) {
-      const result = await $`bun --no-install ${nodePath}`.nothrow();
+      const result = await $`bun --no-install ${nodePath}`.nothrow().quiet();
       // Script runs but may fail due to missing pnpm - that's ok, we just verify syntax
       expect(typeof result.exitCode).toBe("number");
     }
@@ -671,7 +671,7 @@ describe("Edge Cases and Error Handling", () => {
   test("should handle permission errors gracefully", async () => {
     // This test ensures the script continues even if some operations fail
     const result =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow().quiet();
 
     // Should complete successfully even if some files can't be created
     expect(result.exitCode).toBe(0);
@@ -710,7 +710,7 @@ describe("Edge Cases and Error Handling", () => {
     mkdirSync(join(specialHome, ".config"), { recursive: true });
 
     const result =
-      await $`HOME=${specialHome} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow();
+      await $`HOME=${specialHome} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow().quiet();
 
     // Should complete successfully
     expect(result.exitCode).toBe(0);
@@ -777,7 +777,7 @@ describe("Edge Cases and Error Handling", () => {
   test("should handle empty source directories", async () => {
     // This tests that the script doesn't crash on empty directories
     const result =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --skip-packages`.nothrow().quiet();
 
     expect(result.exitCode).toBe(0);
   });
@@ -826,7 +826,7 @@ describe("CLI Argument Combinations", () => {
 
   test("should reject invalid flags", async () => {
     const result =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --invalid-flag`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --invalid-flag`.nothrow().quiet();
 
     // Should exit with error
     expect(result.exitCode).not.toBe(0);
@@ -862,7 +862,7 @@ describe("Verification Mode", () => {
 
     // Should exit with error code when there are issues
     const exitResult =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow().quiet();
     expect(exitResult.exitCode).toBe(1);
   });
 
@@ -887,7 +887,7 @@ describe("Verification Mode", () => {
 
     // Should exit with success code
     const exitResult =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow().quiet();
     expect(exitResult.exitCode).toBe(0);
   });
 
@@ -909,7 +909,7 @@ describe("Verification Mode", () => {
 
     // Should exit with error code
     const exitResult =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow().quiet();
     expect(exitResult.exitCode).toBe(1);
   });
 
@@ -928,7 +928,7 @@ describe("Verification Mode", () => {
 
     // Should exit with error code
     const exitResult =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow().quiet();
     expect(exitResult.exitCode).toBe(1);
   });
 
@@ -952,7 +952,7 @@ describe("Verification Mode", () => {
 
         // Should exit with error code
         const exitResult =
-          await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow();
+          await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow().quiet();
         expect(exitResult.exitCode).toBe(1);
       } finally {
         // Restore the file
@@ -1054,7 +1054,7 @@ describe("Verification Mode", () => {
 
     // Should exit with error
     const exitResult =
-      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow();
+      await $`HOME=${TEST_HOME} bun ${INSTALL_SCRIPT} --verify`.nothrow().quiet();
     expect(exitResult.exitCode).toBe(1);
   });
 });
