@@ -1058,3 +1058,35 @@ describe("Verification Mode", () => {
     expect(exitResult.exitCode).toBe(1);
   });
 });
+
+describe("Current Environment", () => {
+  // Asserts the dev machine running the tests is already configured from
+  // this repo (i.e. install/install.ts has been run). Skipped silently on
+  // machines that are not configured from this repo (CI, fresh clones, etc.).
+  test("real $HOME should pass --verify when configured from this repo", async () => {
+    const home = process.env.HOME;
+    if (!home) return;
+
+    const realBashrc = join(home, ".bashrc");
+    if (!existsSync(realBashrc)) return;
+
+    let linkTarget: string;
+    try {
+      linkTarget = readlinkSync(realBashrc);
+    } catch {
+      return; // Not a symlink — machine not configured from this repo
+    }
+
+    const expected = join(CONFIGS_ROOT, "home", ".bashrc");
+    if (linkTarget !== expected) return; // Configured from a different checkout
+
+    const result = await $`bun ${INSTALL_SCRIPT} --verify`.nothrow().quiet();
+    if (result.exitCode !== 0) {
+      // Surface verifier output so the failure is actionable
+      throw new Error(
+        `--verify failed on current environment:\n${result.stdout.toString()}\n${result.stderr.toString()}`,
+      );
+    }
+    expect(result.exitCode).toBe(0);
+  });
+});
