@@ -4,7 +4,8 @@ Configuration files for my preferred setup.
 
 ## Prerequisites
 
-This installation system requires [Bun](https://bun.sh) to be installed:
+This installation system requires [Bun](https://bun.sh) to be installed.
+Bun is used as the runner for installing and testing to verify the current environment.
 
 ```bash
 # Install Bun (macOS, Linux, WSL)
