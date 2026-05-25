@@ -62,7 +62,7 @@ PATH="$PATH:$HOME/.my_scripts"
 PATH="$HOME/.fastlane/bin:$PATH"
 
 # JAVA
-alias JAVA_HOME='/usr/libexec/java_home'
+export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null || true)"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export JUNIT_HOME="$HOME/java"
 PATH="$PATH:$JUNIT_HOME"
@@ -77,7 +77,7 @@ PATH="$PATH:$GOPATH/bin"
 eval "$(pyenv init -)"
 PATH=$(pyenv root)/shims:$PATH
 # helps with build failures for some modules that occur on Apple Silicon (scipy, statsmodels)
-export OPENBLAS=$(brew --prefix openblas || "")
+export OPENBLAS="$(brew --prefix openblas 2>/dev/null || true)"
 ## Poetry
 PATH="$HOME/.local/bin:$PATH"
 
@@ -95,7 +95,7 @@ PATH="$PNPM_HOME:$PATH"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # clangd
-PATH="$PATH:$brew_prefix/opt/llvm/bin/"
+PATH="$PATH:$(brew --prefix)/opt/llvm/bin"
 
 # Node.js
 eval "$(fnm env)"
@@ -106,7 +106,7 @@ PATH=$BUN_INSTALL/bin:$PATH
 
 # Ruby
 PATH="$PATH:$HOME/.rvm/bin"
-eval "$(rbenv init - zsh)"
+eval "$(rbenv init - bash)"
 
 # Mojo
 export MODULAR_HOME="$HOME/.modular"
