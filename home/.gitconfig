@@ -11,8 +11,6 @@
     defaultBranch = main
 [github]
     user = bradleymackey
-[ui "color"]
-    ui = always
 [color]
     ui = true
 [merge]
@@ -38,10 +36,7 @@
     process = git-lfs filter-process
     required = true
 [alias]
-    c = commit
-    s = status
     st = status
-    lg = log --oneline
     last = log -1 HEAD
     f = push --force-with-lease
 	# https://stackoverflow.com/a/11688523/472927
@@ -77,6 +72,9 @@
     s = status
     sb = status -s -b
     #############
+    l = log --oneline
+    lg = log --oneline --graph --decorate
+    #############
     bump = !sh -c 'git commit -am \"Version bump v$1\" && git psuoc && git release $1' -
     release = !sh -c 'git tag v$1 && git pst' -
     unrelease = !sh -c 'git tag -d v$1 && git pso :v$1' -
@@ -87,9 +85,6 @@
     whois = !sh -c 'git log -i -1 --author=\"$1\" --pretty=\"format:%an <%ae>\"' -
     serve = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     #############
-    l = log --oneline
-    lg = log --oneline --graph --decorate
-	#############
     ls = ls-files
     lsf = !git ls-files | grep -i
 [pull]
