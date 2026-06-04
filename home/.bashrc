@@ -1,6 +1,8 @@
 # .bashrc
 # Variables and setup. 
 
+[ -f "$HOME/.bash_secrets" ] && source "$HOME/.bash_secrets"
+
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS2" ] && \
