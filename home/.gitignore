@@ -1,6 +1,9 @@
 # GLOBAL GITIGNORE
 # this should be referenced by the global gitconfig
 
+# Secrets
+.bash_secrets
+
 # Temporary files #
 ###################
 *.swp

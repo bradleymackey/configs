@@ -4,6 +4,7 @@
 **/*.key
 **/*key*.json
 **/.*_history
+**/.bash_secrets
 
 # Dependencies
 node_modules/
