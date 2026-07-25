@@ -124,12 +124,16 @@ return {
   { "tomtom/tcomment_vim" },
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     lazy = false,
     build = ":TSUpdate",
     dependencies = {
       "hiphish/rainbow-delimiters.nvim",
       "JoosepAlviste/nvim-ts-context-commentstring",
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+      },
     },
     config = function()
       require("treesitter-config")
