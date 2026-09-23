@@ -1,0 +1,7 @@
+font-family = "MesloLGS Nerd Font Mono"
+font-size = 14
+background = 002c34
+foreground = ffffff
+theme = vesper
+font-feature = -liga
+title = " "
