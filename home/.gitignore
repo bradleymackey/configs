@@ -159,3 +159,5 @@ fabric.properties
 
 # Neovim
 .nvim-no-format
+
+**/.claude/settings.local.json
