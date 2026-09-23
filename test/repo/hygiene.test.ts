@@ -66,6 +66,12 @@ describe("repo hygiene", () => {
     expect(ignored.exitCode).toBe(0);
   });
 
+  test("submodules clone over HTTPS (a fresh Mac has no SSH key yet)", async () => {
+    const urls = [...(await Bun.file(join(REPO_ROOT, ".gitmodules")).text()).matchAll(/^\s*url\s*=\s*(\S+)/gm)].map((m) => m[1]);
+    expect(urls.length).toBeGreaterThan(0);
+    expect(urls.filter((u) => !u.startsWith("https://"))).toEqual([]);
+  });
+
   test("package.json has no npm lifecycle scripts (`bun install` must never run the installer)", async () => {
     const { scripts } = await Bun.file(join(REPO_ROOT, "package.json")).json();
     const lifecycle = ["preinstall", "install", "postinstall", "prepublish", "preprepare", "prepare", "postprepare"];

@@ -2,7 +2,7 @@
 # .bash_profile
 # For interactive shells, bootstraps the launch of tmux.
 
-source ~/.profile
+[ -f ~/.profile ] && source ~/.profile
 source ~/.bashrc
 
 # -> Launch to tmux if 
