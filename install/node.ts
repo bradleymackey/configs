@@ -1,9 +1,11 @@
 #!/usr/bin/env bun
 
-import { $ } from "bun";
 import type { StepResult, SummaryItem } from "./types.ts";
+import type { Context } from "./lib/context.ts";
+import { runStandalone } from "./lib/standalone.ts";
 
-const packages = [
+// pyright is installed by Homebrew (see home/Brewfile), not here
+export const NODE_PACKAGES = [
   "fixjson",
   "jsonlint",
   "firebase-tools",
@@ -15,20 +17,20 @@ const packages = [
   "typescript-language-server",
   "prettier",
   "prettier_d_slim",
-  "pyright",
   "markdownlint-cli",
 ];
 
-async function listGlobalPackages(): Promise<Set<string>> {
+export type NodeAuditResult = StepResult & { packages: string[] };
+
+export async function listGlobalPackages(ctx: Context): Promise<Set<string>> {
   // pnpm list --json prints an array of objects; each has a `dependencies` map
-  const result = await $`pnpm list -g --depth 0 --json`.nothrow().quiet();
+  const result = await ctx.runner.run(["pnpm", "list", "-g", "--depth", "0", "--json"], { mutates: false });
   if (result.exitCode !== 0) return new Set();
   try {
-    const parsed = JSON.parse(result.stdout.toString());
+    const parsed = JSON.parse(result.stdout);
     const names = new Set<string>();
     for (const entry of Array.isArray(parsed) ? parsed : [parsed]) {
-      const deps = entry?.dependencies ?? {};
-      for (const name of Object.keys(deps)) names.add(name);
+      for (const name of Object.keys(entry?.dependencies ?? {})) names.add(name);
     }
     return names;
   } catch {
@@ -36,134 +38,132 @@ async function listGlobalPackages(): Promise<Set<string>> {
   }
 }
 
-async function isDeprecated(pkg: string): Promise<string | null> {
-  // `npm view <pkg> deprecated --json` prints "string" or empty.
+export async function checkDeprecated(ctx: Context, pkg: string): Promise<string | null> {
+  // `npm view <pkg> deprecated --json` prints a JSON string or nothing.
   // Use npm view rather than pnpm — works without auth, parseable output.
-  const result = await $`npm view ${pkg} deprecated --json`.nothrow().quiet();
+  const result = await ctx.runner.run(["npm", "view", pkg, "deprecated", "--json"], { mutates: false });
   if (result.exitCode !== 0) return null;
-  const raw = result.stdout.toString().trim();
+  const raw = result.stdout.trim();
   if (!raw) return null;
   try {
     const parsed = JSON.parse(raw);
-    if (typeof parsed === "string" && parsed.length > 0) return parsed;
+    return typeof parsed === "string" && parsed.length > 0 ? parsed : null;
   } catch {
     // Some versions print the bare string (no JSON quotes) — accept that too
-    if (raw && raw !== "undefined") return raw;
+    return raw !== "undefined" ? raw : null;
   }
-  return null;
 }
 
 /**
- * Audit pnpm global packages for deprecation warnings.
- * Deprecated packages are removed from the install list AND uninstalled.
- * Mutates `packages` in-place so installNodePackages won't re-add them.
+ * Audit pnpm global packages for deprecation warnings. Deprecated packages
+ * are dropped from the returned install list and uninstalled if present.
  */
-export async function auditNodePackages(): Promise<StepResult> {
-  const changes: SummaryItem[] = [];
-  const installed = await listGlobalPackages();
-
-  const npmCheck = await $`which npm`.nothrow().quiet();
-  if (npmCheck.exitCode !== 0) {
+export async function auditNodePackages(ctx: Context, packages: string[] = NODE_PACKAGES): Promise<NodeAuditResult> {
+  if (!ctx.runner.which("npm")) {
     return {
       ok: true,
-      changes: [
-        {
-          category: "Audit",
-          name: "pnpm globals",
-          status: "skipped",
-          detail: "npm not available for registry lookup",
-        },
-      ],
+      packages,
+      changes: [{ category: "Audit", name: "pnpm globals", status: "skipped", detail: "npm not available for registry lookup" }],
     };
   }
 
-  const deprecated: string[] = [];
-  for (const pkg of [...packages]) {
-    const message = await isDeprecated(pkg);
-    if (message) {
-      deprecated.push(pkg);
-      const isInstalled = installed.has(pkg);
-      // Drop from the install list so we don't re-add it below
-      const idx = packages.indexOf(pkg);
-      if (idx >= 0) packages.splice(idx, 1);
+  const changes: SummaryItem[] = [];
+  const installed = await listGlobalPackages(ctx);
+  const keep: string[] = [];
 
-      if (isInstalled) {
-        const remove = await $`pnpm rm -g ${pkg}`.nothrow();
-        changes.push({
-          category: "Cleanup",
-          name: pkg,
-          status: remove.exitCode === 0 ? "replaced" : "failed",
-          detail:
-            remove.exitCode === 0
-              ? `deprecated: ${message}`
-              : `deprecated, removal failed`,
-        });
-      } else {
-        changes.push({
-          category: "Cleanup",
-          name: pkg,
-          status: "replaced",
-          detail: `deprecated, dropped from install list`,
-        });
-      }
+  for (const pkg of packages) {
+    const message = await checkDeprecated(ctx, pkg);
+    if (!message) {
+      keep.push(pkg);
+      continue;
     }
+    if (!installed.has(pkg)) {
+      changes.push({
+        category: "Cleanup",
+        name: pkg,
+        status: ctx.dryRun ? "planned" : "replaced",
+        detail: `deprecated, ${ctx.dryRun ? "would drop" : "dropped"} from install list`,
+      });
+      continue;
+    }
+    const remove = await ctx.runner.run(["pnpm", "rm", "-g", pkg], { mutates: true });
+    changes.push(
+      ctx.dryRun
+        ? { category: "Cleanup", name: pkg, status: "planned", detail: `deprecated, would uninstall: ${message}` }
+        : remove.exitCode === 0
+          ? { category: "Cleanup", name: pkg, status: "replaced", detail: `deprecated: ${message}` }
+          : { category: "Cleanup", name: pkg, status: "failed", detail: "deprecated, removal failed" },
+    );
   }
 
-  if (deprecated.length === 0) {
-    changes.push({
-      category: "Audit",
-      name: `${packages.length} pnpm globals`,
-      status: "unchanged",
-      detail: "no deprecated packages",
-    });
+  if (keep.length === packages.length) {
+    changes.push({ category: "Audit", name: `${packages.length} pnpm globals`, status: "unchanged", detail: "no deprecated packages" });
   }
 
-  return { ok: true, changes };
+  return { ok: true, changes, packages: keep };
 }
 
 /**
  * Install global Node.js packages via pnpm
  */
-export async function installNodePackages(): Promise<StepResult> {
+export async function installNodePackages(ctx: Context, packages: string[] = NODE_PACKAGES): Promise<StepResult> {
   if (packages.length === 0) {
     return {
       ok: true,
-      changes: [
-        {
-          category: "Package step",
-          name: "pnpm globals",
-          status: "unchanged",
-          detail: "no packages to install",
-        },
-      ],
+      changes: [{ category: "Package step", name: "pnpm globals", status: "unchanged", detail: "no packages to install" }],
     };
   }
 
-  const before = await listGlobalPackages();
+  if (!ctx.runner.which("pnpm")) {
+    if (ctx.dryRun) {
+      return {
+        ok: true,
+        changes: [{ category: "Package step", name: "pnpm globals", status: "planned", detail: "pnpm not installed yet (Brewfile provides it)" }],
+      };
+    }
+    return { ok: false, error: "pnpm not installed" };
+  }
 
-  try {
-    await $`pnpm add -g ${packages}`;
-    const after = await listGlobalPackages();
-    const changes: SummaryItem[] = packages.map((pkg) => ({
+  const before = await listGlobalPackages(ctx);
+  const add = await ctx.runner.run(["pnpm", "add", "-g", ...packages], { mutates: true, stream: true });
+
+  if (ctx.dryRun) {
+    return {
+      ok: true,
+      changes: packages.map((pkg) =>
+        before.has(pkg)
+          ? { category: "Package step", name: pkg, status: "unchanged" }
+          : { category: "Package step", name: pkg, status: "planned", detail: "would install" },
+      ),
+    };
+  }
+
+  if (add.exitCode !== 0) {
+    return { ok: false, error: "pnpm add -g returned non-zero" };
+  }
+
+  const after = await listGlobalPackages(ctx);
+  return {
+    ok: true,
+    changes: packages.map((pkg) => ({
       category: "Package step",
       name: pkg,
-      status: before.has(pkg)
-        ? "unchanged"
-        : after.has(pkg)
-          ? "created"
-          : "failed",
-    }));
-    return { ok: true, changes };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("Failed to install Node packages:", error);
-    return { ok: false, error: message };
-  }
+      status: before.has(pkg) ? "unchanged" : after.has(pkg) ? "created" : "failed",
+    })),
+  };
+}
+
+/** Audit then install, as one step (the install list depends on the audit). */
+export async function syncNodePackages(ctx: Context, packages: string[] = NODE_PACKAGES): Promise<StepResult> {
+  const audit = await auditNodePackages(ctx, packages);
+  const install = await installNodePackages(ctx, audit.packages);
+  return {
+    ok: audit.ok && install.ok,
+    changes: [...(audit.changes ?? []), ...(install.changes ?? [])],
+    error: install.error,
+  };
 }
 
 if (import.meta.main) {
-  // Standalone path: just run the install. The audit is orchestrated by
-  // install.ts because it needs to coordinate with the install step.
-  const install = await installNodePackages();
-  if (!install.ok) process.exit(1);
+  process.exitCode = await runStandalone("Node.js packages", syncNodePackages);
 }

@@ -1,203 +1,203 @@
 #!/usr/bin/env bun
 
-import { $ } from "bun";
 import { existsSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 import type { StepResult, SummaryItem } from "../types.ts";
+import type { Context } from "../lib/context.ts";
+import { runStandalone } from "../lib/standalone.ts";
 
-/**
- * Install Homebrew and packages from Brewfile
- */
-export async function installBrew(configsRoot?: string): Promise<StepResult> {
-  const changes: SummaryItem[] = [];
+const HOMEBREW_INSTALL = `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`;
 
-  const CONFIGS_ROOT =
-    configsRoot || join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-  const HOME_PATH = join(CONFIGS_ROOT, "home");
+// Probes must never trigger Homebrew's auto-update (slow, and it mutates the install)
+const BREW_ENV = { HOMEBREW_NO_AUTO_UPDATE: "1" };
 
-  try {
-    const brewInstalled = await $`which brew`.nothrow().quiet();
+export type Brewfile = { taps: string[]; formulae: string[]; casks: string[] };
 
-    if (brewInstalled.exitCode !== 0) {
-      console.log("Installing Homebrew...");
-      await $`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`;
-      changes.push({
-        category: "Package step",
-        name: "Homebrew",
-        status: "created",
-      });
-    } else {
-      changes.push({
-        category: "Package step",
-        name: "Homebrew",
-        status: "unchanged",
-      });
-    }
-
-    process.env.PATH = `/opt/homebrew/bin:${process.env.PATH}`;
-
-    const brewfilePath = join(HOME_PATH, "Brewfile");
-
-    if (existsSync(brewfilePath)) {
-      const bundle = await $`brew bundle --file ${brewfilePath}`.nothrow();
-      changes.push({
-        category: "Package step",
-        name: "Brewfile bundle",
-        status: bundle.exitCode === 0 ? "unchanged" : "failed",
-        detail:
-          bundle.exitCode === 0 ? undefined : "brew bundle returned non-zero",
-      });
-    } else {
-      console.warn(`Brewfile not found at ${brewfilePath}`);
-      changes.push({
-        category: "Package step",
-        name: "Brewfile bundle",
-        status: "failed",
-        detail: `Brewfile missing at ${brewfilePath}`,
-      });
-    }
-
-    const fzfPath = (await $`brew --prefix`.quiet().text()).trim();
-    const fzfBindings = join(fzfPath, "opt", "fzf", "shell", "key-bindings.bash");
-    if (existsSync(fzfBindings)) {
-      changes.push({
-        category: "Package step",
-        name: "fzf completions",
-        status: "unchanged",
-      });
-    } else {
-      console.log("Installing fzf completions...");
-      await $`${fzfPath}/opt/fzf/install --key-bindings --completion --no-update-rc`.quiet();
-      changes.push({
-        category: "Package step",
-        name: "fzf completions",
-        status: "created",
-      });
-    }
-
-    return { ok: true, changes };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("Failed to install Homebrew packages:", error);
-    return { ok: false, changes, error: message };
+export function parseBrewfile(text: string): Brewfile {
+  const result: Brewfile = { taps: [], formulae: [], casks: [] };
+  for (const line of text.split("\n")) {
+    const match = line.match(/^(tap|brew|cask)\s+"([^"]+)"/);
+    if (!match) continue;
+    const [, kind, name] = match;
+    if (kind === "tap") result.taps.push(name);
+    else if (kind === "brew") result.formulae.push(name);
+    else result.casks.push(name);
   }
+  return result;
+}
+
+/** Parses `brew bundle check --verbose` lines like "→ Cask foo needs to be installed." */
+export function parseBundleCheck(output: string): string[] {
+  const missing: string[] = [];
+  for (const line of output.split("\n")) {
+    const match = line.match(/^→ \S+(?: \S+)*? (\S+) needs to be /);
+    if (match) missing.push(match[1]);
+  }
+  return missing;
+}
+
+export function brewfilePath(ctx: Context): string {
+  return join(ctx.configsRoot, "home", "Brewfile");
 }
 
 /**
- * Audit Brewfile for deprecated or disabled formulae/casks.
- * Does NOT modify the Brewfile — surfaces issues in the summary so the user
- * can decide what to do.
+ * Install Homebrew and packages from the Brewfile
  */
-export async function auditBrewfile(configsRoot?: string): Promise<StepResult> {
+export async function installBrew(ctx: Context): Promise<StepResult> {
   const changes: SummaryItem[] = [];
+  const { runner } = ctx;
 
-  const CONFIGS_ROOT =
-    configsRoot || join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-  const brewfilePath = join(CONFIGS_ROOT, "home", "Brewfile");
-
-  if (!existsSync(brewfilePath)) {
-    return {
-      ok: true,
-      changes: [
-        {
-          category: "Audit",
-          name: "Brewfile",
-          status: "skipped",
-          detail: "Brewfile not found",
-        },
-      ],
-    };
+  if (!runner.which("brew")) {
+    if (ctx.dryRun) {
+      await runner.run(["/bin/bash", "-c", HOMEBREW_INSTALL], { mutates: true });
+      changes.push(
+        { category: "Package step", name: "Homebrew", status: "planned", detail: "would install" },
+        { category: "Package step", name: "Brewfile bundle", status: "planned", detail: "would install everything in the Brewfile" },
+      );
+      return { ok: true, changes };
+    }
+    ctx.log.info("Installing Homebrew...");
+    const install = await runner.run(["/bin/bash", "-c", HOMEBREW_INSTALL], { mutates: true, stream: true });
+    if (install.exitCode !== 0) {
+      changes.push({ category: "Package step", name: "Homebrew", status: "failed", detail: "installer returned non-zero" });
+      return { ok: false, changes, error: "Homebrew install failed" };
+    }
+    // Make the fresh install visible to the rest of this run
+    ctx.env.PATH = `/opt/homebrew/bin:${ctx.env.PATH ?? ""}`;
+    changes.push({ category: "Package step", name: "Homebrew", status: "created" });
+  } else {
+    changes.push({ category: "Package step", name: "Homebrew", status: "unchanged" });
   }
 
-  const brewCheck = await $`which brew`.nothrow().quiet();
-  if (brewCheck.exitCode !== 0) {
-    return {
-      ok: true,
-      changes: [
-        {
-          category: "Audit",
-          name: "Brewfile",
-          status: "skipped",
-          detail: "brew not available",
-        },
-      ],
-    };
+  const brewfile = brewfilePath(ctx);
+  if (!existsSync(brewfile)) {
+    ctx.log.warn(`Brewfile not found at ${brewfile}`);
+    changes.push({ category: "Package step", name: "Brewfile bundle", status: "failed", detail: `Brewfile missing at ${brewfile}` });
+    return { ok: true, changes };
   }
 
-  const content = await Bun.file(brewfilePath).text();
-  const formulae: string[] = [];
-  const casks: string[] = [];
-  for (const line of content.split("\n")) {
-    const brewMatch = line.match(/^brew\s+"([^"]+)"/);
-    if (brewMatch) formulae.push(brewMatch[1]);
-    const caskMatch = line.match(/^cask\s+"([^"]+)"/);
-    if (caskMatch) casks.push(caskMatch[1]);
+  const check = await runner.run(["brew", "bundle", "check", "--file", brewfile, "--verbose", "--no-upgrade"], {
+    mutates: false,
+    env: BREW_ENV,
+  });
+  const missing = check.exitCode === 0 ? [] : parseBundleCheck(check.stdout + check.stderr);
+
+  const bundle = await runner.run(["brew", "bundle", "--file", brewfile], { mutates: true, stream: true });
+  if (ctx.dryRun) {
+    changes.push(
+      missing.length > 0
+        ? { category: "Package step", name: "Brewfile bundle", status: "planned", detail: `would install: ${missing.join(", ")}` }
+        : { category: "Package step", name: "Brewfile bundle", status: "unchanged", detail: "all dependencies satisfied" },
+    );
+  } else if (bundle.exitCode !== 0) {
+    changes.push({ category: "Package step", name: "Brewfile bundle", status: "failed", detail: "brew bundle returned non-zero" });
+  } else {
+    changes.push(
+      missing.length > 0
+        ? { category: "Package step", name: "Brewfile bundle", status: "created", detail: `installed: ${missing.join(", ")}` }
+        : { category: "Package step", name: "Brewfile bundle", status: "unchanged" },
+    );
   }
 
-  let problemCount = 0;
+  const prefix = (await runner.run(["brew", "--prefix"], { mutates: false, env: BREW_ENV })).stdout.trim();
+  const fzfDir = join(prefix, "opt", "fzf");
+  if (existsSync(join(fzfDir, "shell", "key-bindings.bash"))) {
+    changes.push({ category: "Package step", name: "fzf completions", status: "unchanged" });
+  } else {
+    const fzf = await runner.run(
+      [join(fzfDir, "install"), "--key-bindings", "--completion", "--no-update-rc", "--no-zsh", "--no-fish"],
+      { mutates: true },
+    );
+    changes.push(
+      ctx.dryRun
+        ? { category: "Package step", name: "fzf completions", status: "planned", detail: "would install bash key bindings" }
+        : fzf.exitCode === 0
+          ? { category: "Package step", name: "fzf completions", status: "created" }
+          : { category: "Package step", name: "fzf completions", status: "failed", detail: "fzf install returned non-zero" },
+    );
+  }
 
-  async function checkBatch(
-    items: string[],
-    kind: "formula" | "cask",
-  ): Promise<void> {
-    if (items.length === 0) return;
-    const result =
-      kind === "formula"
-        ? await $`brew info --json=v2 ${items}`.nothrow().quiet()
-        : await $`brew info --json=v2 --cask ${items}`.nothrow().quiet();
+  return { ok: true, changes };
+}
 
-    let parsed: any = null;
+type BrewInfoEntry = {
+  full_name?: string;
+  token?: string;
+  deprecated?: boolean;
+  disabled?: boolean;
+  deprecation_replacement?: string;
+  disable_replacement?: string;
+};
+
+/**
+ * Audit Brewfile for deprecated, disabled, or missing formulae/casks.
+ * Read-only: surfaces issues in the summary so the user can decide.
+ */
+export async function auditBrewfile(ctx: Context): Promise<StepResult> {
+  const changes: SummaryItem[] = [];
+  const brewfile = brewfilePath(ctx);
+
+  if (!existsSync(brewfile)) {
+    return { ok: true, changes: [{ category: "Audit", name: "Brewfile", status: "skipped", detail: "Brewfile not found" }] };
+  }
+  if (!ctx.runner.which("brew")) {
+    return { ok: true, changes: [{ category: "Audit", name: "Brewfile", status: "skipped", detail: "brew not available" }] };
+  }
+
+  const { formulae, casks } = parseBrewfile(await Bun.file(brewfile).text());
+  let problems = 0;
+
+  async function brewInfo(items: string[], kind: "formula" | "cask"): Promise<BrewInfoEntry[] | { error: string }> {
+    const cmd = kind === "formula" ? ["brew", "info", "--json=v2", ...items] : ["brew", "info", "--json=v2", "--cask", ...items];
+    const result = await ctx.runner.run(cmd, { mutates: false, env: BREW_ENV });
     try {
-      parsed = JSON.parse(result.stdout.toString());
+      const parsed: { formulae?: BrewInfoEntry[]; casks?: BrewInfoEntry[] } = JSON.parse(result.stdout);
+      return (kind === "formula" ? parsed.formulae : parsed.casks) ?? [];
     } catch {
-      changes.push({
-        category: "Audit",
-        name: `Brewfile ${kind}s`,
-        status: "skipped",
-        detail: "brew info JSON unparseable",
-      });
-      return;
+      return { error: result.stderr.trim().split("\n")[0] || "brew info returned no JSON" };
+    }
+  }
+
+  async function checkBatch(items: string[], kind: "formula" | "cask"): Promise<void> {
+    if (items.length === 0) return;
+    const seen = new Set<string>();
+    const entries: BrewInfoEntry[] = [];
+
+    const batch = await brewInfo(items, kind);
+    if (Array.isArray(batch)) {
+      entries.push(...batch);
+    } else {
+      // One bad entry (unknown, untrusted tap, ...) fails the whole batch; check each on its own
+      for (const item of items) {
+        const single = items.length > 1 ? await brewInfo([item], kind) : batch;
+        if (Array.isArray(single)) {
+          entries.push(...single);
+        } else {
+          changes.push({ category: "Audit", name: item, status: "failed", detail: single.error });
+          problems++;
+          seen.add(item);
+        }
+      }
     }
 
-    const entries = kind === "formula" ? parsed.formulae : parsed.casks;
-    const seen = new Set<string>();
-    for (const entry of entries ?? []) {
-      const name = kind === "formula" ? entry.full_name : entry.token;
+    for (const entry of entries) {
+      const name = (kind === "formula" ? entry.full_name : entry.token) ?? "?";
       seen.add(name);
-      const replacement =
-        entry.deprecation_replacement || entry.disable_replacement;
-      if (entry.disabled) {
-        changes.push({
-          category: "Audit",
-          name,
-          status: "failed",
-          detail: replacement
-            ? `disabled — replacement: ${replacement}`
-            : "disabled",
-        });
-        problemCount++;
-      } else if (entry.deprecated) {
-        changes.push({
-          category: "Audit",
-          name,
-          status: "failed",
-          detail: replacement
-            ? `deprecated — replacement: ${replacement}`
-            : "deprecated",
-        });
-        problemCount++;
-      }
+      const state = entry.disabled ? "disabled" : entry.deprecated ? "deprecated" : null;
+      if (!state) continue;
+      const replacement = entry.deprecation_replacement || entry.disable_replacement;
+      changes.push({
+        category: "Audit",
+        name,
+        status: "failed",
+        detail: replacement ? `${state} — replacement: ${replacement}` : state,
+      });
+      problems++;
     }
     for (const requested of items) {
       if (!seen.has(requested)) {
-        changes.push({
-          category: "Audit",
-          name: requested,
-          status: "failed",
-          detail: `${kind} not found in Homebrew`,
-        });
-        problemCount++;
+        changes.push({ category: "Audit", name: requested, status: "failed", detail: `${kind} not found in Homebrew` });
+        problems++;
       }
     }
   }
@@ -205,7 +205,7 @@ export async function auditBrewfile(configsRoot?: string): Promise<StepResult> {
   await checkBatch(formulae, "formula");
   await checkBatch(casks, "cask");
 
-  if (problemCount === 0) {
+  if (problems === 0) {
     changes.push({
       category: "Audit",
       name: `${formulae.length} formulae · ${casks.length} casks`,
@@ -218,6 +218,5 @@ export async function auditBrewfile(configsRoot?: string): Promise<StepResult> {
 }
 
 if (import.meta.main) {
-  const result = await installBrew();
-  if (!result.ok) process.exit(1);
+  process.exitCode = await runStandalone("Homebrew installation", installBrew);
 }

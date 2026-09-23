@@ -7,12 +7,14 @@ export type ItemStatus =
   | "created"
   | "replaced"
   | "failed"
-  | "skipped";
+  | "skipped"
+  | "planned";
 
 export type SummaryCategory =
   | "Symlink"
   | "Directory"
   | "Package step"
+  | "Setting"
   | "Cleanup"
   | "Audit";
 

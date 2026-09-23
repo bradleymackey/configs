@@ -1,41 +1,56 @@
 #!/usr/bin/env bun
 
-import { $ } from "bun";
-import type { StepResult } from "../types.ts";
+import type { StepResult, SummaryItem } from "../types.ts";
+import type { Context } from "../lib/context.ts";
+import { runStandalone } from "../lib/standalone.ts";
+
+export type DefaultSetting = {
+  label: string;
+  domain: string;
+  key: string;
+  type: "string" | "int" | "bool";
+  value: string;
+};
+
+export const MACOS_DEFAULTS: DefaultSetting[] = [
+  { label: "Dock orientation", domain: "com.apple.dock", key: "orientation", type: "string", value: "left" },
+  { label: "Initial key repeat", domain: "NSGlobalDomain", key: "InitialKeyRepeat", type: "int", value: "12" },
+  { label: "Key repeat", domain: "NSGlobalDomain", key: "KeyRepeat", type: "int", value: "1" },
+];
 
 /**
- * Apply macOS system settings
+ * Apply macOS system settings. Reads each value first so the summary reports
+ * what actually changed (and dry-run shows current -> desired).
  */
-export async function setupMacOS(): Promise<StepResult> {
-  console.log("Setting up macOS...");
+export async function setupMacOS(ctx: Context, settings: DefaultSetting[] = MACOS_DEFAULTS): Promise<StepResult> {
+  const changes: SummaryItem[] = [];
+  let ok = true;
 
-  try {
-    console.log("Setup Dock");
-    await $`defaults write com.apple.dock orientation left`;
+  for (const setting of settings) {
+    const { domain, key, type, value, label } = setting;
+    const read = await ctx.runner.run(["defaults", "read", domain, key], { mutates: false });
+    const current = read.exitCode === 0 ? read.stdout.trim() : null;
 
-    console.log("Reducing key repeat");
-    await $`defaults write -g InitialKeyRepeat -int 12`;
-    await $`defaults write -g KeyRepeat -int 1`;
+    if (current === value) {
+      changes.push({ category: "Setting", name: label, status: "unchanged", detail: `${key} = ${value}` });
+      continue;
+    }
 
-    console.log("macOS settings applied!");
-    return {
-      ok: true,
-      changes: [
-        {
-          category: "Package step",
-          name: "macOS defaults (dock, key repeat)",
-          status: "unchanged",
-        },
-      ],
-    };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("Failed to apply macOS settings:", error);
-    return { ok: false, error: message };
+    const write = await ctx.runner.run(["defaults", "write", domain, key, `-${type}`, value], { mutates: true });
+    const transition = `${key}: ${current ?? "unset"} → ${value}`;
+    if (ctx.dryRun) {
+      changes.push({ category: "Setting", name: label, status: "planned", detail: transition });
+    } else if (write.exitCode === 0) {
+      changes.push({ category: "Setting", name: label, status: current === null ? "created" : "replaced", detail: transition });
+    } else {
+      ok = false;
+      changes.push({ category: "Setting", name: label, status: "failed", detail: `defaults write failed: ${write.stderr.trim()}` });
+    }
   }
+
+  return ok ? { ok, changes } : { ok, changes, error: "some macOS settings could not be written" };
 }
 
 if (import.meta.main) {
-  const result = await setupMacOS();
-  if (!result.ok) process.exit(1);
+  process.exitCode = await runStandalone("macOS system settings", setupMacOS);
 }
