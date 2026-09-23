@@ -20,6 +20,38 @@ bun --version
 Clone the repo, symlink folders/files in the relevant places.
 This will ensure they stay in sync with this repo.
 
+### New Mac
+
+On a fresh Mac, in this order:
+
+```bash
+# 1. Command Line Tools (git and compilers; `git` is only a stub until this is done)
+xcode-select --install
+
+# 2. Bun
+curl -fsSL https://bun.sh/install | bash   # then open a new terminal
+
+# 3. Clone over HTTPS (no SSH key yet; submodules use HTTPS too)
+git clone https://github.com/bradleymackey/configs ~/configs
+cd ~/configs
+
+# 4. Preview, then install. Expect password prompts for Homebrew, `chsh`
+#    (login shell -> /bin/bash) and casks that ship .pkg installers
+bun run dry-run
+bun run setup
+```
+
+Then:
+
+- Log out and back in: key repeat, Dock position and the login shell apply on the next login
+- Create an SSH key, add it to GitHub, then
+  `git -C ~/configs remote set-url origin git@github.com:bradleymackey/configs.git`
+- Copy untracked secrets across by hand: `~/.bash_secrets` (sourced by `.bashrc`) and `~/.profile`
+- If macFUSE asks on first use, allow it in System Settings → Privacy & Security
+- Optional: `rm -rf ~/.bun` (Homebrew's `bun` replaces the bootstrap copy) and `fnm install --lts`
+  (until then, Homebrew's `node` is used)
+- `bun run verify`
+
 ### Quick Start
 
 ```bash

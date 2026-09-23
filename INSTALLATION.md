@@ -19,7 +19,7 @@ install/
   verify.ts         Verification mode, stale-link detection, required tools
   node.ts           Global pnpm packages (+ deprecation audit)
   rust.ts           rustup, components, cargo tools
-  macos/macos.ts    macOS `defaults` settings
+  macos/macos.ts    macOS `defaults` settings, login shell (`chsh` to /bin/bash)
   macos/brew.ts     Homebrew, Brewfile bundle, fzf bindings, Brewfile audit
   lib/context.ts    Context passed to every step (dry-run flag, HOME, runner, log, summary)
   lib/runner.ts     Command runner; the dry-run runner never executes mutating commands
@@ -37,6 +37,18 @@ wrapped by `createDryRunRunner`: commands with `mutates: false` (e.g. `brew bund
 commands with `mutates: true` are only printed as `Would run: …`. Filesystem changes in
 `lib/fs-ops.ts` check `ctx.dryRun` the same way. The summary marks previewed changes as
 **Would change**.
+
+## New Mac
+
+See "New Mac" in `README.md` for the bootstrap order (Command Line Tools, Bun, HTTPS clone,
+setup, then the manual follow-ups). Things setup handles for a fresh machine:
+
+- The Homebrew installer and `chsh` run with the terminal's stdin (`interactive: true`), so they
+  can prompt for a password; without a TTY the Homebrew installer aborts on `sudo`
+- rustup is installed with `--no-modify-path`, so it never appends to `~/.bashrc` /
+  `~/.bash_profile` (symlinks into this repo)
+- `PNPM_HOME` is set for the run if missing (setup is usually launched from zsh on a new Mac)
+- fzf's install script runs when `~/.fzf.bash` (what `.bashrc` sources) is missing
 
 ## Usage
 
