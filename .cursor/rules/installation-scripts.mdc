@@ -10,4 +10,5 @@ alwaysApply: false
 - Main installer: `install/install.ts`
 - Platform-specific scripts in subdirectories (e.g., `install/macos/`)
 - Scripts should support `--dry-run`, `--skip-packages`, `--verbose`, `--help`
-- Use `bun run <script-name>` for predefined package.json scripts
+- Use `bun run <script-name>` for predefined package.json scripts (`setup`, `dry-run`, `verify`, `test`)
+- Declare every command's `mutates` flag; dry-run must never execute mutating commands

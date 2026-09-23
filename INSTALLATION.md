@@ -4,103 +4,65 @@ This document describes the Bun-based installation system for managing dotfiles 
 
 ## Overview
 
-The installation system has been completely rewritten in TypeScript using Bun, providing:
-
-- **Cross-platform compatibility**: Uses Bun shell for better portability
-- **Type safety**: Full TypeScript with type checking
-- **Comprehensive testing**: Test suite using Bun's built-in test runner
-- **Verification mode**: Check symlink status without making changes
-- **Dry-run mode**: Preview changes before applying them
-- **Idempotency**: Safe to run multiple times
-- **Backup protection**: Automatically backs up existing files
+- **Dry-run everything**: every step (symlinks, macOS settings, Homebrew, pnpm, Rust) previews its changes
+- **Verification mode**: check symlinks, stale links and required tools without making changes
+- **Idempotency**: safe to run multiple times
+- **Backup protection**: existing files are backed up before being replaced
+- **Tested**: unit tests for every module, CLI integration tests, and a coverage gate
 
 ## Architecture
 
-### Main Components
+```
+install/
+  install.ts        CLI entry point: install / --dry-run / --verify
+  symlinks.ts       The symlink manifest (single source of truth)
+  verify.ts         Verification mode, stale-link detection, required tools
+  node.ts           Global pnpm packages (+ deprecation audit)
+  rust.ts           rustup, components, cargo tools
+  macos/macos.ts    macOS `defaults` settings
+  macos/brew.ts     Homebrew, Brewfile bundle, fzf bindings, Brewfile audit
+  lib/context.ts    Context passed to every step (dry-run flag, HOME, runner, log, summary)
+  lib/runner.ts     Command runner; the dry-run runner never executes mutating commands
+  lib/fs-ops.ts     Symlink/directory operations (lstat + symlinkSync, backups)
+  lib/step.ts       Runs a step and folds its result into the summary
+  lib/summary.ts    End-of-run summary table
+  lib/standalone.ts Lets each step run on its own with the same flags
+```
 
-1. **`install/install.ts`** - Main installation script
-   - Handles symlink creation for dotfiles
-   - Manages directory structure
-   - Orchestrates package installation scripts
-   - Provides CLI interface with flags
+### How dry-run works
 
-2. **`install/node.ts`** - Node.js package installation
-   - Installs global pnpm packages
-   - TypeScript, ESLint, Prettier, etc.
-
-3. **`install/rust.ts`** - Rust toolchain installation
-   - Installs rustup and cargo
-   - Adds Rust components (clippy, rustfmt, etc.)
-
-4. **`install/macos/`** - macOS-specific scripts
-   - `macos.ts`: System preferences (Dock, key repeat, etc.)
-   - `brew.ts`: Homebrew and package installation
-
-5. **`test/install.test.ts`** - Comprehensive test suite
-   - Tests all installation scenarios
-   - Validates idempotency and error handling
-   - Platform-specific tests
-
-### Configuration Files
-
-- **`package.json`** - Defines npm scripts and dependencies
-- **`tsconfig.json`** - TypeScript configuration
+Every command is run through `ctx.runner.run(cmd, { mutates })`. In dry-run mode the runner is
+wrapped by `createDryRunRunner`: commands with `mutates: false` (e.g. `brew bundle check`,
+`defaults read`, `pnpm list`) still run so the preview reflects the real machine, while
+commands with `mutates: true` are only printed as `Would run: …`. Filesystem changes in
+`lib/fs-ops.ts` check `ctx.dryRun` the same way. The summary marks previewed changes as
+**Would change**.
 
 ## Usage
 
-### Installation
-
 ```bash
-# Check status of symlinks (recommended first step)
-bun run verify
-
-# Preview changes
-bun run dry-run
-
-# Install everything
-bun run install
-
-# Install only dotfiles (skip packages)
-bun run install:dotfiles
-
-# Verbose output
-bun run install:verbose
-
-# Show detailed help
-bun run usage
+bun run verify          # Check status (recommended first step)
+bun run dry-run         # Preview every change
+bun run setup           # Install everything
+bun run setup:dotfiles  # Install only dotfiles (skip packages)
+bun run setup:verbose   # Verbose output
+bun run usage           # Show detailed help
 ```
 
-### Testing
+Individual steps can run standalone and accept the same flags:
 
 ```bash
-# Run all tests
-bun test
-
-# Watch mode (auto-rerun on changes)
-bun test --watch
-
-# Specific test file
-bun test test/install.test.ts
+bun install/macos/brew.ts --dry-run
+bun install/macos/macos.ts --dry-run
+bun install/node.ts --dry-run
+bun install/rust.ts --dry-run
 ```
 
-### Development
-
-```bash
-# Show detailed installation help
-bun run usage
-
-# Run install script directly (if needed)
-bun install/install.ts --help
-
-# Check TypeScript types
-bun --no-install install/install.ts --help
-```
+`CONFIGS_ROOT` overrides the repo location (used by the tests to point at a fixture).
 
 ## Key Features
 
 ### Verification Mode
-
-Check the status of all expected symlinks without making any changes:
 
 ```bash
 bun run verify
@@ -109,152 +71,94 @@ bun run verify
 Output shows:
 - ✓ **OK** (green): Symlink correctly points to source
 - ✗ **Missing** (yellow): Symlink doesn't exist yet
-- ✗ **Wrong target** (red): Symlink points to wrong location
+- ✗ **Wrong target** (red): Symlink points to the wrong location (or nowhere)
 - ✗ **Not a symlink** (red): Regular file/directory exists instead
 - ✗ **Source missing** (red): Source file doesn't exist in configs
+- ✗ **Stale link** (red): A symlink in `~` or `~/.config` that is dangling, or points into
+  this repo but isn't in the manifest (e.g. left behind by a removed config)
+
+It also checks the environment (tmux, bash as login shell, SSH git remote, required tools,
+fzf bindings). Environment issues are reported but don't fail verification.
 
 Exit codes:
 - `0`: All symlinks are correctly configured
-- `1`: Issues found (use `bun run install` to fix)
+- `1`: Symlink issues found (run `bun run setup` to fix; remove stale links by hand)
 
-This is useful for:
-- Checking your system's current state
-- CI/CD integration
-- Auditing before/after changes
+### Idempotency and Backups
 
-### Dry-Run Mode
-
-The dry-run command allows you to preview all changes before applying them:
-
-```bash
-bun run dry-run
-```
-
-Output shows:
-- Which symlinks would be created
-- Which directories would be created
-- Which scripts would be run
-- No actual changes are made
-
-### Idempotency
-
-The installation is fully idempotent:
-- Detects existing correct symlinks and skips them
-- Won't re-run installations unnecessarily
-- Safe to run multiple times without side effects
-
-### Backup Protection
-
-Before replacing any existing files:
-1. Checks if target exists
-2. Creates timestamped backup (`.backup.{timestamp}`)
-3. Then creates the new symlink
-
-Example: `~/.bashrc.backup.1729356789`
-
-### Error Handling
-
-- Gracefully handles missing source files
-- Continues on non-critical errors
-- Provides clear error messages with color coding
-- Returns appropriate exit codes
+- Correct symlinks are detected and left untouched
+- Anything else at a target (file, directory, wrong or dangling link) is renamed to
+  `<target>.backup.<timestamp>` before the link is created
+- Links are created with `symlinkSync`, so an existing directory link is never followed
+  (the old `ln -s` implementation could write links *inside* the repo)
 
 ## Symlinks Created
 
+The manifest lives in `install/symlinks.ts`.
+
 ### Home Directory
-- `.bash_profile` → Bash login configuration
-- `.bashrc` → Bash interactive shell configuration
+- `.bash_profile`, `.bashrc` → Bash login and interactive configuration
 - `.tmux.conf` → tmux configuration
 - `.vimrc` → Vim configuration
 - `.lldbinit` → LLDB debugger configuration
-- `.gitconfig` → Git configuration
-- `.gitignore` → Global Git ignore patterns
+- `.gitconfig`, `.gitignore` → Git configuration and global ignore patterns
 - `.my_scripts/` → Custom shell scripts
+- `.vimdid` → Neovim undo history (`home/.config/nvim/vimdid`, gitignored)
 
 ### ~/.config Directory
 - `nvim/` → Neovim configuration
-- `base16-shell/` → Base16 color scheme
-- `kitty/` → Kitty terminal configuration
-- `alacritty/` → Alacritty terminal configuration
+- `base16-shell/` → Base16 color scheme (submodule)
 - `helix/` → Helix editor configuration
-- `swift_po/` → Swift debugging tools
+- `swift_po/` → Swift debugging tools (submodule)
+- `starship.toml` → Starship prompt
+- `stylua.toml` → StyLua (Lua formatter used by Neovim) global config
 
 ### macOS Specific
-- `~/Library/Application Support/nushell/config.nu`
-- `~/Library/Application Support/nushell/env.nu`
+- `~/Library/Application Support/nushell/config.nu` and `env.nu`
+- `~/Library/Application Support/com.mitchellh.ghostty/config` → Ghostty terminal
 
-## Testing Strategy
+### Tracked but not linked
+Listed in `UNLINKED_ENTRIES` in `install/symlinks.ts`: `home/Brewfile` (used by `brew.ts`),
+`home/README.md`, and `home/.config/vscode` (kept for reference).
 
-The test suite validates:
+## Testing
 
-1. **CLI Interface**
-   - Help flag displays usage
-   - Flag parsing works correctly
-   - Error messages for invalid flags
+```bash
+bun run test        # unit + integration + repo hygiene, with coverage gate
+bun run test:env    # opt-in, read-only checks against this machine
+bun run typecheck   # tsc --noEmit
+```
 
-2. **Dry-Run Mode**
-   - No actual changes made
-   - Correct preview output
-   - All operations simulated
+- **`test/unit/`**: imports every module in-process with a `FakeRunner` (scripted command
+  responses + call log) and temp-dir HOME/configs roots. Each step is tested in normal and
+  dry-run mode, including "no mutating command ran" assertions.
+- **`test/integration/install.test.ts`**: the real CLI against a throwaway HOME and a fixture
+  configs root: backups, idempotency (by inode), dangling links, concurrency, verify states.
+- **`test/integration/dry-run-safety.test.ts`**: full `--dry-run` (and each standalone script)
+  with stub `brew`/`pnpm`/`npm`/`rustup`/`cargo`/`defaults`/`curl`/`git` on PATH; fails if
+  anything other than a read-only probe ran, or if HOME or the fixture changed.
+- **`test/repo/hygiene.test.ts`**: every tracked entry in `home/` is linked or explicitly
+  excluded, no self-referential symlinks, vimdid stays gitignored, the Brewfile provides every
+  required tool and taps every third-party formula, no npm lifecycle scripts.
+- **`test/env/`**: skipped unless `CONFIGS_ENV_TESTS=1` (set by `bun run test:env`). Runs
+  everything in dry-run mode against the real machine: Brewfile audit, Brewfile installed,
+  and `--verify` if this checkout is the one linked into HOME.
 
-3. **Symlink Management**
-   - Creates symlinks correctly
-   - Detects existing symlinks
-   - Handles broken symlinks
-   - Creates backups when needed
-
-4. **Idempotency**
-   - Running twice produces same result
-   - No errors on re-run
-   - Detects "already exists" conditions
-
-5. **Error Handling**
-   - Graceful handling of missing files
-   - Continues on non-critical errors
-   - Proper exit codes
-
-6. **Platform Detection**
-   - Correctly identifies macOS
-   - Runs platform-specific scripts
-   - Skips irrelevant configurations
-
-## Migration from Bash
-
-The previous bash-based system had several issues:
-
-1. **Path typos**: `$CONF_PATH` vs `$CONFIG_PATH`
-2. **Hard-coded paths**: `~/config` vs `~/configs`
-3. **No error handling**: Failed symlinks crashed the script
-4. **No dry-run**: Couldn't preview changes
-5. **No tests**: No way to verify correctness
-6. **Not idempotent**: Couldn't safely re-run
-
-The new Bun-based system addresses all these issues with:
-- Dynamic path resolution
-- Comprehensive error handling
-- Full dry-run support
-- Extensive test coverage
-- Complete idempotency
+`bunfig.toml` sets the coverage threshold (95% lines and functions per file), enforced by
+`bun run test`.
 
 ## Shell Configuration (Bash Only)
 
-This configuration system uses **bash** exclusively. All zsh-related scripts and configurations have been removed for simplicity.
-
-If you need zsh support, you'll need to:
-1. Create your own `.zshrc` configuration
-2. Add zsh symlinks to `install/install.ts`
-3. Optionally add oh-my-zsh installation script
+This configuration uses **bash** exclusively; there is no zsh configuration.
 
 ## Contributing
 
 When adding new features:
 
-1. Update `install/install.ts` with new symlinks or logic
-2. Add corresponding tests in `test/install.test.ts`
-3. Update this documentation
-4. Run tests to ensure nothing breaks: `bun test`
-5. Test in dry-run mode: `bun run dry-run`
-6. Test in verification mode: `bun run verify`
+1. Add symlinks to `install/symlinks.ts` (or to `UNLINKED_ENTRIES` if intentionally not linked)
+2. Declare every command's `mutates` flag correctly so dry-run stays safe
+3. Add unit tests in `test/unit/` (both normal and dry-run paths)
+4. Run `bun run test`, `bun run typecheck`, `bun run dry-run`, and `bun run verify`
 
 ## Troubleshooting
 
@@ -262,22 +166,11 @@ When adding new features:
 Install Bun: `curl -fsSL https://bun.sh/install | bash`
 
 ### "Source does not exist"
-Some source files may be missing. This is normal if you haven't created all config files yet. The installer continues gracefully.
+A manifest source is missing from `home/`. For submodules, run
+`git submodule update --init --recursive`.
 
-### "Failed to create symlink"
-Check permissions and ensure target directory exists and is writable.
+### "Stale link"
+Remove the listed symlink by hand once you've confirmed it's not needed.
 
 ### Tests failing
-Run with verbose output: `bun test --verbose`
-Check that all source files in `home/` directory exist.
-
-## Future Improvements
-
-Potential enhancements:
-
-1. **Interactive mode**: Ask user which components to install
-2. **Uninstall script**: Remove all symlinks and restore backups
-3. **Config validation**: Check dotfiles for common errors before installing
-4. **Remote install**: Install directly from GitHub without cloning
-5. **Platform detection**: Better Linux/Windows support
-6. **Logging**: Write detailed logs to file for debugging
+Run a single file for detail: `bun test test/unit/fs-ops.test.ts`.

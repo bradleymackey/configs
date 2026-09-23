@@ -1,106 +1,80 @@
 # Installation Scripts
 
-This directory contains TypeScript modules for installing and configuring development tools and dotfiles.
+TypeScript modules for installing and configuring development tools and dotfiles.
+See `INSTALLATION.md` at the repo root for the full picture.
 
 ## Usage
 
 ### Running as Scripts
 
-All modules can be run directly as standalone scripts:
+Every module runs standalone and accepts `--dry-run` and `--verbose`:
 
 ```bash
 # Install everything
 bun install/install.ts
 
-# Dry-run mode (preview changes)
+# Preview every change (nothing is modified)
 bun install/install.ts --dry-run
 
-# Skip package installations (only create symlinks)
+# Only create symlinks
 bun install/install.ts --skip-packages
 
 # Verify installation status
 bun install/install.ts --verify
 
-# Individual package installers
-bun install/node.ts
-bun install/rust.ts
-bun install/macos/brew.ts
-bun install/macos/macos.ts
+# Individual steps
+bun install/node.ts --dry-run
+bun install/rust.ts --dry-run
+bun install/macos/brew.ts --dry-run
+bun install/macos/macos.ts --dry-run
 ```
 
 ### Using as Modules
 
-All installation scripts export functions that can be imported and called directly:
+Every step takes a `Context` and returns a `StepResult` (`{ ok, changes?, error? }`):
 
 ```typescript
-import { installNodePackages } from "./install/node.ts";
+import { createContext } from "./install/lib/context.ts";
+import { runStep } from "./install/lib/step.ts";
+import { renderSummary } from "./install/lib/summary.ts";
 import { installRust } from "./install/rust.ts";
-import { installBrew } from "./install/macos/brew.ts";
-import { setupMacOS } from "./install/macos/macos.ts";
 
-// Call functions directly
-try {
-  await installNodePackages();
-  await installRust();
-  
-  if (process.platform === "darwin") {
-    await setupMacOS();
-    await installBrew("/path/to/configs");
-  }
-} catch (error) {
-  console.error("Installation failed:", error);
-}
+const ctx = createContext({ dryRun: true, verbose: false }, { ...process.env });
+await runStep(ctx, "Rust toolchain", () => installRust(ctx));
+console.log(renderSummary(ctx.summary));
 ```
 
 ## Module Exports
 
-### `install/node.ts`
-- **Function**: `installNodePackages(): Promise<void>`
-- **Description**: Installs global Node.js packages via pnpm
-- **Throws**: Error if installation fails
+| Module | Step | Notes |
+|---|---|---|
+| `node.ts` | `syncNodePackages(ctx)` | `auditNodePackages` (drops/uninstalls deprecated) then `installNodePackages` |
+| `rust.ts` | `installRust(ctx)` | rustup, components, deprecated component removal, `cargo-edit` |
+| `macos/brew.ts` | `installBrew(ctx)`, `auditBrewfile(ctx)` | also `parseBrewfile`, `parseBundleCheck` |
+| `macos/macos.ts` | `setupMacOS(ctx)` | reads each `defaults` value first; only writes differences |
+| `verify.ts` | `runVerify(ctx)` | also `findStaleLinks`, `REQUIRED_TOOLS` |
+| `symlinks.ts` | `getSymlinks(root, home, platform)` | the manifest, plus `UNLINKED_ENTRIES` |
 
-### `install/rust.ts`
-- **Function**: `installRust(): Promise<void>`
-- **Description**: Installs Rust toolchain and components via rustup
-- **Throws**: Error if installation fails
+## Rules for new code
 
-### `install/macos/brew.ts`
-- **Function**: `installBrew(configsRoot?: string): Promise<void>`
-- **Description**: Installs Homebrew and packages from Brewfile
-- **Parameters**: 
-  - `configsRoot` (optional): Path to configs repository root
-- **Throws**: Error if installation fails
-
-### `install/macos/macos.ts`
-- **Function**: `setupMacOS(): Promise<void>`
-- **Description**: Applies macOS system settings (Dock, keyboard)
-- **Throws**: Error if configuration fails
+1. Run commands only through `ctx.runner.run(cmd, { mutates })`, and declare `mutates`
+   honestly: the dry-run runner skips mutating commands and runs read-only probes.
+2. Make filesystem changes through `lib/fs-ops.ts`, or check `ctx.dryRun` first.
+3. In dry-run mode, report planned changes with status `"planned"`.
+4. Never read or write `process.env` inside a step; use `ctx.env`.
+5. Guard the entry point with `if (import.meta.main)` and use `runStandalone`.
 
 ## Testing
 
-When writing tests, you can import and call functions directly instead of spawning scripts:
+Use `makeCtx` and `FakeRunner` from `test/helpers.ts`:
 
 ```typescript
-import { installNodePackages } from "../install/node.ts";
+import { FakeRunner, makeCtx } from "../helpers.ts";
+import { installRust } from "../../install/rust.ts";
 
-test("should install node packages", async () => {
-  // Mock or stub the function as needed
-  await installNodePackages();
+test("dry-run runs only probes", async () => {
+  const fake = new FakeRunner(new Set(["rustup"]));
+  await installRust(makeCtx({ dryRun: true, fake }));
+  expect(fake.mutatingCommands()).toEqual([]);
 });
 ```
-
-## Architecture
-
-Each script follows this pattern:
-
-1. **Export a main function** with descriptive name
-2. **Check `import.meta.main`** to determine if running standalone
-3. **Handle errors appropriately**:
-   - When imported: throw errors to caller
-   - When standalone: catch errors and exit with code 1
-
-This allows scripts to be:
-- ✅ Run directly from command line
-- ✅ Imported and called as functions
-- ✅ Easily tested without spawning processes
-- ✅ Composed into larger workflows

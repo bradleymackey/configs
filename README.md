@@ -30,18 +30,21 @@ cd ~/configs
 # Check status of symlinks (verification mode)
 bun run verify
 
-# Preview what will be installed (dry-run mode)
+# Preview everything that would change (nothing is modified)
 bun run dry-run
 
 # Install everything
-bun run install
+bun run setup
 
 # Install only dotfiles (skip package installations)
-bun run install:dotfiles
+bun run setup:dotfiles
 
 # Install with verbose output
-bun run install:verbose
+bun run setup:verbose
 ```
+
+> The installer is deliberately **not** named `install`: `bun install` runs a
+> package's `install` script, which would silently run the whole installer.
 
 ### Available Commands
 
@@ -49,16 +52,18 @@ All commands are available as `bun run` scripts:
 
 ```bash
 # Verification & Installation
-bun run verify           # Check status of all symlinks (no changes made)
-bun run install          # Install everything (dotfiles + packages)
-bun run install:dotfiles # Install only dotfiles (skip brew, rust, node, etc.)
-bun run install:verbose  # Install with detailed output
-bun run dry-run          # Preview all changes without making any
-bun run usage            # Show detailed help and all options
+bun run verify          # Check symlinks + environment (no changes made)
+bun run dry-run         # Preview every step, including brew/pnpm/rust/macOS settings
+bun run setup           # Install everything (dotfiles + packages)
+bun run setup:dotfiles  # Install only dotfiles (skip brew, rust, node, etc.)
+bun run setup:verbose   # Install with detailed output
+bun run usage           # Show detailed help and all options
 
-# Testing
-bun test                 # Run all tests
-bun test:watch          # Run tests in watch mode
+# Development
+bun run test            # Hermetic test suite + coverage gate (>= 95%)
+bun run test:watch      # Run tests in watch mode
+bun run test:env        # Opt-in read-only checks against this machine
+bun run typecheck       # TypeScript type checking
 ```
 
 ### CLI Options
@@ -71,41 +76,41 @@ You can also call the installer directly with flags:
 - `--verbose` or `-v`: Show detailed output for all operations
 - `--help` or `-h`: Display usage information
 
+Each package step can also run on its own, and accepts the same flags:
+
 ```bash
-# Direct usage (if you prefer)
 bun install/install.ts --verify
 bun install/install.ts --dry-run --verbose
+bun install/macos/brew.ts --dry-run
+bun install/rust.ts --dry-run
 ```
 
 ### Features
 
-- **Cross-platform**: Built with Bun for better portability and performance
-- **Type-safe**: Written in TypeScript with full type checking
-- **Verification Mode**: Check status of all symlinks without making changes
+- **Dry-run everything**: Every command is declared read-only or mutating; in dry-run
+  mode mutating commands are never executed, only reported, while read-only probes
+  still run so the preview reflects the machine's real state
+- **Verification Mode**: Check symlinks, stale links and required tools without making changes
 - **Idempotent**: Safe to run multiple times without breaking existing setup
 - **Backup Protection**: Automatically backs up existing files before replacing them
-- **Smart Symlinks**: Detects and skips already-correct symlinks
-- **Error Handling**: Gracefully handles missing files and failed operations
-- **Colored Output**: Clear visual feedback for success, warnings, and errors
-- **Dry-run Mode**: Preview all changes before applying them
+- **Smart Symlinks**: Detects correct links, replaces dangling ones, never writes into linked directories
+- **Type-safe**: Written in TypeScript with full type checking
 
 ### Testing
 
-Run the comprehensive test suite using Bun's built-in test runner:
-
 ```bash
-# Run all tests
-bun test
-
-# Run tests in watch mode (auto-rerun on changes)
-bun test --watch
-
-# Or use npm scripts
-bun run test
-bun run test:watch
+bun run test       # unit + integration + repo hygiene, with coverage gate
+bun run test:env   # read-only checks against this machine (Brewfile health, --verify)
 ```
 
-The test suite validates symlink creation, idempotency, backup/restore, verification mode, dry-run mode, error handling, edge cases, git integration, platform detection, and CLI argument combinations.
+- `test/unit/`: every install module in-process, with a fake command runner and temp dirs
+- `test/integration/`: the real CLI against a throwaway HOME and a fixture configs root;
+  `dry-run-safety.test.ts` puts stub `brew`/`pnpm`/`rustup`/`defaults`/... on PATH and fails
+  if a dry run executes anything but a read-only probe
+- `test/repo/`: the manifest covers everything tracked in `home/`, the Brewfile provides every
+  required tool, no self-referential symlinks, vimdid stays gitignored
+
+No test touches the real HOME, the real repo tree, or a real package manager.
 
 I'm a fan of configs working, and working fast.
 There may be better alternatives to some of these tools below, but they work well for me in my workflow.
