@@ -49,15 +49,9 @@ describe("runVerify", () => {
 
   function setup(options: { tools?: Set<string>; env?: Record<string, string>; remote?: object; fzf?: boolean } = {}) {
     const root = makeFixtureRoot();
-    const prefix = tempDir("brew-prefix-");
-    if (options.fzf ?? true) {
-      mkdirSync(join(prefix, "opt", "fzf", "shell"), { recursive: true });
-      writeFileSync(join(prefix, "opt", "fzf", "shell", "key-bindings.bash"), "");
-    }
-    const fake = new FakeRunner(options.tools ?? ALL_TOOLS)
-      .on("git -C", options.remote ?? { stdout: "git@github.com:me/configs.git\n" })
-      .on("brew --prefix", { stdout: prefix });
+    const fake = new FakeRunner(options.tools ?? ALL_TOOLS).on("git -C", options.remote ?? { stdout: "git@github.com:me/configs.git\n" });
     const ctx = makeCtx({ configsRoot: root, fake, env: { TMUX: "1", SHELL: "/bin/bash", ...options.env } });
+    if (options.fzf ?? true) writeFileSync(join(ctx.home, ".fzf.bash"), "");
     const install = () => {
       for (const link of getSymlinks(root, ctx.home, ctx.platform)) safeSymlink(makeCtx({ home: ctx.home, configsRoot: root }), link);
     };

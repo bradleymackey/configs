@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, spyOn, test } from "bun:test";
-import { mkdirSync, readlinkSync, writeFileSync } from "fs";
+import { mkdirSync, readlinkSync } from "fs";
 import { join } from "path";
 import { HELP, main, runInstall } from "../../install/install.ts";
 import { NODE_PACKAGES } from "../../install/node.ts";
@@ -13,8 +13,6 @@ afterEach(cleanupTempDirs);
  * `overrides` are registered first so they win over the defaults.
  */
 function upToDateMachine(prefix: string, overrides: [string, object][] = []) {
-  mkdirSync(join(prefix, "opt", "fzf", "shell"), { recursive: true });
-  writeFileSync(join(prefix, "opt", "fzf", "shell", "key-bindings.bash"), "");
   const fake = new FakeRunner(new Set(["brew", "npm", "pnpm", "rustup"]));
   for (const [command, result] of overrides) fake.on(command, result);
   const installed = Object.fromEntries(NODE_PACKAGES.map((p) => [p, {}]));
@@ -26,6 +24,7 @@ function upToDateMachine(prefix: string, overrides: [string, object][] = []) {
     .on("defaults read com.apple.dock", { stdout: "left" })
     .on("defaults read NSGlobalDomain InitialKeyRepeat", { stdout: "12" })
     .on("defaults read NSGlobalDomain KeyRepeat", { stdout: "1" })
+    .on("dscl . -read", { stdout: "UserShell: /bin/bash\n" })
     .on("rustup component list", { stdout: "rust-src\nclippy-x\nrustfmt-x\n" })
     .on("cargo install --list", { stdout: "cargo-edit v1.0.0:\n" });
 }
@@ -69,8 +68,11 @@ describe("runInstall", () => {
   test("full dry-run: every step reports, nothing mutating runs, nothing on disk changes", async () => {
     const root = makeFixtureRoot();
     mkdirSync(join(root, ".git"));
-    const fake = upToDateMachine(tempDir(), [["defaults read com.apple.dock", { stdout: "bottom" }]]);
-    const ctx = makeCtx({ dryRun: true, configsRoot: root, fake });
+    const fake = upToDateMachine(tempDir(), [
+      ["defaults read com.apple.dock", { stdout: "bottom" }],
+      ["dscl . -read", { stdout: "UserShell: /bin/zsh\n" }],
+    ]);
+    const ctx = makeCtx({ dryRun: true, configsRoot: root, fake, env: { USER: "tester" } });
     const home = snapshotTree(ctx.home);
     const fixture = snapshotTree(root);
 
@@ -83,6 +85,7 @@ describe("runInstall", () => {
     expect(text).toContain("DRY-RUN MODE");
     expect(text).toContain("Would run: git -C");
     expect(text).toContain("Would run: defaults write com.apple.dock orientation -string left");
+    expect(text).toContain("Would run: chsh -s /bin/bash");
     expect(text).toContain("Would run: brew bundle");
     expect(text).toContain("Would run: pnpm add -g");
     expect(text).toContain("Would run: rustup update stable");

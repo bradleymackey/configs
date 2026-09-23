@@ -9,7 +9,9 @@ export const RUST_COMPONENTS = ["rust-src", "clippy", "rustfmt"];
 export const DEPRECATED_COMPONENTS = ["rls", "rust-analysis"];
 export const CARGO_TOOLS = ["cargo-edit"];
 
-const RUSTUP_INSTALL = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y";
+// --no-modify-path: rustup would otherwise append to ~/.bashrc and ~/.bash_profile, which are
+// symlinks into this repo; .bashrc already puts ~/.cargo/bin on PATH
+export const RUSTUP_INSTALL = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path";
 
 export async function listInstalledComponents(ctx: Context): Promise<string[]> {
   const result = await ctx.runner.run(["rustup", "component", "list", "--installed"], { mutates: false });

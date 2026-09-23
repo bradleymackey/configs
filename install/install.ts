@@ -14,7 +14,7 @@ import { runStep } from "./lib/step.ts";
 import { hasFailures, renderSummary } from "./lib/summary.ts";
 import { getSymlinks } from "./symlinks.ts";
 import { runVerify } from "./verify.ts";
-import { setupMacOS } from "./macos/macos.ts";
+import { configureMacOS } from "./macos/macos.ts";
 import { auditBrewfile, installBrew } from "./macos/brew.ts";
 import { syncNodePackages } from "./node.ts";
 import { installRust } from "./rust.ts";
@@ -76,7 +76,7 @@ export async function runInstall(ctx: Context, skipPackages: boolean): Promise<n
     log.info("Skipping package installations (--skip-packages flag)");
   } else {
     if (ctx.platform === "darwin") {
-      await runStep(ctx, "macOS system settings", () => setupMacOS(ctx));
+      await runStep(ctx, "macOS system settings", () => configureMacOS(ctx));
       await runStep(ctx, "Homebrew installation", () => installBrew(ctx));
       await runStep(ctx, "Brewfile deprecation audit", () => auditBrewfile(ctx));
     }

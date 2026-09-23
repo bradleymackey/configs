@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import {
   auditNodePackages,
   checkDeprecated,
+  ensurePnpmHome,
   installNodePackages,
   listGlobalPackages,
   NODE_PACKAGES,
@@ -157,7 +158,35 @@ describe("installNodePackages", () => {
   });
 });
 
+describe("ensurePnpmHome", () => {
+  test("sets PNPM_HOME like .bashrc does and puts it on PATH", () => {
+    const ctx = makeCtx({ env: { PATH: "/usr/bin" } });
+    ensurePnpmHome(ctx);
+    expect(ctx.env.PNPM_HOME).toBe(`${ctx.home}/Library/pnpm`);
+    expect(ctx.env.PATH).toBe(`${ctx.home}/Library/pnpm:/usr/bin`);
+  });
+
+  test("handles an unset PATH", () => {
+    const ctx = makeCtx({ env: { PATH: undefined } });
+    ensurePnpmHome(ctx);
+    expect(ctx.env.PATH).toBe(`${ctx.home}/Library/pnpm:`);
+  });
+
+  test("leaves an existing PNPM_HOME alone", () => {
+    const ctx = makeCtx({ env: { PNPM_HOME: "/custom/pnpm", PATH: "/usr/bin" } });
+    ensurePnpmHome(ctx);
+    expect(ctx.env.PNPM_HOME).toBe("/custom/pnpm");
+    expect(ctx.env.PATH).toBe("/usr/bin");
+  });
+});
+
 describe("syncNodePackages", () => {
+  test("sets PNPM_HOME before running pnpm (setup may be launched from zsh)", async () => {
+    const ctx = makeCtx({ fake: tools("pnpm") });
+    await syncNodePackages(ctx, ["a"]);
+    expect(ctx.env.PNPM_HOME).toBe(`${ctx.home}/Library/pnpm`);
+  });
+
   test("installs only what survives the audit", async () => {
     const fake = tools("npm", "pnpm").on("npm view old", { stdout: '"gone"' });
     const result = await syncNodePackages(makeCtx({ fake }), ["old", "new"]);

@@ -20,14 +20,15 @@ function setup(options: { dryRun?: boolean; brew?: boolean; fzf?: boolean; brewf
   mkdirSync(join(root, "home"));
   if (options.brewfile !== null) writeFileSync(join(root, "home", "Brewfile"), options.brewfile ?? BREWFILE);
 
+  // The formula always ships its shell scripts; ~/.fzf.bash only exists once fzf's install ran
   const prefix = tempDir("brew-prefix-");
-  if (options.fzf ?? true) {
-    mkdirSync(join(prefix, "opt", "fzf", "shell"), { recursive: true });
-    writeFileSync(join(prefix, "opt", "fzf", "shell", "key-bindings.bash"), "");
-  }
+  mkdirSync(join(prefix, "opt", "fzf", "shell"), { recursive: true });
+  writeFileSync(join(prefix, "opt", "fzf", "shell", "key-bindings.bash"), "");
+  const home = tempDir("configs-home-");
+  if (options.fzf ?? true) writeFileSync(join(home, ".fzf.bash"), "");
 
   const fake = new FakeRunner(new Set(options.brew === false ? [] : ["brew"])).on("brew --prefix", { stdout: `${prefix}\n` });
-  const ctx = makeCtx({ dryRun: options.dryRun, configsRoot: root, fake });
+  const ctx = makeCtx({ dryRun: options.dryRun, home, configsRoot: root, fake });
   return { ctx, fake, prefix, brewfile: join(root, "home", "Brewfile") };
 }
 
@@ -68,7 +69,8 @@ describe("installBrew", () => {
     ctx.env.PATH = "/usr/bin";
     const result = await installBrew(ctx);
     expect(result.changes?.[0]).toEqual({ category: "Package step", name: "Homebrew", status: "created" });
-    expect(fake.calls[0].opts).toMatchObject({ mutates: true });
+    // Without a TTY on stdin the installer can't prompt for sudo and aborts
+    expect(fake.calls[0].opts).toMatchObject({ mutates: true, interactive: true });
     expect(ctx.env.PATH).toBe("/opt/homebrew/bin:/usr/bin");
   });
 
@@ -150,11 +152,11 @@ describe("installBrew", () => {
     expect(result.changes?.[1]).toMatchObject({ status: "unchanged", detail: "all dependencies satisfied" });
   });
 
-  test("installs fzf bash bindings only (no zsh/fish, no rc edits)", async () => {
+  test("installs fzf bash bindings only (no zsh/fish/nushell, no rc edits) when ~/.fzf.bash is missing", async () => {
     const { ctx, fake, prefix } = setup({ fzf: false });
     const result = await installBrew(ctx);
     expect(fake.mutatingCommands()).toContain(
-      `${join(prefix, "opt", "fzf", "install")} --key-bindings --completion --no-update-rc --no-zsh --no-fish`,
+      `${join(prefix, "opt", "fzf", "install")} --key-bindings --completion --no-update-rc --no-zsh --no-fish --no-nushell`,
     );
     expect(result.changes?.at(-1)).toMatchObject({ name: "fzf completions", status: "created" });
   });

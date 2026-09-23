@@ -53,6 +53,23 @@ describe("createShellRunner", () => {
     expect(result).toEqual({ exitCode: 0, stdout: "", stderr: "" });
   });
 
+  test("only interactive commands get the terminal's stdin", async () => {
+    // Run the runner in a child whose stdin is known, then see what `cat` reads
+    const script = join(tempDir(), "stdin.ts");
+    writeFileSync(
+      script,
+      `import { createShellRunner } from ${JSON.stringify(join(import.meta.dir, "..", "..", "install", "lib", "runner.ts"))};
+const runner = createShellRunner({ PATH: "/usr/bin:/bin" });
+const quiet = await runner.run(["cat"], { mutates: false });
+const interactive = await runner.run(["cat"], { mutates: false, interactive: true });
+console.log(JSON.stringify([quiet.stdout, interactive.stdout]));`,
+    );
+    const proc = Bun.spawn([process.execPath, script], { stdin: new Blob(["typed"]), stdout: "pipe", env: { BUN_RUNTIME_TRANSPILER_CACHE_PATH: "0" } });
+    const output = await new Response(proc.stdout).text();
+    expect(await proc.exited).toBe(0);
+    expect(JSON.parse(output)).toEqual(["", "typed"]);
+  });
+
   test("sees PATH changes made after creation (e.g. after installing Homebrew)", async () => {
     const env = { PATH: SYSTEM_PATH };
     const runner = createShellRunner(env);

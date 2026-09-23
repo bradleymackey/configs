@@ -51,7 +51,7 @@ console.log(renderSummary(ctx.summary));
 | `node.ts` | `syncNodePackages(ctx)` | `auditNodePackages` (drops/uninstalls deprecated) then `installNodePackages` |
 | `rust.ts` | `installRust(ctx)` | rustup, components, deprecated component removal, `cargo-edit` |
 | `macos/brew.ts` | `installBrew(ctx)`, `auditBrewfile(ctx)` | also `parseBrewfile`, `parseBundleCheck` |
-| `macos/macos.ts` | `setupMacOS(ctx)` | reads each `defaults` value first; only writes differences |
+| `macos/macos.ts` | `configureMacOS(ctx)` | `setupMacOS` (reads each `defaults` value first; only writes differences) then `setupLoginShell` (`chsh -s /bin/bash` if needed) |
 | `verify.ts` | `runVerify(ctx)` | also `findStaleLinks`, `REQUIRED_TOOLS` |
 | `symlinks.ts` | `getSymlinks(root, home, platform)` | the manifest, plus `UNLINKED_ENTRIES` |
 
@@ -59,6 +59,8 @@ console.log(renderSummary(ctx.summary));
 
 1. Run commands only through `ctx.runner.run(cmd, { mutates })`, and declare `mutates`
    honestly: the dry-run runner skips mutating commands and runs read-only probes.
+   Pass `interactive: true` for commands that prompt (password, confirmation) so they get
+   the terminal's stdin.
 2. Make filesystem changes through `lib/fs-ops.ts`, or check `ctx.dryRun` first.
 3. In dry-run mode, report planned changes with status `"planned"`.
 4. Never read or write `process.env` inside a step; use `ctx.env`.

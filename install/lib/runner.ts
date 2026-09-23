@@ -11,6 +11,8 @@ export type RunOptions = {
   mutates: boolean;
   /** stream output to the terminal instead of capturing it */
   stream?: boolean;
+  /** attach the terminal's stdin (installers that prompt, or check for a TTY) */
+  interactive?: boolean;
   /** extra environment variables for this command */
   env?: Env;
 };
@@ -49,7 +51,7 @@ export function createShellRunner(env: Env): Runner {
       try {
         proc = Bun.spawn([resolved, ...args], {
           env: { ...env, ...opts.env },
-          stdin: "ignore",
+          stdin: opts.interactive ? "inherit" : "ignore",
           stdout: opts.stream ? "inherit" : "pipe",
           stderr: opts.stream ? "inherit" : "pipe",
         });

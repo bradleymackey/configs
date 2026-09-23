@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 
+import { join } from "path";
 import type { StepResult, SummaryItem } from "./types.ts";
 import type { Context } from "./lib/context.ts";
 import { runStandalone } from "./lib/standalone.ts";
@@ -153,8 +154,19 @@ export async function installNodePackages(ctx: Context, packages: string[] = NOD
   };
 }
 
+/**
+ * pnpm -g needs PNPM_HOME set and on PATH. .bashrc does that, but setup may be
+ * launched from another shell (zsh on a fresh Mac), so mirror it for this run.
+ */
+export function ensurePnpmHome(ctx: Context): void {
+  if (ctx.env.PNPM_HOME) return;
+  ctx.env.PNPM_HOME = join(ctx.home, "Library", "pnpm");
+  ctx.env.PATH = `${ctx.env.PNPM_HOME}:${ctx.env.PATH ?? ""}`;
+}
+
 /** Audit then install, as one step (the install list depends on the audit). */
 export async function syncNodePackages(ctx: Context, packages: string[] = NODE_PACKAGES): Promise<StepResult> {
+  ensurePnpmHome(ctx);
   const audit = await auditNodePackages(ctx, packages);
   const install = await installNodePackages(ctx, audit.packages);
   return {

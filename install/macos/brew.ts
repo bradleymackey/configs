@@ -57,7 +57,8 @@ export async function installBrew(ctx: Context): Promise<StepResult> {
       return { ok: true, changes };
     }
     ctx.log.info("Installing Homebrew...");
-    const install = await runner.run(["/bin/bash", "-c", HOMEBREW_INSTALL], { mutates: true, stream: true });
+    // Interactive: without a TTY on stdin the installer goes non-interactive and can't ask for sudo
+    const install = await runner.run(["/bin/bash", "-c", HOMEBREW_INSTALL], { mutates: true, stream: true, interactive: true });
     if (install.exitCode !== 0) {
       changes.push({ category: "Package step", name: "Homebrew", status: "failed", detail: "installer returned non-zero" });
       return { ok: false, changes, error: "Homebrew install failed" };
@@ -99,13 +100,13 @@ export async function installBrew(ctx: Context): Promise<StepResult> {
     );
   }
 
-  const prefix = (await runner.run(["brew", "--prefix"], { mutates: false, env: BREW_ENV })).stdout.trim();
-  const fzfDir = join(prefix, "opt", "fzf");
-  if (existsSync(join(fzfDir, "shell", "key-bindings.bash"))) {
+  // ~/.fzf.bash is what .bashrc sources; fzf's own install script generates it
+  if (existsSync(join(ctx.home, ".fzf.bash"))) {
     changes.push({ category: "Package step", name: "fzf completions", status: "unchanged" });
   } else {
+    const prefix = (await runner.run(["brew", "--prefix"], { mutates: false, env: BREW_ENV })).stdout.trim();
     const fzf = await runner.run(
-      [join(fzfDir, "install"), "--key-bindings", "--completion", "--no-update-rc", "--no-zsh", "--no-fish"],
+      [join(prefix, "opt", "fzf", "install"), "--key-bindings", "--completion", "--no-update-rc", "--no-zsh", "--no-fish", "--no-nushell"],
       { mutates: true },
     );
     changes.push(

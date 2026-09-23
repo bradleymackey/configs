@@ -20,6 +20,7 @@ const READ_ONLY = [
   /^rustup component list --installed$/,
   /^cargo install --list$/,
   /^defaults read \S+ \S+$/,
+  /^dscl \. -read \S+ UserShell$/,
 ];
 
 const STUB = `#!/bin/sh
@@ -36,6 +37,7 @@ case "$(basename "$0") $1 $2" in
   "pnpm list "*) echo '[{"dependencies":{"npm":{}}}]' ;;
   "rustup component "*) printf 'rust-src\\nrls-aarch64-apple-darwin\\n' ;;
   "defaults read "*) echo "bottom" ;;
+  "dscl . -read") echo "UserShell: /bin/zsh" ;;
 esac
 exit 0
 `;
@@ -52,7 +54,7 @@ beforeEach(() => {
   stubs = tempDir("configs-stubs-");
   log = join(stubs, "calls.log");
   writeFileSync(log, "");
-  for (const bin of ["brew", "pnpm", "npm", "rustup", "cargo", "defaults", "curl", "git"]) {
+  for (const bin of ["brew", "pnpm", "npm", "rustup", "cargo", "defaults", "dscl", "chsh", "curl", "git"]) {
     writeFileSync(join(stubs, bin), STUB);
     chmodSync(join(stubs, bin), 0o755);
   }
@@ -64,6 +66,7 @@ async function run(script: string, args: string[]): Promise<CliResult> {
   const proc = Bun.spawn([process.execPath, join(REPO_ROOT, "install", script), ...args], {
     env: {
       HOME: home,
+      USER: "tester",
       CONFIGS_ROOT: root,
       PATH: `${stubs}:/usr/bin:/bin`,
       STUB_LOG: log,
@@ -111,6 +114,7 @@ describe("full --dry-run (no --skip-packages)", () => {
     expect(output).toContain("Would run: cargo install cargo-edit");
     if (process.platform === "darwin") {
       expect(output).toContain("Would run: defaults write com.apple.dock orientation -string left");
+      expect(output).toContain("Would run: chsh -s /bin/bash");
       expect(output).toContain("Would run: brew bundle --file");
       expect(output).toContain("would install: jq");
       expect(output).toContain("--no-zsh --no-fish");

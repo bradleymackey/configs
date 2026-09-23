@@ -77,6 +77,8 @@ describe("installRust", () => {
     const ctx = makeCtx({ fake, env: { PATH: "/usr/bin" } });
     const result = await installRust(ctx);
     expect(fake.mutatingCommands()[0]).toStartWith("/bin/sh -c curl --proto '=https'");
+    // rustup must not append to ~/.bashrc / ~/.bash_profile: they're symlinks into the repo
+    expect(fake.mutatingCommands()[0]).toEndWith("sh -s -- -y --no-modify-path");
     expect(result.changes?.[0]).toEqual({ category: "Package step", name: "rustup", status: "created" });
     expect(ctx.env.PATH).toBe(`${ctx.home}/.cargo/bin:/usr/bin`);
   });

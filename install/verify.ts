@@ -118,11 +118,10 @@ export async function runVerify(ctx: Context): Promise<number> {
   }
 
   if (ctx.runner.which("brew")) {
-    const prefix = (await ctx.runner.run(["brew", "--prefix"], { mutates: false, env: { HOMEBREW_NO_AUTO_UPDATE: "1" } })).stdout.trim();
     check(
-      lexists(join(prefix, "opt", "fzf", "shell", "key-bindings.bash")),
+      lexists(join(ctx.home, ".fzf.bash")),
       "fzf shell completions installed",
-      "fzf shell completions not installed (run: $(brew --prefix)/opt/fzf/install)",
+      "fzf shell completions not installed (run: $(brew --prefix)/opt/fzf/install --key-bindings --completion --no-update-rc)",
     );
   }
 
