@@ -4,15 +4,17 @@
   "type": "module",
   "description": "Personal development environment configuration and dotfiles",
   "scripts": {
-    "install": "bun install/install.ts",
-    "install:dry-run": "bun install/install.ts --dry-run",
-    "install:dotfiles": "bun install/install.ts --skip-packages",
-    "install:verbose": "bun install/install.ts --verbose",
+    "setup": "bun install/install.ts",
+    "setup:dry-run": "bun install/install.ts --dry-run",
+    "setup:dotfiles": "bun install/install.ts --skip-packages",
+    "setup:verbose": "bun install/install.ts --verbose",
     "dry-run": "bun install/install.ts --dry-run",
     "verify": "bun install/install.ts --verify",
     "usage": "bun install/install.ts --help",
-    "test": "bun test test/",
-    "test:watch": "bun test --watch test/"
+    "typecheck": "tsc --noEmit -p .",
+    "test": "bun test --coverage",
+    "test:watch": "bun test --watch",
+    "test:env": "CONFIGS_ENV_TESTS=1 bun test test/env"
   },
   "keywords": [
     "dotfiles",
@@ -22,6 +24,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "typescript": "^7.0.2"
   }
 }
